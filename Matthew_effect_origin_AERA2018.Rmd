@@ -60,7 +60,7 @@ set.seed(42)
 
 Current educational and psychological theories, being qualitative, are incapable of generating precise quantitative predictions -- “point predictions” -- that are the hallmark of the physical sciences  (c.f. Cohen, 1994; Maxwell & Howard, 2009; Meehl, 1967). For theories to be falsifiable, they must make specific predictions. Only then can empirical research provide the type of severe tests (Mayo, 1996) that lead to meaningful scientific progress. We propose such a theory in this paper. Our theory of academic achievement growth can describe and predict the achievement trajectories of individual students, accounting for both individual and environmental factors. 
 
-# Methods1
+# Methods1 one million
 
 The Zone of Proximal Development (ZPD) is the basic psychological principle at the heart of this theoretical model. Although the ZPD concept is typically attributed to Lev Vygotsky, the phenomenon was actually first revealed by Dorthea McCarthy (1930). The ZPD describes how learning emerges from the interaction between a student’s base of currently mastered skills and knowledge with a particular set of learning experiences, and refers specifically to the set of skills that a student cannot perform autonomously but can do with scaffolding from a teacher or more competent peer. In our theory, instruction that occurs within the ZPD leads to the most rapid, efficient learning. 
 
