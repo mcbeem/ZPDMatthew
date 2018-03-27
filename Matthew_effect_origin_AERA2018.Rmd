@@ -49,6 +49,9 @@ library(ZPDGrowthTrajectories)
 library(ggplot2)
 library(dplyr)
 library(cowplot)
+library(ggridges)
+library(viridis)
+library(forcats)
 ```
 
 ```{r analysis_preferences}
@@ -60,7 +63,7 @@ set.seed(42)
 
 Current educational and psychological theories, being qualitative, are incapable of generating precise quantitative predictions -- “point predictions” -- that are the hallmark of the physical sciences  (c.f. Cohen, 1994; Maxwell & Howard, 2009; Meehl, 1967). For theories to be falsifiable, they must make specific predictions. Only then can empirical research provide the type of severe tests (Mayo, 1996) that lead to meaningful scientific progress. We propose such a theory in this paper. Our theory of academic achievement growth can describe and predict the achievement trajectories of individual students, accounting for both individual and environmental factors. 
 
-# Methods
+# Methods1
 
 The Zone of Proximal Development (ZPD) is the basic psychological principle at the heart of this theoretical model. Although the ZPD concept is typically attributed to Lev Vygotsky, the phenomenon was actually first revealed by Dorthea McCarthy (1930). The ZPD describes how learning emerges from the interaction between a student’s base of currently mastered skills and knowledge with a particular set of learning experiences, and refers specifically to the set of skills that a student cannot perform autonomously but can do with scaffolding from a teacher or more competent peer. In our theory, instruction that occurs within the ZPD leads to the most rapid, efficient learning. 
 
@@ -69,7 +72,7 @@ The Zone of Proximal Development (ZPD) is the basic psychological principle at t
 We define the term academic achievement to mean a student’s location along a sequenced, developmental curriculum within a specific domain. Academic achievement therefore refers to the body of knowledge, understanding, and skills that a student has mastered at a particular moment in time. Academic growth or achievement growth is change (typically positive) in achievement over time. Our numeric scale for measuring achievement ranges from zero to positive infinity, where zero is a meaningful quantity representing no knowledge or skills in the domain. Specific values of achievement could refer to the location of specific skill milestones or content mastery. For example, one could (arbitrarily) set the mastery of mathematical operations expected of a typical third grader to a value of 0.40 on the achievement metric. 
 ZPD. The ZPD is represented by a normal curve, normalized to a maximum value of one, whose peak is slightly ahead of the student’s current achievement (Figure 1). In the figure, a vertical line at 0.25 depicts the student’s current achievement; her ZPD is the shaded curve peaking at 0.30. The ZPD is not a single point but rather a “spread” of values varying in intensity; its peak describes the most efficacious level of instruction for stimulating academic growth. 
 
-Insert Figure 1 here. Yes, right here.
+Insert Figure 1 here
 
 
 ## School curriculum. 
@@ -92,6 +95,114 @@ Insert Figure 3 here
 Our model incorporates four child-level parameters: current achievement, learning rate, decay rate, and home environment; these create variability in growth trajectories. The learning rate represents individual differences in the pace of academic growth for students with identical levels of ZPD engagement, and can be considered to be a combination of general intelligence and motivation. The decay rate is the rate at which achievement will decay (due to forgetting) in the absence of instruction. The home environment parameter describes how effectively the home environment is at facilitating academic growth. 
 
 
+## Cool plot
+
+```{r}
+
+MAP.2015.norms <-
+  # subject # grade  # time  # subject # mean # SD
+  matrix(c(
+    rep(1, times=12*3),
+    rep(seq(0,11), each=3),
+    rep(c(1,2,3), times=12),
+    c(141.0, 151.3, 158.1, 
+      160.7, 171.5, 177.5,
+      174.7, 184.2, 188.7,
+      188.3, 195.6, 198.6,
+      198.2, 203.6, 205.9,
+      205.7, 209.8, 211.8,
+      211.0, 214.2, 215.8,
+      214.4, 216.9, 218.2,
+      217.2, 219.1, 220.1,
+      220.2, 221.3, 221.9,
+      220.4, 221.0, 221.2,
+      222.6, 222.7, 222.3),
+    c(13.54, 12.72, 12.85, 
+      13.08, 13.54, 14.54,
+      15.52, 14.98, 15.21,
+      15.85, 15.14, 15.10,
+      15.53, 14.96, 14.92,
+      15.13, 14.65, 14.72,
+      14.94, 14.53, 14.66,
+      15.31, 14.98, 15.14,
+      15.72, 15.37, 15.73,
+      15.68, 15.54, 16.21,
+      16.85, 16.70, 17.48, 
+      16.75, 16.53, 17.68)),
+    ncol=5) %>% data.frame()
+
+names(MAP.2015.norms) <- c("Subject", "Grade", "Time", "Mean", "SD")
+MAP.2015.norms$Subject <- factor(MAP.2015.norms$Subject, labels=c("Reading"))
+
+
+# now I need to create a normal curve for each one
+### Approach 1: sample random values, then use geom_density_ridges_gradient
+n <- 200
+
+b <- MAP.2015.norms[rep(1:36, each=n), ]
+
+# cause i'm having trouble with mapply and don't care about style points
+for (i in 1:nrow(MAP.2015.norms)) {
+  if (i == 1) {
+    rm(y)
+    y <- rnorm(n=n, mean=MAP.2015.norms$Mean[i], sd=MAP.2015.norms$SD[i])
+    }
+  if (i > 1) {y <- c(y, rnorm(n=n, mean=MAP.2015.norms$Mean[i], sd=MAP.2015.norms$SD[i]))}
+}
+
+b$y <- y
+
+ggplot(data=filter(b, Time==1), aes(x = y, y = (factor(Grade)), fill = ..x..)) +
+  geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01, gradient_lwd = 1, bandwidth=15) +
+  scale_x_continuous(expand = c(0.01, 0)) +
+  #scale_y_discrete(limits = unique(rev(b$Grade)))+
+  scale_y_discrete(expand = c(0.01, 0)) +
+  scale_fill_viridis(name = "y", option = "D") +
+  labs(title = 'MAP 2015 Reading Norms by Grade')+
+  theme_ridges(font_size = 12, grid = TRUE) + 
+  theme(axis.title.y = element_blank(), 
+        legend.position="none")+
+  geom_vline(xintercept=180, col="white", lwd=1.5, alpha=.8)+
+    geom_vline(xintercept=180, col="black", lwd=.8, linetype="dashed")
+
+### Approach 2: fill under lines with geom_ridgeline
+
+x <- seq(50, 300, by=1)# %>% length()
+a <- cbind(MAP.2015.norms[rep(1:nrow(MAP.2015.norms), each=length(x)), ], x)
+
+for (i in 1:nrow(a)) {
+   a$y[i] <- dnorm(x=a$x[i], mean=a$Mean[i], sd=a$SD[i])
+}
+
+a$y[a$y<.0001] <- NA
+
+p1 <- ggplot(data=filter(a, Time==1), aes(x = x, y = (factor(Grade)), height=y, fill = ..x..)) +
+  geom_ridgeline_gradient(gradient_lwd = 1, scale=80) +
+  scale_x_continuous(expand = c(0.01, 0)) +
+  #scale_y_discrete(limits = unique(rev(b$Grade)))+
+  scale_y_discrete(expand = c(0.01, 0)) +
+  scale_fill_viridis(name = "y", option = "D") +
+  labs(title = 'MAP 2015 Reading Norms by Grade')+
+  theme_ridges(font_size = 12, grid = TRUE) + 
+  theme(axis.title.y = element_blank(), 
+        legend.position="none")#+
+  #geom_vline(xintercept=180, col="white", lwd=1.5, alpha=.8)+
+  #  geom_vline(xintercept=180, col="black", lwd=.8, linetype="dashed")
+
+
+# 
+# ggplot(lincoln_weather, aes(x = `Mean Temperature [F]`, y = `Month`, fill = ..x..)) +
+#   geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01, gradient_lwd = 1.) +
+#   scale_x_continuous(expand = c(0.01, 0)) +
+#   scale_y_discrete(expand = c(0.01, 0)) +
+#   scale_fill_viridis(name = "Temp. [F]", option = "C") +
+#   labs(title = 'Temperatures in Lincoln NE',
+#        subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the Weather Underground') +
+#   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
+#   
+```
+
+
 ## Model dynamics
 
 The amount of learning during discrete time interval $t$ for individual $i$ is given by
@@ -104,6 +215,7 @@ The amount of learning during discrete time interval $t$ for individual $i$ is g
   & (1-\textit{dosage}_{ti}) * \textit{HomeEnv}_i * \int_{0}^{\infty} \textit{ZPD}_{ti}(x) * H_t(x) \, dx \big) \big]
 \end{split}
 \end{equation}
+
 
 
 
