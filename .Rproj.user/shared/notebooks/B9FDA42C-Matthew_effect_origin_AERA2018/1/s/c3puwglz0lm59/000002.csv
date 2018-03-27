@@ -1,0 +1,3 @@
+"0","assignment <- c(rep(0, times=800), rep(1, times=200), rep(0, times=100), rep(2, times=200))"
+"0","curriculum.start.points <- matrix(c(.10, .15), nrow=2, ncol=1)"
+"0","curriculum.widths <- matrix(c(.05, .05), nrow=2, ncol=1)"

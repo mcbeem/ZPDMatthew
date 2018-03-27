@@ -1,0 +1,290 @@
+---
+title             : "On the Origin of the Matthew Effect: Insights from a Quantitative Theoretical Model"
+shorttitle        : "Origin"
+
+author: 
+  - name          : "Matthew T. McBee"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : ""
+    email         : "mcbeem@etsu.edu"
+    
+  - name          : "Matthew C. Makel"
+    affiliation   : "2"
+    
+  - name          : "Natasha L. Godkin"
+    affiliation   : "1"
+
+affiliation:
+  - id            : "1"
+    institution   : "East Tennessee State University"
+    
+  - id            : "2"
+    institution   : "Duke University Talent Identification Program"
+
+author_note: >
+
+abstract: 
+  A quantitative theoretical model of academic achievement, based on the concept of the Zone of Proximal     Development (ZPD), has proven capable of reproducing the results of several empirical, longitudinal studies of achievement. This paper applies the model to understanding the origins of variance in achievement (at the individual and subgroup mean level of analysis), and the effect of gifted education initiatives on that variability.
+  
+keywords          : "gifted, excellence gap, zone of proximal development, theoretical calculation"
+wordcount         : "X"
+
+bibliography      : ["r-references.bib"]
+
+figsintext        : yes
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+lineno            : no
+
+lang              : "english"
+class             : "man"
+output            : papaja::apa6_pdf
+---
+
+```{r load_packages, include = FALSE}
+library("papaja")
+library(ZPDGrowthTrajectories)
+library(ggplot2)
+library(dplyr)
+library(cowplot)
+```
+
+```{r analysis_preferences}
+# Seed for random number generation
+set.seed(42)
+```
+
+# Theoretical Framework
+
+Current educational and psychological theories, being qualitative, are incapable of generating precise quantitative predictions -- “point predictions” -- that are the hallmark of the physical sciences  (c.f. Cohen, 1994; Maxwell & Howard, 2009; Meehl, 1967). For theories to be falsifiable, they must make specific predictions. Only then can empirical research provide the type of severe tests (Mayo, 1996) that lead to meaningful scientific progress. We propose such a theory in this paper. Our theory of academic achievement growth can describe and predict the achievement trajectories of individual students, accounting for both individual and environmental factors. 
+
+# Methods1
+
+The Zone of Proximal Development (ZPD) is the basic psychological principle at the heart of this theoretical model. Although the ZPD concept is typically attributed to Lev Vygotsky, the phenomenon was actually first revealed by Dorthea McCarthy (1930). The ZPD describes how learning emerges from the interaction between a student’s base of currently mastered skills and knowledge with a particular set of learning experiences, and refers specifically to the set of skills that a student cannot perform autonomously but can do with scaffolding from a teacher or more competent peer. In our theory, instruction that occurs within the ZPD leads to the most rapid, efficient learning. 
+
+## Academic achievement
+
+We define the term academic achievement to mean a student’s location along a sequenced, developmental curriculum within a specific domain. Academic achievement therefore refers to the body of knowledge, understanding, and skills that a student has mastered at a particular moment in time. Academic growth or achievement growth is change (typically positive) in achievement over time. Our numeric scale for measuring achievement ranges from zero to positive infinity, where zero is a meaningful quantity representing no knowledge or skills in the domain. Specific values of achievement could refer to the location of specific skill milestones or content mastery. For example, one could (arbitrarily) set the mastery of mathematical operations expected of a typical third grader to a value of 0.40 on the achievement metric. 
+ZPD. The ZPD is represented by a normal curve, normalized to a maximum value of one, whose peak is slightly ahead of the student’s current achievement (Figure 1). In the figure, a vertical line at 0.25 depicts the student’s current achievement; her ZPD is the shaded curve peaking at 0.30. The ZPD is not a single point but rather a “spread” of values varying in intensity; its peak describes the most efficacious level of instruction for stimulating academic growth. 
+
+Insert Figure 1 here
+
+
+## School curriculum. 
+
+School curriculum is co-located on the same scale with academic achievement in much the same way that IRT models place test scores and item difficulties on a common scale. For example, one could imagine that a typical Kindergarten reading curriculum ranges from 0.05 to 0.15, where 0.05 might include basic letter and phoneme awareness and 0.15 a limited ability to “sound out” simple words and knowledge of roughly 200 sight words. Within this academic year, the curriculum presented on a specific day would consist of a narrow slice or segment of this interval, and as the year progresses, the presented curriculum would steadily advance. Our model uses a normalized trapezoidal distribution to represent the school curriculum due to the many shapes it can assume with different choices of values for its parameters. Figure 2 illustrates how three students, with varying initial achievement, can experience the same school curriculum. Only the student in the center panel would derive strong benefit from exposure to this curriculum as it falls within his ZPD. The curriculum is too difficult for the first student and too easy for the third; neither of these students would experience much benefit. Our implementation of the model in our R package does allow for students to experience different curricula (e.g., remedial, typical, or advanced) on an individual basis. 
+
+
+Insert Figure 2 here
+
+
+## Home curriculum
+
+Children learn a great deal at home, particularly in early childhood and in certain subjects such as reading. The rate of academic growth caused by learning experiences at home is a function of the overlap between the child’s ZPD and what we call the “home curriculum”, which we conceptualize as a downward-sloping function. Our R package implantation represents the home curriculum as a normalized beta distribution with the $\alpha$ parameter fixed to 1. Figure 3 displays the home curriculum function (with parameter $\beta$ set to 5) with a superimposed ZPD for a child with achievement = 0.20. The implication of this downward slope is that academic growth due to home instruction is most rapid in early childhood and becomes increasingly reliant on school instruction in later grades. 
+
+
+Insert Figure 3 here
+
+## Individual difference parameters
+
+Our model incorporates four child-level parameters: current achievement, learning rate, decay rate, and home environment; these create variability in growth trajectories. The learning rate represents individual differences in the pace of academic growth for students with identical levels of ZPD engagement, and can be considered to be a combination of general intelligence and motivation. The decay rate is the rate at which achievement will decay (due to forgetting) in the absence of instruction. The home environment parameter describes how effectively the home environment is at facilitating academic growth. 
+
+
+## Model dynamics
+
+The amount of learning during discrete time interval $t$ for individual $i$ is given by
+
+
+\begin{equation}
+\begin{split}
+\textit{Learning}_{ti} = \textit{LearnRate}_i \, &* \\
+  & \big[ \big( \textit{dosage}_{ti} * \int_{0}^{\infty} \textit{ZPD}_{ti}(x) * S_t(x) \, dx \big) + \\ 
+  & (1-\textit{dosage}_{ti}) * \textit{HomeEnv}_i * \int_{0}^{\infty} \textit{ZPD}_{ti}(x) * H_t(x) \, dx \big) \big]
+\end{split}
+\end{equation}
+
+
+
+```{r}
+# generate data for four students
+# learning rate
+learning.rates <- c(.08, .10, .12, .18) # decay rate
+decay.rates <- c(.04, .03, .02, .01) # initial achievement
+initial.achievements <- rep(0, times=4) # quality of home environment
+home.environments <- c(.06, .12, .15, .20)
+
+# school curriculum
+assignment <- c(rep(0, times=800), rep(1, times=200), rep(0, times=100), rep(2, times=200))
+
+curriculum.start.points <- matrix(c(.10, .15), nrow=2, ncol=1)
+```
+
+
+```{r}
+assignment <- c(rep(0, times=800), rep(1, times=200), rep(0, times=100), rep(2, times=200))
+curriculum.start.points <- matrix(c(.10, .15), nrow=2, ncol=1)
+
+curriculum.widths <- matrix(c(.05, .05), nrow=2, ncol=1)
+
+```
+
+
+```{r}
+trajectories <- ZPDGrowthTrajectories( output.format="wide",
+days=1300,
+assignment=assignment, curriculum.start.points=curriculum.start.points, curriculum.widths=curriculum.widths,
+  dosage=.8,
+  learning.rates=learning.rates,
+  decay.rates=decay.rates,
+  initial.achievements=initial.achievements,
+  home.environments=home.environments,
+  integration.points=200,
+  curriculum.lower.slope=8,
+  curriculum.upper.slope=300,
+  alpha=1,
+  home.curriculum.shape1=1,
+  home.curriculum.shape2=5,
+  zpd.offset=.03,
+  zpd.sd=.028,
+  zpd.scale=.15,
+  decay.weight=.005,
+  useGPU=FALSE,
+  verbose=FALSE)
+visualizeTrajectories(trajectories)
+```
+
+```{r}
+# give better home
+trajectories <- ZPDGrowthTrajectories( output.format="wide",
+days=1300,
+assignment=assignment, curriculum.start.points=curriculum.start.points, curriculum.widths=curriculum.widths,
+  dosage=.8,
+  learning.rates=learning.rates,
+  decay.rates=decay.rates,
+  initial.achievements=initial.achievements,
+  home.environments=home.environments + .2,
+  integration.points=200,
+  curriculum.lower.slope=8,
+  curriculum.upper.slope=300,
+  alpha=1,
+  home.curriculum.shape1=1,
+  home.curriculum.shape2=5,
+  zpd.offset=.03,
+  zpd.sd=.028,
+  zpd.scale=.15,
+  decay.weight=.005,
+  useGPU=FALSE,
+  verbose=FALSE)
+visualizeTrajectories(trajectories)
+```
+
+
+```{r}
+# increase learning rate
+trajectories <- ZPDGrowthTrajectories( output.format="wide",
+days=1300,
+assignment=assignment, curriculum.start.points=curriculum.start.points, curriculum.widths=curriculum.widths,
+  dosage=.8,
+  learning.rates=1.2*learning.rates,
+  decay.rates=decay.rates,
+  initial.achievements=initial.achievements,
+  home.environments=home.environments,
+  integration.points=200,
+  curriculum.lower.slope=8,
+  curriculum.upper.slope=300,
+  alpha=1,
+  home.curriculum.shape1=1,
+  home.curriculum.shape2=5,
+  zpd.offset=.03,
+  zpd.sd=.028,
+  zpd.scale=.15,
+  decay.weight=.005,
+  useGPU=FALSE,
+  verbose=FALSE)
+visualizeTrajectories(trajectories)
+```
+
+
+```{r}
+# give wider curriculum
+trajectories <- ZPDGrowthTrajectories( output.format="wide",
+days=1300,
+assignment=assignment, curriculum.start.points=curriculum.start.points, curriculum.widths=1.5*curriculum.widths,
+  dosage=.8,
+  learning.rates=learning.rates,
+  decay.rates=decay.rates,
+  initial.achievements=initial.achievements,
+  home.environments=home.environments,
+  integration.points=200,
+  curriculum.lower.slope=8,
+  curriculum.upper.slope=300,
+  alpha=1,
+  home.curriculum.shape1=1,
+  home.curriculum.shape2=5,
+  zpd.offset=.03,
+  zpd.sd=.028,
+  zpd.scale=.15,
+  decay.weight=.005,
+  useGPU=FALSE,
+  verbose=FALSE)
+visualizeTrajectories(trajectories)
+```
+
+```{r}
+# give more rapidly advancing and wider
+trajectories <- ZPDGrowthTrajectories( output.format="wide",
+days=1300,
+assignment=assignment, 
+curriculum.start.points=c(0, .1)+curriculum.start.points, 
+curriculum.widths=curriculum.widths+.03,
+  dosage=.8,
+  learning.rates=learning.rates,
+  decay.rates=decay.rates,
+  initial.achievements=initial.achievements,
+  home.environments=home.environments,
+  integration.points=200,
+  curriculum.lower.slope=8,
+  curriculum.upper.slope=300,
+  alpha=1,
+  home.curriculum.shape1=1,
+  home.curriculum.shape2=5,
+  zpd.offset=.03,
+  zpd.sd=.028,
+  zpd.scale=.15,
+  decay.weight=.005,
+  useGPU=FALSE,
+  verbose=FALSE)
+visualizeTrajectories(trajectories)
+```
+
+
+
+# Methods
+We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
+
+## Participants
+
+## Material
+
+## Procedure
+
+## Data analysis
+We used `r cite_r("r-references.bib")` for all our analyses.
+
+
+# Results
+
+# Discussion
+
+
+\newpage
+
+# References
+```{r create_r-references}
+r_refs(file = "r-references.bib")
+```
+
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}

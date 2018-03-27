@@ -1,0 +1,4 @@
+"0","#read data"
+"0","data <- read.table("
+"0","  file=""/Users/matt/OneDrive/PSYC 5410/Spring 2017/Datasets/many_anova.txt"", "
+"0","  header=TRUE)"
