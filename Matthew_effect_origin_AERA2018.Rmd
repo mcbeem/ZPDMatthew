@@ -58,6 +58,8 @@ set.seed(42)
 
 # Theoretical Framework
 
+yo adrian!
+
 Current educational and psychological theories, being qualitative, are incapable of generating precise quantitative predictions -- “point predictions” -- that are the hallmark of the physical sciences  (c.f. Cohen, 1994; Maxwell & Howard, 2009; Meehl, 1967). For theories to be falsifiable, they must make specific predictions. Only then can empirical research provide the type of severe tests (Mayo, 1996) that lead to meaningful scientific progress. We propose such a theory in this paper. Our theory of academic achievement growth can describe and predict the achievement trajectories of individual students, accounting for both individual and environmental factors. 
 
 # Methods1 one million
