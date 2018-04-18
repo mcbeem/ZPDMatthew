@@ -1,0 +1,215 @@
+\clearpage
+
+
+
+\begin{appendix}
+\section{}
+R code for reproducing figure @ref(fig:model1). Figures @ref(fig:model2)
+through @ref(fig:model5) (as well as tables @ref(tab:ach-long),
+@ref(tab:exc-gaps), and @ref(tab:ach-gaps)) were produced using the same
+code after making alterations to the \texttt{learning.rates} object
+(model 2), \texttt{home.environments} object (model 3), \texttt{dosage=}
+argument to the \texttt{plotGaps()} function (model 4), or the
+\texttt{curriculum.starts} and \texttt{curriculum.widths} objects (model
+5) as described in text.
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(devtools)}
+\CommentTok{# download the ZPDGrowthTrajectories package from github; only needs to be done once}
+\CommentTok{# uncomment the next line if you need to download the package}
+\CommentTok{#install_github("mcbeem/ZPDGrowthTrajectories", build_vignettes=TRUE)}
+
+\KeywordTok{library}\NormalTok{(ZPDGrowthTrajectories)}
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{library}\NormalTok{(cowplot)}
+\KeywordTok{library}\NormalTok{(reshape2)}
+
+\CommentTok{# set the individual differences parameters}
+\NormalTok{learning.rates <-}\StringTok{ }\KeywordTok{c}\NormalTok{(.}\DecValTok{145}\NormalTok{, .}\DecValTok{175}\NormalTok{, .}\DecValTok{190}\NormalTok{) }\CommentTok{# learning rate }
+\NormalTok{decay.rates <-}\StringTok{ }\KeywordTok{c}\NormalTok{(.}\DecValTok{01}\NormalTok{, .}\DecValTok{008}\NormalTok{, .}\DecValTok{001}\NormalTok{) }\CommentTok{# decay rate}
+\NormalTok{home.environments <-}\StringTok{ }\KeywordTok{c}\NormalTok{(.}\DecValTok{09}\NormalTok{, .}\DecValTok{21}\NormalTok{, .}\DecValTok{34}\NormalTok{) }\CommentTok{# quality of home environment #.25}
+\NormalTok{initial.achievements <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{) }\CommentTok{# initial achievement all set to zero}
+
+\CommentTok{# create the assignment object}
+\NormalTok{assignment <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}
+  \KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1825}\NormalTok{),   }\CommentTok{# time at home before school starts}
+  \KeywordTok{rep}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{5}\NormalTok{), }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DecValTok{36}\NormalTok{),    }\CommentTok{# kindergarten}
+  \KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{113}\NormalTok{),    }\CommentTok{# not in school days, including summers, holidays, and weekends}
+  \KeywordTok{rep}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{5}\NormalTok{), }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DecValTok{36}\NormalTok{),    }\CommentTok{# first grade}
+  \KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{113}\NormalTok{),    }\CommentTok{# not in school days, including summers, holidays, and weekends}
+  \KeywordTok{rep}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{5}\NormalTok{), }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DecValTok{36}\NormalTok{),    }\CommentTok{# second grade}
+  \KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{113}\NormalTok{),    }\CommentTok{# not in school days, including summers, holidays, and weekends}
+  \KeywordTok{rep}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{), }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DecValTok{36}\NormalTok{),    }\CommentTok{# third grade}
+  \KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{113}\NormalTok{),    }\CommentTok{# not in school days, including summers, holidays, and weekends}
+  \KeywordTok{rep}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{5}\NormalTok{,}\DecValTok{5}\NormalTok{), }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DecValTok{36}\NormalTok{),    }\CommentTok{# fourth grade}
+  \KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{113}\NormalTok{),    }\CommentTok{# not in school days, including summers, holidays, and weekends}
+  \KeywordTok{rep}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{6}\NormalTok{,}\DecValTok{5}\NormalTok{), }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DecValTok{36}\NormalTok{),    }\CommentTok{# fifth grade}
+  \KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{113}\NormalTok{))    }\CommentTok{# not in school days, including summers, holidays, and weekends}
+
+\NormalTok{curriculum.starts <-}\StringTok{ }\KeywordTok{structure}\NormalTok{(}\KeywordTok{c}\NormalTok{(}
+  \FloatTok{0.0715}\NormalTok{, }\FloatTok{0.2157}\NormalTok{, }\FloatTok{0.3187}\NormalTok{, }\FloatTok{0.3599}\NormalTok{, }\FloatTok{0.4011}\NormalTok{, }\FloatTok{0.432}\NormalTok{, }\CommentTok{# advanced}
+  \FloatTok{0.0406}\NormalTok{, }\FloatTok{0.1539}\NormalTok{, }\FloatTok{0.226}\NormalTok{, }\FloatTok{0.2981}\NormalTok{, }\FloatTok{0.3496}\NormalTok{, }\FloatTok{0.3908}\NormalTok{, }\CommentTok{# remedial}
+  \FloatTok{0.0715}\NormalTok{, }\FloatTok{0.1745}\NormalTok{, }\FloatTok{0.2569}\NormalTok{, }\FloatTok{0.329}\NormalTok{, }\FloatTok{0.3805}\NormalTok{, }\FloatTok{0.4217}\NormalTok{), }\CommentTok{# standard}
+  \DataTypeTok{.Dim =} \KeywordTok{c}\NormalTok{(6L, 3L)) }
+
+\NormalTok{curriculum.widths <-}\StringTok{ }\KeywordTok{structure}\NormalTok{(}\KeywordTok{c}\NormalTok{(}
+  \FloatTok{0.125}\NormalTok{, }\FloatTok{0.104}\NormalTok{, }\FloatTok{0.083}\NormalTok{, }\FloatTok{0.062}\NormalTok{, }\FloatTok{0.041}\NormalTok{, }\FloatTok{0.02}\NormalTok{, }\CommentTok{# advanced}
+  \FloatTok{0.125}\NormalTok{, }\FloatTok{0.104}\NormalTok{, }\FloatTok{0.083}\NormalTok{, }\FloatTok{0.062}\NormalTok{, }\FloatTok{0.041}\NormalTok{, }\FloatTok{0.02}\NormalTok{, }\CommentTok{# remedial}
+  \FloatTok{0.125}\NormalTok{, }\FloatTok{0.104}\NormalTok{, }\FloatTok{0.083}\NormalTok{, }\FloatTok{0.062}\NormalTok{, }\FloatTok{0.041}\NormalTok{, }\FloatTok{0.02}\NormalTok{), }\CommentTok{# standard)}
+  \DataTypeTok{.Dim =} \KeywordTok{c}\NormalTok{(6L, 3L))}
+
+\CommentTok{# modify the visualizeTrajectories function to add a legend and tweak the size and }
+\CommentTok{# transparency of the lines}
+
+\NormalTok{visualizeTrajectories2 <-}\StringTok{ }\NormalTok{function(trajectories) \{}
+  \NormalTok{if (}\KeywordTok{ncol}\NormalTok{(trajectories) !=}\StringTok{ }\DecValTok{3}\NormalTok{) \{}
+    \NormalTok{nstudents <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(trajectories)}
+    \NormalTok{days <-}\StringTok{ }\KeywordTok{ncol}\NormalTok{(trajectories) -}\StringTok{ }\DecValTok{1}
+    \NormalTok{trajectories <-}\StringTok{ }\NormalTok{reshape2::}\KeywordTok{melt}\NormalTok{(trajectories, }\DataTypeTok{measure.vars =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{:days +}\StringTok{ }\DecValTok{1}\NormalTok{))}
+    \NormalTok{trajectories[, }\DecValTok{2}\NormalTok{] <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{:days), }\DataTypeTok{each =} \NormalTok{nstudents)}
+    \KeywordTok{names}\NormalTok{(trajectories) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"student"}\NormalTok{, }\StringTok{"day"}\NormalTok{, }\StringTok{"achievement"}\NormalTok{)}
+    \NormalTok{trajectories <-}\StringTok{ }\NormalTok{trajectories[}\KeywordTok{order}\NormalTok{(trajectories$student), ]}
+  \NormalTok{\}}
+  \NormalTok{p <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =} \NormalTok{trajectories, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \NormalTok{day, }
+        \DataTypeTok{y =} \NormalTok{achievement, }\DataTypeTok{color =} \KeywordTok{factor}\NormalTok{(student))) +}\StringTok{ }\KeywordTok{geom_line}\NormalTok{(}
+        \DataTypeTok{size =} \FloatTok{0.6}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.6}\NormalTok{) +}\StringTok{ }\KeywordTok{geom_hline}\NormalTok{(}\DataTypeTok{yintercept =} \DecValTok{0}\NormalTok{, }
+        \DataTypeTok{col =} \StringTok{"gray"}\NormalTok{) +}\StringTok{ }\KeywordTok{geom_vline}\NormalTok{(}\DataTypeTok{xintercept =} \DecValTok{0}\NormalTok{, }\DataTypeTok{col =} \StringTok{"gray"}\NormalTok{) +}\StringTok{ }
+\StringTok{        }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{panel.background =} \KeywordTok{element_blank}\NormalTok{(), }
+                   \DataTypeTok{panel.grid.major =} \KeywordTok{element_blank}\NormalTok{(), }\DataTypeTok{panel.grid.minor =} \KeywordTok{element_blank}\NormalTok{())}
+  \KeywordTok{return}\NormalTok{(p)}
+\NormalTok{\}}
+
+\CommentTok{# define function for plotting the trajectories and gaps}
+
+\NormalTok{plotGaps <-}\StringTok{ }\NormalTok{function(assignment, learning.rates, decay.rates, initial.achievements, }
+                     \NormalTok{home.environments, }\DataTypeTok{dosage=}\NormalTok{.}\DecValTok{66}\NormalTok{, curriculum.starts, curriculum.widths, }
+                     \DataTypeTok{scale.intercept=}\FloatTok{118.5}\NormalTok{, }\DataTypeTok{scale.slope=}\DecValTok{245}\NormalTok{, }\DataTypeTok{ach.max=}\DecValTok{260}\NormalTok{, }\DataTypeTok{gap.max=}\DecValTok{60}\NormalTok{, }
+                     \DataTypeTok{days.to.sample=}\DecValTok{1825}\NormalTok{+}\KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DataTypeTok{by=}\DecValTok{356}\NormalTok{, }\DataTypeTok{length.out=}\DecValTok{7}\NormalTok{)) \{}
+  
+  \CommentTok{# generate the trajectories}
+  
+  \NormalTok{trajectories <-}\StringTok{ }\KeywordTok{ZPDGrowthTrajectories}\NormalTok{(}\DataTypeTok{output.format=}\StringTok{"wide"}\NormalTok{,}
+                                        \DataTypeTok{days=}\DecValTok{4015}\NormalTok{,}
+                                        \DataTypeTok{assignment=}\NormalTok{assignment, }
+                                        \DataTypeTok{curriculum.start.points=}\NormalTok{curriculum.starts, }
+                                        \DataTypeTok{curriculum.widths=}\NormalTok{curriculum.widths,}
+                                        \DataTypeTok{dosage=}\NormalTok{dosage,}
+                                        \DataTypeTok{learning.rates=}\NormalTok{learning.rates,}
+                                        \DataTypeTok{decay.rates=}\NormalTok{decay.rates,}
+                                        \DataTypeTok{initial.achievements=}\NormalTok{initial.achievements,}
+                                        \DataTypeTok{home.environments=}\NormalTok{home.environments,}
+                                        \DataTypeTok{integration.points=}\DecValTok{200}\NormalTok{,}
+                                        \DataTypeTok{curriculum.lower.slope=}\DecValTok{8}\NormalTok{,}
+                                        \DataTypeTok{curriculum.upper.slope=}\DecValTok{10000}\NormalTok{,}
+                                        \DataTypeTok{alpha=}\DecValTok{1}\NormalTok{,}
+                                        \DataTypeTok{home.curriculum.shape1=}\DecValTok{1}\NormalTok{,}
+                                        \DataTypeTok{home.curriculum.shape2=}\DecValTok{5}\NormalTok{,}
+                                        \DataTypeTok{zpd.offset=}\NormalTok{.}\DecValTok{026}\NormalTok{,}
+                                        \DataTypeTok{zpd.sd=}\NormalTok{.}\DecValTok{039}\NormalTok{,}
+                                        \DataTypeTok{zpd.scale=}\NormalTok{.}\DecValTok{05}\NormalTok{,}
+                                        \DataTypeTok{decay.weight=}\NormalTok{.}\DecValTok{005}\NormalTok{,}
+                                        \DataTypeTok{useGPU=}\OtherTok{FALSE}\NormalTok{,}
+                                        \DataTypeTok{verbose=}\OtherTok{FALSE}\NormalTok{)}
+  
+  \CommentTok{# rescale the achievement values to MAP scale}
+  \NormalTok{trajectories[,}\DecValTok{2}\NormalTok{:}\KeywordTok{ncol}\NormalTok{(trajectories)] <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(trajectories[,}\DecValTok{2}\NormalTok{:}\KeywordTok{ncol}\NormalTok{(trajectories)], }
+                                               \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{), function(x) \{scale.intercept+(x*scale.slope)\})}
+  
+  \CommentTok{# make the plot of trajectories (panel 1)}
+  \NormalTok{p1 <-}\StringTok{ }\KeywordTok{visualizeTrajectories2}\NormalTok{(trajectories)+}
+\StringTok{    }\KeywordTok{xlim}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{3903}\NormalTok{)+}\KeywordTok{ylim}\NormalTok{(}\DecValTok{100}\NormalTok{, ach.max)+}\StringTok{  }\CommentTok{#1826}
+\StringTok{    }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y=}\StringTok{"MAP score"}\NormalTok{, }\DataTypeTok{color=}\StringTok{"Student"}\NormalTok{)+}
+\StringTok{    }\KeywordTok{geom_vline}\NormalTok{(}\DataTypeTok{xintercept=}\KeywordTok{seq}\NormalTok{(}\DecValTok{1826}\NormalTok{, }\DecValTok{3901}\NormalTok{, }\DataTypeTok{by=}\DecValTok{365}\NormalTok{), }\DataTypeTok{linetype=}\StringTok{"solid"}\NormalTok{, }\DataTypeTok{alpha=}\NormalTok{.}\DecValTok{2}\NormalTok{)+}
+\StringTok{    }\KeywordTok{geom_vline}\NormalTok{(}\DataTypeTok{xintercept=}\KeywordTok{seq}\NormalTok{(}\DecValTok{1826+365-113}\NormalTok{, }\DecValTok{4100}\NormalTok{, }\DataTypeTok{by=}\DecValTok{365}\NormalTok{), }\DataTypeTok{linetype=}\StringTok{"solid"}\NormalTok{, }\DataTypeTok{alpha=}\NormalTok{.}\DecValTok{2}\NormalTok{)+}
+\StringTok{    }\KeywordTok{annotate}\NormalTok{(}\StringTok{"text"}\NormalTok{, }\DataTypeTok{x =} \KeywordTok{seq}\NormalTok{(}\DecValTok{1826+110}\NormalTok{, }\DecValTok{4100}\NormalTok{, }\DataTypeTok{by=}\DecValTok{365}\NormalTok{), }\DataTypeTok{y =} \DecValTok{120}\NormalTok{, }
+             \DataTypeTok{label =} \KeywordTok{c}\NormalTok{(}\StringTok{" K "}\NormalTok{, }\StringTok{"1st"}\NormalTok{, }\StringTok{"2nd"}\NormalTok{, }\StringTok{"3rd"}\NormalTok{, }\StringTok{"4th"}\NormalTok{, }\StringTok{"5th"}\NormalTok{), }\DataTypeTok{size=}\FloatTok{3.2}\NormalTok{)+}
+\StringTok{    }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position=}\KeywordTok{c}\NormalTok{(.}\DecValTok{06}\NormalTok{, .}\DecValTok{75}\NormalTok{),}
+          \DataTypeTok{axis.text.x=}\KeywordTok{element_blank}\NormalTok{(),}
+          \DataTypeTok{axis.title.x=}\KeywordTok{element_blank}\NormalTok{(),}
+          \DataTypeTok{axis.ticks.x=}\KeywordTok{element_blank}\NormalTok{(),}
+          \DataTypeTok{axis.text.y=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{11}\NormalTok{),}
+          \DataTypeTok{axis.title.y=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{11}\NormalTok{),}
+          \DataTypeTok{legend.text=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{11}\NormalTok{),}
+          \DataTypeTok{legend.title=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{12}\NormalTok{))}
+  
+  \CommentTok{# calculate the gaps by differencing student 3-2 and student 3-1}
+  \NormalTok{e_gap <-}\StringTok{ }\NormalTok{trajectories[}\DecValTok{3}\NormalTok{,}\DecValTok{2}\NormalTok{:}\KeywordTok{ncol}\NormalTok{(trajectories)] -}\StringTok{ }\NormalTok{trajectories[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{:}\KeywordTok{ncol}\NormalTok{(trajectories)]}
+  \NormalTok{a_gap <-}\StringTok{ }\NormalTok{trajectories[}\DecValTok{3}\NormalTok{,}\DecValTok{2}\NormalTok{:}\KeywordTok{ncol}\NormalTok{(trajectories)] -}\StringTok{ }\NormalTok{trajectories[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{:}\KeywordTok{ncol}\NormalTok{(trajectories)]}
+  
+  \CommentTok{# bind into data frame. }
+  \CommentTok{# Gap type is varname "student" to enable visualizeTrajectories2 to be used}
+  \NormalTok{student <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Excellence"}\NormalTok{, }\StringTok{"Achievement"}\NormalTok{)}
+  \NormalTok{gaps <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(student, }\KeywordTok{rbind}\NormalTok{(e_gap, a_gap))}
+  
+  \CommentTok{# make the plot of gaps (panel 2)}
+  \NormalTok{p2 <-}\StringTok{ }\KeywordTok{visualizeTrajectories2}\NormalTok{(gaps)+}
+\StringTok{    }\KeywordTok{xlim}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{3903}\NormalTok{)+}\KeywordTok{ylim}\NormalTok{(-}\DecValTok{10}\NormalTok{, gap.max)+}
+\StringTok{    }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y=}\StringTok{"Gap"}\NormalTok{, }\DataTypeTok{color=}\StringTok{"Type"}\NormalTok{)+}
+\StringTok{    }\KeywordTok{geom_vline}\NormalTok{(}\DataTypeTok{xintercept=}\KeywordTok{seq}\NormalTok{(}\DecValTok{1826}\NormalTok{, }\DecValTok{3901}\NormalTok{, }\DataTypeTok{by=}\DecValTok{365}\NormalTok{), }\DataTypeTok{linetype=}\StringTok{"solid"}\NormalTok{, }\DataTypeTok{alpha=}\NormalTok{.}\DecValTok{2}\NormalTok{)+}
+\StringTok{    }\KeywordTok{geom_vline}\NormalTok{(}\DataTypeTok{xintercept=}\KeywordTok{seq}\NormalTok{(}\DecValTok{1826+365-113}\NormalTok{, }\DecValTok{4100}\NormalTok{, }\DataTypeTok{by=}\DecValTok{365}\NormalTok{), }\DataTypeTok{linetype=}\StringTok{"solid"}\NormalTok{, }\DataTypeTok{alpha=}\NormalTok{.}\DecValTok{2}\NormalTok{)+}
+\StringTok{    }\KeywordTok{annotate}\NormalTok{(}\StringTok{"text"}\NormalTok{, }\DataTypeTok{x =} \KeywordTok{seq}\NormalTok{(}\DecValTok{1826+110}\NormalTok{, }\DecValTok{4100}\NormalTok{, }\DataTypeTok{by=}\DecValTok{365}\NormalTok{), }\DataTypeTok{y =} \NormalTok{-}\DecValTok{7}\NormalTok{, }
+             \DataTypeTok{label =} \KeywordTok{c}\NormalTok{(}\StringTok{" K "}\NormalTok{, }\StringTok{"1st"}\NormalTok{, }\StringTok{"2nd"}\NormalTok{, }\StringTok{"3rd"}\NormalTok{, }\StringTok{"4th"}\NormalTok{, }\StringTok{"5th"}\NormalTok{), }\DataTypeTok{size=}\FloatTok{3.2}\NormalTok{)+}
+\StringTok{    }\CommentTok{# these color codes are ColorBrewer set1 colors 4 and 5}
+\StringTok{    }\KeywordTok{scale_colour_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"#984ea3"}\NormalTok{, }\StringTok{"#ff7f00"}\NormalTok{))+}
+\StringTok{    }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position=}\KeywordTok{c}\NormalTok{(.}\DecValTok{06}\NormalTok{, .}\DecValTok{8}\NormalTok{),}
+          \DataTypeTok{axis.text.x=}\KeywordTok{element_blank}\NormalTok{(),}
+          \DataTypeTok{axis.title.x=}\KeywordTok{element_blank}\NormalTok{(),}
+          \DataTypeTok{axis.ticks.x=}\KeywordTok{element_blank}\NormalTok{(),}
+          \DataTypeTok{axis.text.y=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{11}\NormalTok{),}
+          \DataTypeTok{axis.title.y=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{11}\NormalTok{),}
+          \DataTypeTok{legend.text=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{11}\NormalTok{),}
+          \DataTypeTok{legend.title=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{12}\NormalTok{))}
+  
+  \NormalTok{gap.summary <-}\StringTok{ }\NormalTok{gaps[,}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, days.to.sample}\DecValTok{+1}\NormalTok{)]}
+  \KeywordTok{names}\NormalTok{(gap.summary) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Type"}\NormalTok{, }\StringTok{"GradeK"}\NormalTok{, }\StringTok{"Grade1"}\NormalTok{, }\StringTok{"Grade2"}\NormalTok{, }\StringTok{"Grade3"}\NormalTok{, }
+                          \StringTok{"Grade4"}\NormalTok{, }\StringTok{"Grade5"}\NormalTok{, }\StringTok{"Grade6"}\NormalTok{)}
+  \NormalTok{gap.summary <-}\StringTok{ }\KeywordTok{melt}\NormalTok{(gap.summary)}
+  
+  \NormalTok{ach.summary <-}\StringTok{ }\NormalTok{trajectories[,}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, days.to.sample}\DecValTok{+1}\NormalTok{)]}
+  \KeywordTok{names}\NormalTok{(ach.summary) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Student"}\NormalTok{, }\StringTok{"GradeK"}\NormalTok{, }\StringTok{"Grade1"}\NormalTok{, }\StringTok{"Grade2"}\NormalTok{, }\StringTok{"Grade3"}\NormalTok{, }
+                          \StringTok{"Grade4"}\NormalTok{, }\StringTok{"Grade5"}\NormalTok{, }\StringTok{"Grade6"}\NormalTok{)}
+  \NormalTok{ach.summary <-}\StringTok{ }\KeywordTok{melt}\NormalTok{(ach.summary, }\DataTypeTok{id.vars=}\StringTok{"Student"}\NormalTok{)}
+  \NormalTok{ach.summary <-}\StringTok{ }\NormalTok{ach.summary[}\KeywordTok{order}\NormalTok{(ach.summary$Student),]}
+  
+  \NormalTok{nstudents <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(trajectories)}
+  \NormalTok{days <-}\StringTok{ }\KeywordTok{ncol}\NormalTok{(trajectories) -}\StringTok{ }\DecValTok{1}
+  \NormalTok{trajectories <-}\StringTok{ }\NormalTok{reshape2::}\KeywordTok{melt}\NormalTok{(trajectories, }\DataTypeTok{measure.vars =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{:days +}\StringTok{  }\DecValTok{1}\NormalTok{))}
+  \NormalTok{trajectories[, }\DecValTok{2}\NormalTok{] <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{:days), }\DataTypeTok{each =} \NormalTok{nstudents)}
+  \KeywordTok{names}\NormalTok{(trajectories) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"student"}\NormalTok{, }\StringTok{"day"}\NormalTok{, }\StringTok{"achievement"}\NormalTok{)}
+  \NormalTok{trajectories <-}\StringTok{ }\NormalTok{trajectories[}\KeywordTok{order}\NormalTok{(trajectories$student), ]}
+  
+  \NormalTok{nstudents <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(gaps)}
+  \NormalTok{days <-}\StringTok{ }\KeywordTok{ncol}\NormalTok{(gaps) -}\StringTok{ }\DecValTok{1}
+  \NormalTok{gaps <-}\StringTok{ }\NormalTok{reshape2::}\KeywordTok{melt}\NormalTok{(gaps, }\DataTypeTok{measure.vars =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{:days +}\StringTok{ }\DecValTok{1}\NormalTok{))}
+  \NormalTok{gaps[, }\DecValTok{2}\NormalTok{] <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{:days), }\DataTypeTok{each =} \NormalTok{nstudents)}
+  \KeywordTok{names}\NormalTok{(gaps) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"student"}\NormalTok{, }\StringTok{"day"}\NormalTok{, }\StringTok{"achievement"}\NormalTok{)}
+  \NormalTok{gaps <-}\StringTok{ }\NormalTok{gaps[}\KeywordTok{order}\NormalTok{(gaps$student), ]}
+  
+  \KeywordTok{return}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\DataTypeTok{p1=}\NormalTok{p1, }\DataTypeTok{p2=}\NormalTok{p2, }\DataTypeTok{gap.summary=}\NormalTok{gap.summary, }\DataTypeTok{ach.summary=}\NormalTok{ach.summary, }
+              \DataTypeTok{trajectories=}\NormalTok{trajectories, }\DataTypeTok{gaps=}\NormalTok{gaps))}
+\NormalTok{\}}
+
+\NormalTok{model1 <-}\StringTok{ }\KeywordTok{plotGaps}\NormalTok{(}\DataTypeTok{assignment=}\NormalTok{assignment, }\DataTypeTok{learning.rates=}\NormalTok{learning.rates, }
+                   \DataTypeTok{decay.rates=}\NormalTok{decay.rates, }\DataTypeTok{initial.achievements=}\NormalTok{initial.achievements,}
+                   \DataTypeTok{home.environments=}\NormalTok{home.environments, }\DataTypeTok{dosage=}\NormalTok{.}\DecValTok{66}\NormalTok{,}
+                   \DataTypeTok{curriculum.starts=}\NormalTok{curriculum.starts, }\DataTypeTok{curriculum.widths=}\NormalTok{curriculum.widths,}
+                   \DataTypeTok{ach.max=}\DecValTok{240}\NormalTok{)}
+
+\CommentTok{# show the plot}
+\KeywordTok{plot_grid}\NormalTok{(model1$p1, model1$p2, }\DataTypeTok{ncol=}\DecValTok{1}\NormalTok{)}
+
+\CommentTok{# save the data}
+\NormalTok{gap1 <-}\StringTok{ }\NormalTok{model1$gap.summary}
+\NormalTok{ach1 <-}\StringTok{ }\NormalTok{model1$ach.summary}
+
+\CommentTok{# rename outcome column}
+\KeywordTok{names}\NormalTok{(gap1)[}\DecValTok{3}\NormalTok{] <-}\StringTok{ "model1"}
+\KeywordTok{names}\NormalTok{(ach1)[}\DecValTok{3}\NormalTok{] <-}\StringTok{ "model1"}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize
+\end{appendix}

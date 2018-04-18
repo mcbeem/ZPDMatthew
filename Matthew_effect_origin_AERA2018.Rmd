@@ -18,19 +18,24 @@ author:
 affiliation:
   - id            : "1"
     institution   : "East Tennessee State University"
-    
+
   - id            : "2"
     institution   : "Duke University Talent Identification Program"
-
+    
 author_note: >
 
 abstract: 
-  A quantitative theoretical model of academic achievement, based on the concept of the Zone of Proximal     Development (ZPD), has proven capable of reproducing the results of several empirical, longitudinal studies of achievement. This paper applies the model to understanding the origins of variance in achievement (at the individual and subgroup mean level of analysis), and the effect of gifted education initiatives on that variability.
+  A quantitative theoretical model of academic achievement, based on the concept of the Zone 
+  of Proximal Development (ZPD) is used to explore the origin and development of achievement 
+  discrepancies via  the phenomenon known as the Matthew effect. This paper applies the model to 
+  explore the potential impact of various types of educational interventions and their anticipated 
+  effects on academic achievement as well as excellence and achievement gaps. Interventions tend to 
+  aggravate both type of gaps unless they are paired with countervailing curricular insufficiency that   serves to limit the growth of the highest achieving students. 
   
-keywords          : "gifted, excellence gap, zone of proximal development, theoretical calculation"
+keywords          : "gifted, achievement gap, excellence gap, zone of proximal development"
 wordcount         : "X"
 
-bibliography      : ["r-references.bib"]
+bibliography      : ["r-references.bib", "Matthew_ref.bib"]
 
 figsintext        : yes
 figurelist        : no
@@ -39,8 +44,11 @@ footnotelist      : no
 lineno            : no
 
 lang              : "english"
-class             : "man"
-output            : papaja::apa6_pdf
+class             : "jou"
+output            : 
+  papaja::apa6_pdf:
+    includes:
+      after_body: "appendix.tex"
 ---
 
 ```{r load_packages, include = FALSE}
@@ -52,54 +60,91 @@ library(cowplot)
 library(ggridges)
 library(viridis)
 library(forcats)
+library(cowplot)
+library(extrafont)
+library(reshape2)
+library(trapezoid)
 ```
+
+```{r}
+# from https://stackoverflow.com/questions/25646333/code-chunk-font-size-in-rmarkdown-with-knitr-and-latex
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+```
+
 
 ```{r analysis_preferences}
 # Seed for random number generation
 set.seed(42)
 ```
 
-# Theoretical Framework
+```{r global_options, include=FALSE}
+# set global options
+knitr::opts_chunk$set(fig.width=6, fig.asp=.8, fig.path='figures/',
+                      echo=FALSE, warning=FALSE, message=FALSE, cache=T)
+```
 
-Current educational and psychological theories, being qualitative, are incapable of generating precise quantitative predictions -- “point predictions” -- that are the hallmark of the physical sciences  (c.f. Cohen, 1994; Maxwell & Howard, 2009; Meehl, 1967). For theories to be falsifiable, they must make specific predictions. Only then can empirical research provide the type of severe tests (Mayo, 1996) that lead to meaningful scientific progress. We propose such a theory in this paper. Our theory of academic achievement growth can describe and predict the achievement trajectories of individual students, accounting for both individual and environmental factors. 
+“For whoever has will be given more, and they will have an abundance. Whoever does not have, even what they have will be taken from them." Matthew 25:29. NIV
 
-# Methods1
+The Biblical passage quote above, more colloquially stated, “the rich get richer and the poor get poorer” originally referred to the growth of a person’s faith. @merton, relying on @zuckerman interviews with Nobel laureates, argued that a modernized form of what he dubbed “The Matthew Effect” applied to scientists. As one Nobel interviewee stated, “The world tends to give the credit to already famous people” (Merton, p. 607). Broadly, those who had an initial advantage or accomplishment, reaped not just rewards, but outsized rewards, which lead to subsequent outsized opportunity and advantage which further widened the gap between those who had from those who had not. Merton described the Nobel winners as sometimes being embarrassed beneficiaries of this phenomenon.
 
-The Zone of Proximal Development (ZPD) is the basic psychological principle at the heart of this theoretical model. Although the ZPD concept is typically attributed to Lev Vygotsky, the phenomenon was actually first revealed by Dorthea McCarthy (1930). The ZPD describes how learning emerges from the interaction between a student’s base of currently mastered skills and knowledge with a particular set of learning experiences, and refers specifically to the set of skills that a student cannot perform autonomously but can do with scaffolding from a teacher or more competent peer. In our theory, instruction that occurs within the ZPD leads to the most rapid, efficient learning. 
-
-## Academic achievement
-
-We define the term academic achievement to mean a student’s location along a sequenced, developmental curriculum within a specific domain. Academic achievement therefore refers to the body of knowledge, understanding, and skills that a student has mastered at a particular moment in time. Academic growth or achievement growth is change (typically positive) in achievement over time. Our numeric scale for measuring achievement ranges from zero to positive infinity, where zero is a meaningful quantity representing no knowledge or skills in the domain. Specific values of achievement could refer to the location of specific skill milestones or content mastery. For example, one could (arbitrarily) set the mastery of mathematical operations expected of a typical third grader to a value of 0.40 on the achievement metric. 
-ZPD. The ZPD is represented by a normal curve, normalized to a maximum value of one, whose peak is slightly ahead of the student’s current achievement (Figure 1). In the figure, a vertical line at 0.25 depicts the student’s current achievement; her ZPD is the shaded curve peaking at 0.30. The ZPD is not a single point but rather a “spread” of values varying in intensity; its peak describes the most efficacious level of instruction for stimulating academic growth. 
-
-Insert Figure 1 here
+Since Merton, others have found cumulative advantage Matthew Effects in numerous domains including education (for review, see @ceci). For example, students who read well and have strong vocabularies tend read more than their peers, thus further developing their reading skills whereas children with weaker vocabularies read more slowly and less, thus widening the gap in reading between the groups [@ceci]. Ceci and Papierno also note that Matthew Effects are observed when both gifted and nongifted students are provided with an educational intervention [@borkowski]; an already existing gap between the groups grew larger after the intervention. 
 
 
-## School curriculum. 
+There is not universal acceptance of Matthew Effects. For example, researchers have found that a diverging performance that had a fan-spread pattern was not evident. However, they found that performance differences in the initial ability was maintained across grades [@protopapas]. The general alternative hypothesis to the Matthew Effect is called the compensatory trajectory of development. Children who initially start with lower abilities in reading, accelerate their abilities over time and catch up to those who had higher initial starting abilities [@huang]. Regardless, to our knowledge, no one suggests that Matthew Effects are inevitable. Rather, that they are both common and pervasive [@ceci]. 
 
-School curriculum is co-located on the same scale with academic achievement in much the same way that IRT models place test scores and item difficulties on a common scale. For example, one could imagine that a typical Kindergarten reading curriculum ranges from 0.05 to 0.15, where 0.05 might include basic letter and phoneme awareness and 0.15 a limited ability to “sound out” simple words and knowledge of roughly 200 sight words. Within this academic year, the curriculum presented on a specific day would consist of a narrow slice or segment of this interval, and as the year progresses, the presented curriculum would steadily advance. Our model uses a normalized trapezoidal distribution to represent the school curriculum due to the many shapes it can assume with different choices of values for its parameters. Figure 2 illustrates how three students, with varying initial achievement, can experience the same school curriculum. Only the student in the center panel would derive strong benefit from exposure to this curriculum as it falls within his ZPD. The curriculum is too difficult for the first student and too easy for the third; neither of these students would experience much benefit. Our implementation of the model in our R package does allow for students to experience different curricula (e.g., remedial, typical, or advanced) on an individual basis. 
+\par
+Matthew Effects are particularly relevant in the modern policy environment with its strong focus on identifying and closing gaps. This is because when interventions are given universally to all students, Matthew Effects occur often, with disproportionate gains going to those who had already been high performing [@ceci]. The question of what interventions should be provided – and to whom – becomes relevant. If the sole goal of a nation’s policy is to close gaps, targeted interventions that purposefully avoid providing the intervention to higher performing groups is a path to consider. The policy grows different if the goals vary (e.g., provide appropriate challenge to students no matter their current performance level) or are more multi-faceted (e.g., shrink gaps while also providing appropriate challenge to all students).  
 
+Matthew Effects are particularly relevant for gifted education due to pervasive excellence gaps. Excellence gaps represent performance differences between sub-groups at the high end of achievement [@plucker]. Typically demonstrated through gaps between students of different race/ethnicity and income-level backgrounds in the percent of students attaining high performance, excellence gaps are large and pervasive. When achievement is unevenly distributed across demographic groups, the existence of Matthew Effects suggest that advanced educational opportunities like gifted programming will increase each group’s mean achievement while at the same times magnifying discrepancies between groups.
 
-Insert Figure 2 here
+The goal of this paper is to model the psychological underpinning of the Matthew Effect as well as its limitations through the lens of Vygotsky’s Zone of Proximal Development (ZPD; @vygotsky). ZPD is the basic psychological principle at the heart of this theoretical model. Although the ZPD concept is typically attributed to Lev Vygotsky, the phenomenon was actually first proposed by Dorthea @mccarthy. The ZPD describes how learning emerges from the interaction between a student’s base of currently mastered skills and knowledge with a particular set of learning experiences, and refers specifically to the set of skills that a student cannot perform autonomously but can do with scaffolding from a teacher or more competent peer. To further investigate the Matthew Effect, we have produced a quantitative model for academic achievement growth based on the ZPD (McBee, Makel, McCoach, nd) and developed an R package for implementing these calculations [@R-ZPDGrowthTrajectories]. The package is available for download from the first author's github site and installed using the following R code:
 
+```{r, echo=T, eval=F, tidy=F, size="scriptsize"}
+# install the function for loading R packages from github
+install.packages('devtools')
+library(devtools)
+# install the ZPDGrowthTrajectories package
+install_github("mcbeem/ZPDGrowthTrajectories", 
+               build_vignettes=TRUE)
+# load it
+library(ZPDGrowthTrajectories)
+# view the package vignette
+vignette("Intro", package="ZPDGrowthTrajectories")
+```
 
-## Home curriculum
+# Method
 
-Children learn a great deal at home, particularly in early childhood and in certain subjects such as reading. The rate of academic growth caused by learning experiences at home is a function of the overlap between the child’s ZPD and what we call the “home curriculum”, which we conceptualize as a downward-sloping function. Our R package implantation represents the home curriculum as a normalized beta distribution with the $\alpha$ parameter fixed to 1. Figure 3 displays the home curriculum function (with parameter $\beta$ set to 5) with a superimposed ZPD for a child with achievement = 0.20. The implication of this downward slope is that academic growth due to home instruction is most rapid in early childhood and becomes increasingly reliant on school instruction in later grades. 
+In this section, we provide a brief introduction to the features of the quantitative ZPD model. The amount of learning during discrete time interval $t$ for individual $i$ is given by
 
+\small
+\begin{equation}
+\begin{split}
+\textit{Learning}_{ti} = & (\textit{LearnRate}_i) \times \,  \\
+  & \big[ ( \textit{dosage}_{ti})  \int_{0}^{\infty} \textit{ZPD}_{ti}(x) * S_t(x) \, dx  + \\ 
+  & (1-\textit{dosage}_{ti}) (\textit{HomeEnv}_i)  \int_{0}^{\infty} \textit{ZPD}_{ti}(x) * H_t(x) \, dx \big]
+\end{split}
+\end{equation}
+\normalsize
 
-Insert Figure 3 here
+where * denotes the pointwise product, $LearnRate_i$ the $i$th student’s learning rate, $HomeEnv_i$ the $i$th student’s home environment, dosage a constant between 0 and 1 that describes the relative exposure to school versus home during academic years, $x$ denotes achievement, $ZPD_it(x)$ denotes the function describing the $i$th student’s zone of proximal development at time $t$, $S_t(x)$ denotes the function describing the home curriculum at time $t$, and $H_t(x)$ the function describing the home curriculum at time $t$. As previously described, we use the normalized normal density function as our working model for $ZPD(x)$, the normalized trapezoidal for $S(x)$, and the normalized beta for $H(x)$. The first integral gives the amount of learning due to school, the second integral the amount of learning at home. The value of the second interval is multiplied by the student’s individual value of the home environment. Then these two components are summed and multiplied by the student’s learning rate to yield the total growth (change in achievement) during interval $t$. 
 
-## Individual difference parameters
+Achievement is updated for time interval $t$ by adding the amount of learning during that interval to the student’s prior achievement and then multiplying the result by a value slightly smaller than 1.0 to model decay due to forgetting. 
 
-Our model incorporates four child-level parameters: current achievement, learning rate, decay rate, and home environment; these create variability in growth trajectories. The learning rate represents individual differences in the pace of academic growth for students with identical levels of ZPD engagement, and can be considered to be a combination of general intelligence and motivation. The decay rate is the rate at which achievement will decay (due to forgetting) in the absence of instruction. The home environment parameter describes how effectively the home environment is at facilitating academic growth. 
+\begin{equation}
+\textit{Achievement}_{i,t}=(\textit{Achievement}_{i,t-1} + \textit{Learning}_{i,t})(1 - \textit{Decay}_i)
+\end{equation}
 
+### Academic achievement
 
-## Cool plot
+We define the term academic achievement to mean a student’s location along a sequenced, developmental curriculum within a specific domain. Academic achievement therefore refers to the body of knowledge, understanding, and skills that a student has mastered at a particular moment in time. Academic growth or achievement growth is change (typically positive) in achievement over time. Our numeric scale for measuring achievement ranges from zero to positive infinity, where zero is a meaningful quantity representing no knowledge or skills in the domain. Specific values of achievement could refer to the location of specific skill milestones or content mastery. For example, one could (arbitrarily) set the mastery of mathematical operations expected of a typical third grader to a value of 0.40 on the achievement metric. Prior to plotting results, we rescaled the achievement values output by our model to the NWEA MAP RIT metric to place them on a more intuitively meaningful scale. The national norms from this test are displayed in figure \@ref(fig:MAPnorms).
 
-```{r}
+```{r MAPnorms, fig.asp=1, fig.cap="NWEA MAP national norms by subject and grade."}
 
-MAP.2015.norms <-
+MAP.2015.norms.reading <-
   # subject # grade  # time  # subject # mean # SD
   matrix(c(
     rep(1, times=12*3),
@@ -131,265 +176,862 @@ MAP.2015.norms <-
       16.75, 16.53, 17.68)),
     ncol=5) %>% data.frame()
 
-names(MAP.2015.norms) <- c("Subject", "Grade", "Time", "Mean", "SD")
-MAP.2015.norms$Subject <- factor(MAP.2015.norms$Subject, labels=c("Reading"))
+names(MAP.2015.norms.reading) <- c("Subject", "Grade", "Time", "Mean", "SD")
+
+MAP.2015.norms.math <-
+  # subject # grade  # time  # subject # mean # SD
+  matrix(c(
+    rep(2, times=12*3),  # 2 for math
+    rep(seq(0,11), each=3),  # first number is starting grade, 2nd is ending grade
+    rep(c(1,2,3), times=12),  # 12 is the number of years of data
+    c(140.0, 151.5, 159.1,  # means: begin middle end
+      162.4, 173.8, 180.8,
+      176.9, 186.4, 192.1,
+      190.4, 198.2, 203.4,
+      201.9, 208.7, 213.5,
+      211.4, 217.2, 221.4,
+      217.6, 222.1, 225.3,
+      222.6, 226.1, 228.6,
+      226.3, 229.1, 230.9,
+      230.3, 232.2, 233.4,
+      230.1, 231.5, 232.4,
+      233.3, 234.4, 235.0),
+    c(15.06, 13.95, 13.69,  # SDs: begin middle end
+      12.87, 12.96, 13.63,
+      13.22, 13.11, 13.54,
+      13.10, 13.29, 13.81,
+      13.76, 14.27, 14.97,
+      14.68, 15.33, 16.18,
+      15.53, 16.00, 16.71,
+      16.59, 17.07, 17.72,
+      17.85, 18.31, 19.11,
+      18.13, 18.62, 19.52,
+      19.60, 20.01, 20.96, 
+      19.95, 20.18, 21.30)),
+    ncol=5) %>% data.frame()
+
+names(MAP.2015.norms.math) <- c("Subject", "Grade", "Time", "Mean", "SD")
+
+MAP.2015.norms.language <-
+  # subject # grade  # time  # subject # mean # SD
+  matrix(c(
+    rep(3, times=10*3),  # 2 for math
+    rep(seq(2,11), each=3),  # first number is starting grade, 2nd is ending grade
+    rep(c(1,2,3), times=10),  # 12 is the number of years of data
+    c(174.5, 184.9, 189.7,  # means: begin middle end
+      189.4, 196.8, 200.0,
+      198.8, 204.4, 206.7,
+      205.6, 209.7, 211.5,
+      210.7, 213.9, 215.3,
+      214.0, 216.5, 217.6,
+      216.2, 218.1, 219.0,
+      218.4, 219.7, 220.4,
+      218.9, 219.7, 220.1,
+      221.5, 222.1, 222.1),
+    c(16.58, 15.34, 15.47,  # SDs: begin middle end
+      15.20, 14.24, 14.11,
+      14.66, 13.83, 13.64,
+      13.87, 13.23, 13.19,
+      13.79, 13.30, 13.38,
+      13.82, 13.52, 13.70,
+      14.17, 13.92, 14.26,
+      14.15, 13.98, 14.50,
+      15.04, 14.99, 15.74,
+      14.96, 14.85, 15.80)),
+    ncol=5) %>% data.frame()
+
+names(MAP.2015.norms.language) <- c("Subject", "Grade", "Time", "Mean", "SD")
+
+MAP.2015.norms.science <-
+  # subject # grade  # time  # subject # mean # SD
+  matrix(c(
+    rep(4, times=8*3),  # 2 for math
+    rep(seq(3,10), each=3),  # first number is starting grade, 2nd is ending grade
+    rep(c(1,2,3), times=8),  # 12 is the number of years of data
+    c(187.5, 192.6, 195.4,  # means: begin middle end
+      194.6, 198.7, 201.0,
+      200.2, 203.7, 205.7,
+      204.3, 207.1, 208.6,
+      207.2, 209.5, 210.9,
+      210.3, 212.3, 213.5,
+      212.4, 213.9, 214.8,
+      213.4, 214.5, 215),
+    c(11.74, 10.92, 11.01,  # SDs: begin middle end
+      11.16, 10.75, 10.92,
+      11.06, 10.80, 11.07,
+      11.54, 11.40, 11.73,
+      11.92, 11.87, 12.23,
+      12.28, 12.19, 12.63,
+      12.83, 12.78, 13.32,
+      13.76, 13.72, 14.29)),
+    ncol=5) %>% data.frame()
+
+names(MAP.2015.norms.science) <- c("Subject", "Grade", "Time", "Mean", "SD")
+
+# bind the subject datasets together
+MAP.2015.norms <- rbind(MAP.2015.norms.reading, MAP.2015.norms.math, MAP.2015.norms.language,  MAP.2015.norms.science)
+
+MAP.2015.norms$Subject <- factor(MAP.2015.norms$Subject, labels=c("Reading", "Math", "Language", "Science"))
 
 
-# now I need to create a normal curve for each one
-### Approach 1: sample random values, then use geom_density_ridges_gradient
-n <- 200
+#create function for making the plots
+score <- seq(50, 300, by=1)
+MAP.norms.for.plotting <- cbind(MAP.2015.norms[rep(1:nrow(MAP.2015.norms), each=length(score)), ], score)
 
-b <- MAP.2015.norms[rep(1:36, each=n), ]
-
-# cause i'm having trouble with mapply and don't care about style points
-for (i in 1:nrow(MAP.2015.norms)) {
-  if (i == 1) {
-    rm(y)
-    y <- rnorm(n=n, mean=MAP.2015.norms$Mean[i], sd=MAP.2015.norms$SD[i])
-    }
-  if (i > 1) {y <- c(y, rnorm(n=n, mean=MAP.2015.norms$Mean[i], sd=MAP.2015.norms$SD[i]))}
+#looping here 'cause i'm having trouble with mapply and don't care about style points
+for (i in 1:nrow(MAP.norms.for.plotting)) {
+   MAP.norms.for.plotting$density[i] <- dnorm(x=MAP.norms.for.plotting$score[i], 
+                                        mean=MAP.norms.for.plotting$Mean[i],
+                                        sd=MAP.norms.for.plotting$SD[i])
 }
 
-b$y <- y
+MAP.norms.for.plotting$density[MAP.norms.for.plotting$density<.0001] <- NA
+ 
+ makeplot <- function(subject, time) {
+ 
+  a <- ggplot(data=filter(MAP.norms.for.plotting, Time==time, Subject==subject), 
+              aes(x = score, y = (factor(Grade)), height=density, fill = ..x..)) +
+  geom_ridgeline_gradient(gradient_lwd = 1, scale=70) +
+   scale_x_continuous(minor_breaks=seq(100, 300, 50), breaks=seq(100, 300, 50)) +
+    coord_cartesian(xlim=c(100, 300))+
+   scale_y_discrete(expand = c(0.01, 0),  
+                    limits=c("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11")) +
+   scale_fill_viridis(name = "y", option = "D", direction=-1, alpha=.5) +
+   labs(title = paste0(subject))+
+   theme_ridges(font_size = 12, grid = TRUE) + 
+   theme(axis.title.y = element_blank(), 
+         axis.title.x = element_blank(),
+         text=element_text(family="Times", size=10),
+         legend.position="none")
+  
+  return(a)
+ }
+ 
+reading <- makeplot(subject="Reading", time=1)
+math <- makeplot(subject="Math", time=1)
+language <- makeplot(subject="Language", time=1)
+science <- makeplot(subject="Science", time=1)
 
-ggplot(data=filter(b, Time==1), aes(x = y, y = (factor(Grade)), fill = ..x..)) +
-  geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01, gradient_lwd = 1, bandwidth=15) +
-  scale_x_continuous(expand = c(0.01, 0)) +
-  #scale_y_discrete(limits = unique(rev(b$Grade)))+
-  scale_y_discrete(expand = c(0.01, 0)) +
-  scale_fill_viridis(name = "y", option = "D") +
-  labs(title = 'MAP 2015 Reading Norms by Grade')+
-  theme_ridges(font_size = 12, grid = TRUE) + 
-  theme(axis.title.y = element_blank(), 
-        legend.position="none")+
-  geom_vline(xintercept=180, col="white", lwd=1.5, alpha=.8)+
-    geom_vline(xintercept=180, col="black", lwd=.8, linetype="dashed")
+plot_grid(reading, math, language, science, ncol=2)
 
-### Approach 2: fill under lines with geom_ridgeline
+```
 
-x <- seq(50, 300, by=1)# %>% length()
-a <- cbind(MAP.2015.norms[rep(1:nrow(MAP.2015.norms), each=length(x)), ], x)
+### Zone of Proximal Development
 
-for (i in 1:nrow(a)) {
-   a$y[i] <- dnorm(x=a$x[i], mean=a$Mean[i], sd=a$SD[i])
+The ZPD is represented by a normal curve, normalized to a maximum value of one, whose peak is slightly ahead of the student’s current achievement (figure \@ref(fig:ZPD)). In the figure, a vertical line at 0.25 depicts the student’s current achievement; her ZPD is the shaded normal curve peaking at 0.27. The ZPD is not a single point but rather a “spread” of values varying in intensity; its peak describes the most efficacious level of instruction for stimulating academic growth.
+
+```{r ZPD, fig.asp=.4, fig.cap="Representation of the ZPD. The student's current level of achievement in a particular subject is represented by the vertical line. The student's ZPD is the shaded curve. Instruction is effective at producing academic growth when it aligns with this range."}
+
+ach <- .25
+x <- seq(0,1,.001)
+
+zpd.offset <- .023
+zpd.sd <- .012
+
+zpd <- dnorm(x, ach+zpd.offset, zpd.sd) / max(dnorm(x, ach+zpd.offset, zpd.sd))
+
+a <- cbind(x, zpd, 0)
+
+d <- data.frame(a)
+names(d) <- c("x", "y", "curve")
+
+shade1 <- data.frame(rbind(c(0, 0), subset(a, (x >= 0 & x <= 1)), 
+               c(1, 0)))
+
+names(shade1) <- c("x", "y", "curve")
+
+ggplot(d, aes(x=x, y=y, group=curve)) + geom_line() + geom_vline(xintercept = ach, 
+    col = "black", cex = 0.75, alpha = 0.8) + 
+    xlim(.15, .6)+ylim(0,1.1)+
+    geom_polygon(data = shade1, aes(x, y), fill = "blue", alpha = 0.25)+
+    theme_classic()+xlab("achievement")+ylab("intensity")+
+    theme(axis.text.x=element_text(family="Times", size=11),
+          axis.title.x=element_text(family="Times", size=11, 
+            margin = margin(t = 0, r = 20, b = 1, l = 0)),
+          axis.text.y=element_blank(),
+          axis.title.y=element_text(family="Times", size=11),
+          legend.text=element_text(family="Times", size=11),
+          legend.title=element_text(family="Times", size=12)) 
+```
+
+The ZPD is a function of the student's current achievement; as achievement changes, the location of the ZPD moves along with it.
+
+### School curriculum 
+
+School curriculum is co-located on the same scale with academic achievement in much the same way that IRT models place test scores and item difficulties on a common scale. For example, one could imagine that a typical Kindergarten reading curriculum ranges from 0.05 to 0.15, where 0.05 might include basic letter and phoneme awareness and 0.15 a limited ability to “sound out” simple words and knowledge of roughly 200 sight words. Our model uses a normalized trapezoidal distribution to represent the school curriculum due to the many shapes it can assume with different choices of values for its parameters. Figure \@ref(fig:schoolCurr) illustrates how three students with varying initial achievement, can experience the same school curriculum. The student in the center panel would derive strong benefit from exposure to this curriculum (manifesting as the most rapid growth) as it falls within his ZPD. The curriculum is somewhat too difficult for the first student and too easy for the third; neither of these students would experience academic growth at the same pace due to this mismatch between what they need and what they receive. Our implementation of the model in our R package does allow for students to experience different curricula (e.g., remedial, typical, or advanced) on an individual basis. 
+
+```{r schoolCurr, fig.asp=.85, fig.cap="Interaction of the ZPD (blue) with the school curriculum function (red). Panel 1: The student's current achievement is substantially below the curriculum. The small area of the intersection of these two curves indicates that this student will experience relatively slow achievement growth during interval t. The instruction is too advanced for optimal growth. Panel 2: The student experiences rapid academic growth due to the correspondence between the ZPD and instruction. Panel 3: The student experiences relatively slow growth because the instruction is too basic."}
+
+plotit <- function(ach, xtext=F) {
+
+  x <- seq(0,1,.001)
+
+  zpd.offset <- .023
+  zpd.sd <- .012
+  
+  curr.min <- .3
+  curr.max <- curr.min+.07
+  
+  zpd <- dnorm(x, ach+zpd.offset, zpd.sd) / max(dnorm(x, ach+zpd.offset, zpd.sd))
+
+  schcurr <- dtrapezoid(x, mode1=curr.min, mode2=curr.max, n1=300, n3=300, alpha=1) 
+  schcurr <- schcurr / max(schcurr)
+  
+  a <- cbind(x, zpd, 0)
+  b <- cbind(x, schcurr, 1)
+  
+  d <- data.frame(rbind(a,b))
+  names(d) <- c("x", "y", "curve")
+  
+  
+  shade1 <- data.frame(rbind(c(0, 0), subset(a, (x >= 0 & x <= 1)), 
+                 c(1, 0)))
+  
+  shade2 <- data.frame(rbind(c(0, 0), subset(b, (x >= 0 & x <= 1)), 
+                  c(1, 0)))
+  
+  names(shade1) <- c("x", "y", "curve")
+  names(shade2) <- c("x", "y", "curve")
+  
+  if (xtext==TRUE) {
+    plot1 <- ggplot(d, aes(x=x, y=y, group=curve)) + geom_line() + geom_vline(xintercept = ach, 
+      col = "black", cex = 0.75, alpha = 0.8) + 
+      xlim(.15, .6)+ylim(0,1.1)+
+      geom_polygon(data = shade1, aes(x, y), fill = "blue", alpha = 0.25)+
+      geom_polygon(data = shade2, aes(x, y), fill = "red", alpha = 0.1)+
+      theme_classic()+xlab("achievement")+ylab("intensity")+
+      theme(axis.text.x=element_text(family="Times", size=11),
+            axis.title.x=element_text(family="Times", size=11),
+            axis.text.y=element_blank(),
+            axis.title.y=element_text(family="Times", size=11),
+            legend.text=element_text(family="Times", size=11),
+            legend.title=element_text(family="Times", size=12)) }
+  
+  if (xtext==FALSE) {
+    plot1 <- ggplot(d, aes(x=x, y=y, group=curve)) + geom_line() + geom_vline(xintercept = ach, 
+      col = "black", cex = 0.75, alpha = 0.8) + 
+      xlim(.15, .6)+ylim(0,1.1)+
+      geom_polygon(data = shade1, aes(x, y), fill = "blue", alpha = 0.25)+
+      geom_polygon(data = shade2, aes(x, y), fill = "red", alpha = 0.1)+
+      theme_classic()+xlab("achievement")+ylab("intensity")+
+      theme(axis.text.x=element_blank(),
+            axis.title.x=element_blank(),
+            axis.text.y=element_blank(),
+            axis.title.y=element_text(family="Times", size=11),
+            legend.text=element_text(family="Times", size=11),
+            legend.title=element_text(family="Times", size=12)) }
+  return(plot1)
 }
 
-a$y[a$y<.0001] <- NA
+a <- plotit(ach=.27)+
+     annotate("text", x = .5, y = .75, label = c("Growth rate during interval t \n is proportional to the area of the \n intersection of the curves"), family="Times", size=3.5)+
+      annotate("segment", x=.41, y=.72, xend=.308, yend=.2, alpha=.5)
 
-p1 <- ggplot(data=filter(a, Time==1), aes(x = x, y = (factor(Grade)), height=y, fill = ..x..)) +
-  geom_ridgeline_gradient(gradient_lwd = 1, scale=80) +
-  scale_x_continuous(expand = c(0.01, 0)) +
-  #scale_y_discrete(limits = unique(rev(b$Grade)))+
-  scale_y_discrete(expand = c(0.01, 0)) +
-  scale_fill_viridis(name = "y", option = "D") +
-  labs(title = 'MAP 2015 Reading Norms by Grade')+
-  theme_ridges(font_size = 12, grid = TRUE) + 
-  theme(axis.title.y = element_blank(), 
-        legend.position="none")#+
-  #geom_vline(xintercept=180, col="white", lwd=1.5, alpha=.8)+
-  #  geom_vline(xintercept=180, col="black", lwd=.8, linetype="dashed")
-
-
-# 
-# ggplot(lincoln_weather, aes(x = `Mean Temperature [F]`, y = `Month`, fill = ..x..)) +
-#   geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01, gradient_lwd = 1.) +
-#   scale_x_continuous(expand = c(0.01, 0)) +
-#   scale_y_discrete(expand = c(0.01, 0)) +
-#   scale_fill_viridis(name = "Temp. [F]", option = "C") +
-#   labs(title = 'Temperatures in Lincoln NE',
-#        subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the Weather Underground') +
-#   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
-#   
-```
-
-
-## Model dynamics
-
-The amount of learning during discrete time interval $t$ for individual $i$ is given by
-
-
-\begin{equation}
-\begin{split}
-\textit{Learning}_{ti} = \textit{LearnRate}_i \, &* \\
-  & \big[ \big( \textit{dosage}_{ti} * \int_{0}^{\infty} \textit{ZPD}_{ti}(x) * S_t(x) \, dx \big) + \\ 
-  & (1-\textit{dosage}_{ti}) * \textit{HomeEnv}_i * \int_{0}^{\infty} \textit{ZPD}_{ti}(x) * H_t(x) \, dx \big) \big]
-\end{split}
-\end{equation}
-
-
-
-
-```{r}
-# generate data for four students
-# learning rate
-learning.rates <- c(.08, .10, .12, .18) # decay rate
-decay.rates <- c(.04, .03, .02, .01) # initial achievement
-initial.achievements <- rep(0, times=4) # quality of home environment
-home.environments <- c(.06, .12, .15, .20)
-
-# school curriculum
-assignment <- c(rep(0, times=800), rep(1, times=200), rep(0, times=100), rep(2, times=200))
-
-curriculum.start.points <- matrix(c(.10, .15), nrow=2, ncol=1)
-```
-
-
-```{r}
-assignment <- c(rep(0, times=800), rep(1, times=200), rep(0, times=100), rep(2, times=200))
-curriculum.start.points <- matrix(c(.10, .15), nrow=2, ncol=1)
-
-curriculum.widths <- matrix(c(.05, .05), nrow=2, ncol=1)
+plot_grid(a, plotit(ach=.32), plotit(ach=.36, xtext=T), ncol=1, rel_heights=c(1, 1, 1.22)) 
 
 ```
 
+### Home curriculum
 
-```{r}
-trajectories <- ZPDGrowthTrajectories( output.format="wide",
-days=1300,
-assignment=assignment, curriculum.start.points=curriculum.start.points, curriculum.widths=curriculum.widths,
-  dosage=.8,
-  learning.rates=learning.rates,
-  decay.rates=decay.rates,
-  initial.achievements=initial.achievements,
-  home.environments=home.environments,
-  integration.points=200,
-  curriculum.lower.slope=8,
-  curriculum.upper.slope=300,
-  alpha=1,
-  home.curriculum.shape1=1,
-  home.curriculum.shape2=5,
-  zpd.offset=.03,
-  zpd.sd=.028,
-  zpd.scale=.15,
-  decay.weight=.005,
-  useGPU=FALSE,
-  verbose=FALSE)
-visualizeTrajectories(trajectories)
+Children learn a great deal at home, particularly in early childhood and in certain subjects such as reading. The rate of academic growth caused by learning experiences at home is a function of the overlap between the child’s ZPD and what we call the “home curriculum”, which we conceptualize as a downward-sloping function. Our R package implantation represents the home curriculum as a normalized beta distribution with the $\alpha$ parameter fixed to 1. Figure \@ref(fig:homeCurr) displays the home curriculum function (with parameter $\beta$ set to 5) with a superimposed ZPD for a child with achievement = 0.20. The implication of this downward slope is that academic growth due to home instruction is most rapid in early childhood and becomes increasingly reliant on school instruction in later grades. 
+
+```{r homeCurr, fig.asp=.85, fig.cap="Interaction of the ZPD (blue) with the home curriculum function (red). The growth rate during interval t is proportional to the intersection area of the ZPD curve (blue) with the home curriculum function. As the student gains in achievement (moving down the panels), the intensity of instruction from home is reduced. This produces a diminishing achievement growth rate contribution from home instruction."}
+
+plotit2 <- function(ach, xtext=F) {
+  
+  alpha=1
+  beta=5
+  
+  x <- seq(0,1,.0001)
+  
+  zpd.offset <- .05
+  zpd.sd <- .02
+  
+  curr.min <- .34
+  curr.max <- curr.min+.03
+  
+  zpd <- dnorm(x, ach+zpd.offset, zpd.sd) / max(dnorm(x, ach+zpd.offset, zpd.sd))
+
+  homecurr <- dbeta(x, shape1=alpha, shape2=beta)
+  homecurr <- homecurr / max(homecurr)
+  
+  a <- cbind(x, zpd, 1)
+  b <- cbind(x, homecurr, 0)
+  
+  d <- data.frame(rbind(a,b))
+  names(d) <- c("x", "y", "curve")
+  
+  
+  shade1 <- data.frame(rbind(c(0, 0), subset(a, (x >= 0 & x <= 1)), 
+                             c(1, 0)))
+  
+  shade2 <- data.frame(rbind(c(0, 0), subset(b, (x >= 0 & x <= 1)), 
+                             c(1, 0)))
+  
+  names(shade1) <- c("x", "y", "curve")
+  names(shade2) <- c("x", "y", "curve")
+
+  if (xtext==T) {
+  plot1 <- ggplot(d, aes(x=x, y=y, group=factor(curve))) + geom_line() + geom_vline(xintercept = ach, 
+    col = "black", cex = 0.75, alpha = 0.8) + 
+    geom_polygon(data = shade1, aes(x, y), fill = "blue", alpha = 0.25)+
+    geom_polygon(data = shade2, aes(x, y), fill = "red", alpha = 0.1)+
+    theme_classic()+xlab("achievement")+ylab("intensity")+    
+    theme(axis.text.x=element_text(family="Times", size=11),
+            axis.title.x=element_text(family="Times", size=11),
+            axis.text.y=element_text(family="Times", size=11),
+            axis.title.y=element_text(family="Times", size=11),
+            legend.text=element_text(family="Times", size=11),
+            legend.title=element_text(family="Times", size=12)) }
+  
+  if (xtext==F) {
+    plot1 <- ggplot(d, aes(x=x, y=y, group=factor(curve))) + geom_line() + geom_vline(xintercept = ach, 
+    col = "black", cex = 0.75, alpha = 0.8) + 
+    geom_polygon(data = shade1, aes(x, y), fill = "blue", alpha = 0.25)+
+    geom_polygon(data = shade2, aes(x, y), fill = "red", alpha = 0.1)+
+    theme_classic()+xlab("achievement")+ylab("intensity")+    
+    theme(axis.text.x=element_blank(),
+            axis.title.x=element_blank(),
+            axis.text.y=element_text(family="Times", size=11),
+            axis.title.y=element_text(family="Times", size=11),
+            legend.text=element_text(family="Times", size=11),
+            legend.title=element_text(family="Times", size=12)) }
+  
+  return(plot1)
+}
+
+b <- plotit2(ach=.2)+
+     annotate("text", x = .7, y = .75, label = c("Growth rate during interval t \n is proportional to the area of the \n intersection of the curves"), family="Times", size=3.2)+
+      annotate("segment", x=.51, y=.72, xend=.25, yend=.18, alpha=.5)
+
+plot_grid(b, plotit2(ach=.3), plotit2(ach=.4, xtext=T), ncol=1, rel_heights=c(1, 1, 1.22)) 
 ```
 
-```{r}
-# give better home
-trajectories <- ZPDGrowthTrajectories( output.format="wide",
-days=1300,
-assignment=assignment, curriculum.start.points=curriculum.start.points, curriculum.widths=curriculum.widths,
-  dosage=.8,
-  learning.rates=learning.rates,
-  decay.rates=decay.rates,
-  initial.achievements=initial.achievements,
-  home.environments=home.environments + .2,
-  integration.points=200,
-  curriculum.lower.slope=8,
-  curriculum.upper.slope=300,
-  alpha=1,
-  home.curriculum.shape1=1,
-  home.curriculum.shape2=5,
-  zpd.offset=.03,
-  zpd.sd=.028,
-  zpd.scale=.15,
-  decay.weight=.005,
-  useGPU=FALSE,
-  verbose=FALSE)
-visualizeTrajectories(trajectories)
+### Individual difference parameters
+
+Our model incorporates four child-level individual difference parameters: current achievement, learning rate, decay rate, and home environment; these create variability in growth trajectories. The learning rate represents individual differences in the pace of academic growth for students with identical levels of ZPD engagement, and can be considered to be a combination of general intelligence and the degree of motivation, social and parental support. The decay rate is the rate at which achievement will decay (due to forgetting) in the absence of instruction. The home environment parameter describes how effectively the home environment is at facilitating academic growth. 
+
+## Reproducing Empirical Results with the Theoretical Model
+
+We calibrated our model parameters against results presented by @rambo, hereafter known as "RHM2015"). In that paper, the authors fit a rich nonlinear piecewise multilevel growth model to a large sample of MAP reading data. The authors contrasted the academic year versus summer growth trajectories for high (98th percentile) and average (16-84th percentile) achieving groups, showing that the growth rate in reading for high achieving students does not vary between the school year and the summer. From our perspective, this paper offers a precise and highly constrained target against which we could test the veracity of our model's synthetic growth trajectories. 
+
+As a preliminary step for the analyses we present in this paper, we identified parameters for our simulation that could produce data which are highly similar to real data. To do this, we used our model to generate trajectories from birth through the beginning of sixth grade (matching the highest grade level reported in RHM2015). We took cross-sectional samples from this simulated data at time points corresponding with the grade levels in RHM2015; the beginning and end of 3rd, 4th, and 5th grades, and the beginning of 6th grade. We rescaled the resulting achievement values to the MAP scale, added measurement error, and fit a simplified version of the piecewise model employed by RHM2015. Table \@ref(tab:RHM2015) displays the empirical results from RHM2015 versus results from fitting their model to our synthetic data. The results are extraordinarily similar in both the fixed and random components. 
+
+```{r RHM2015, results="asis"}
+
+RHM2015 <-
+  matrix(c(
+  "Fixed effects", "Intercept", "193.72 (.084)", "190.29 (.053)",
+  "", "High-achieving", "25.24 (.244)", "25.79 (.313)",
+  "", "School year", "1.54 (.024)", "1.58 (.009)",
+  "", "School year * High-ach", "-1.28 (.025)",		"-1.32 (.052)",
+  "", "Summer",	"-0.12 (.033)", "-.083 (.015)",
+  "", "Summer * High-ach", "0.24 (.036)",		"0.504 (.090)",
+  "", "School year squared",	"-0.02 (.001)", "-.021 (.003)",
+  "", "School year squared * High-ach",	"0.03 (.001)",		".032 (.002)",
+  "", "Summer squared",	".001 (.002)", "-0.004 (.001)",
+  "", "Summer squared * High-ach", "-0.001 (.002)", "-.025 (.007)",
+  "Random effect", "Level-1 eij",	"29.890",		"28.896",
+  "", "Intercept",	"30.601",		"30.761",
+  "", "School year growth",	"0.100", "0.286",
+  "", "Summer growth",	"-", "-",
+  "", "School year growth squared", "0.000", "0.000",
+  "", "Summer growth squared",	"-", "-"),
+  ncol=4, byrow=T)
+
+# drop first col
+RHM2015 <- RHM2015[,2:4]
+ 
+names(RHM2015) <- c("Component", "Empirical", "Simulated")
+  
+apa_table(RHM2015,
+          midrules=11,
+          small=T,
+          row.names=F,
+          align=c("l", "r", "r"),
+          stub_indents=list("Fixed effects"=c(1,10), "Random effects"=c(11:16)),
+          caption="Comparison of piecewise growth model results from Rambo-Hernandez and McCoach (2015) to results from the same model fit to synthetic data generated from the theoretical model.",
+          note="1: Model component. 2: Empirical result reported in Rambo-Hernandez & McCoach (2015), Table 3. 3: Results from fitting the piecewise growth model from Rambo-Hernandez & McCoach (2015) to synthetic data generated via the theoretical model.",
+         # col_spanners=list(paste0("Parameter", " (", "Std Err", ")")=c(2,3))),
+          col_spanners=list('Parameter (Std Err)'=c(2,3)))
+
 ```
 
+We used the model parameters that can reproduce the RHM2015 results as the basis of all the simulations reported in this paper.
 
-```{r}
-# increase learning rate
-trajectories <- ZPDGrowthTrajectories( output.format="wide",
-days=1300,
-assignment=assignment, curriculum.start.points=curriculum.start.points, curriculum.widths=curriculum.widths,
-  dosage=.8,
-  learning.rates=1.2*learning.rates,
-  decay.rates=decay.rates,
-  initial.achievements=initial.achievements,
-  home.environments=home.environments,
-  integration.points=200,
-  curriculum.lower.slope=8,
-  curriculum.upper.slope=300,
-  alpha=1,
-  home.curriculum.shape1=1,
-  home.curriculum.shape2=5,
-  zpd.offset=.03,
-  zpd.sd=.028,
-  zpd.scale=.15,
-  decay.weight=.005,
-  useGPU=FALSE,
-  verbose=FALSE)
-visualizeTrajectories(trajectories)
+## Origin of the Matthew Effect
+
+Figure \@ref(fig:origin) illustrates the putative origin of the Matthew effect. In this figure, prototypical academic growth trajectories for three students are displayed beginning at birth. They grow at different rates until they are observed at time $t$, indicated by the vertical reference line. It is observed that these three students differ in achievement at time $t$. If these students are observed again at a later time, their differences in achievement will be larger than they were when last observerd. This is due to the continuity of the process leading to the difference in achievement at $t$. The process that caused the students' achievement to diverge at $t$ will create additional variance in achievement in later observations. Logically, the highest-ranked student at time $t$ must be the one who had experienced the most rapid growth during the prior interval; absent some discontinuous shock or achievement-limiting feature of the educational environment, that student will continue to experience the fastest growth in the subsequent interval. 
+
+```{r origin, fig.asp=.55, fig.cap="Origin of the Matthew effect. X-axis: time. Y-axis: achievement. Students are observed at a time point denoted by the vertical dashed line. The process creating the discrepancies in achievement at time t will continue unless interrupted or constrained, resulting in growing inequality in achievement over time.", cache=FALSE}
+
+# origin of the Matthew effect
+
+x <- seq(0,1,.01)
+y1 <- .45*x - .2*x^2
+y2 <- .55*x - .2*x^2
+y3 <- .65*x -.2*x^2
+
+matthew <- data.frame(cbind(rep(x,3), c(y1, y2, y3), rep(1:3, each=length(x))))
+names(matthew) <- c("time", "achievement", "student")
+
+ggplot(data=matthew, aes(x=time, y=achievement, color=factor(student)))+
+  geom_line(alpha=.6)+theme_classic()+
+  #coord_cartesian(xlim=c(0,.8))+
+  labs(x="Time", color="Student")+
+  geom_vline(xintercept=.5, linetype="dashed", alpha=.5)+
+  theme(
+    legend.position="bottom",
+    axis.text.x=element_blank(),
+          axis.title.x=element_text(family="Times", size=11),
+          axis.ticks.x=element_blank(),
+          axis.ticks.y=element_blank(),
+          axis.text.y=element_blank(),
+          axis.title.y=element_text(family="Times", size=11),
+          legend.text=element_text(family="Times", size=11),
+          legend.title=element_text(family="Times", size=12))+
+ annotate(geom="point", x=c(.5, .5, .5), y=c(.175, .225, .275), 
+           color=c("red", "green", "blue"), alpha=.55)
 ```
 
+Of course, there is such an achievement-limiting feature that is highly salient to school achievement: the limitation of the grade-level curriculum to which the vast majority of students are exposed. For example,  @makel recently found that 35% of 5th graders score at least one grade level ahead of placement in reading, with 24% at least two grade levels above placement. This raises the question of whether these students' school experience will make any positive contribution at all to the development of their reading skills. The results provided in RHM2015 provide an answer; they observed no significant difference in the rate of summer versus academic year growth in reading skills for high-achieving students.
 
-```{r}
-# give wider curriculum
-trajectories <- ZPDGrowthTrajectories( output.format="wide",
-days=1300,
-assignment=assignment, curriculum.start.points=curriculum.start.points, curriculum.widths=1.5*curriculum.widths,
-  dosage=.8,
-  learning.rates=learning.rates,
-  decay.rates=decay.rates,
-  initial.achievements=initial.achievements,
-  home.environments=home.environments,
-  integration.points=200,
-  curriculum.lower.slope=8,
-  curriculum.upper.slope=300,
-  alpha=1,
-  home.curriculum.shape1=1,
-  home.curriculum.shape2=5,
-  zpd.offset=.03,
-  zpd.sd=.028,
-  zpd.scale=.15,
-  decay.weight=.005,
-  useGPU=FALSE,
-  verbose=FALSE)
-visualizeTrajectories(trajectories)
-```
-
-```{r}
-# give more rapidly advancing and wider
-trajectories <- ZPDGrowthTrajectories( output.format="wide",
-days=1300,
-assignment=assignment, 
-curriculum.start.points=c(0, .1)+curriculum.start.points, 
-curriculum.widths=curriculum.widths+.03,
-  dosage=.8,
-  learning.rates=learning.rates,
-  decay.rates=decay.rates,
-  initial.achievements=initial.achievements,
-  home.environments=home.environments,
-  integration.points=200,
-  curriculum.lower.slope=8,
-  curriculum.upper.slope=300,
-  alpha=1,
-  home.curriculum.shape1=1,
-  home.curriculum.shape2=5,
-  zpd.offset=.03,
-  zpd.sd=.028,
-  zpd.scale=.15,
-  decay.weight=.005,
-  useGPU=FALSE,
-  verbose=FALSE)
-visualizeTrajectories(trajectories)
-```
-
-
-
-# Methods
-We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
-
-## Participants
-
-## Material
-
-## Procedure
-
-## Data analysis
-We used `r cite_r("r-references.bib")` for all our analyses.
-
+Thus, the excellence and achievement gaps that are the subject of the Matthew effect are influenced by two countervailing forces: natural variation in student background and learning rates create gaps that will tend to grow over time, while curricular ceilings diminish gaps by limiting the growth potential of the highest performing students. In the following section, we use the quantified ZPD model to examine the consequences of different types of interventions and examine their effects on raw achievement as well as achievement and excellence gaps. 
 
 # Results
 
+```{r}
+
+## functions for making the plots
+
+# modify the visualizeTrajectories function to add a legend and tweak the size and transparency of the 
+#   lines
+
+visualizeTrajectories2 <- function(trajectories) {
+    if (ncol(trajectories) != 3) {
+        nstudents <- nrow(trajectories)
+        days <- ncol(trajectories) - 1
+        trajectories <- reshape2::melt(trajectories, measure.vars = c(1:days + 
+            1))
+        trajectories[, 2] <- rep(seq(1:days), each = nstudents)
+        names(trajectories) <- c("student", "day", "achievement")
+        trajectories <- trajectories[order(trajectories$student), ]
+    }
+    p <- ggplot2::ggplot(data = trajectories, ggplot2::aes(x = day, 
+        y = achievement, color = factor(student))) + ggplot2::geom_line(
+        size = 0.6, alpha = 0.6) + ggplot2::geom_hline(yintercept = 0, 
+        col = "gray") + ggplot2::geom_vline(xintercept = 0, col = "gray") + 
+        ggplot2::theme(panel.background = ggplot2::element_blank(), 
+            panel.grid.major = ggplot2::element_blank(), panel.grid.minor = ggplot2::element_blank())
+    return(p)
+}
+
+
+# function for plotting the trajectories and gaps
+
+plotGaps <- function(assignment, learning.rates, decay.rates, initial.achievements, home.environments, dosage=.66, curriculum.starts, curriculum.widths, scale.intercept=118.5, scale.slope=245, ach.max=260, gap.max=50, days.to.sample=1825+seq(0, by=356, length.out=7)) {
+
+  # generate the trajectories
+  
+  trajectories <- ZPDGrowthTrajectories(output.format="wide",
+  days=4015,
+  assignment=assignment, 
+  curriculum.start.points=curriculum.starts, 
+  curriculum.widths=curriculum.widths,
+    dosage=dosage,
+    learning.rates=learning.rates,
+    decay.rates=decay.rates,
+    initial.achievements=initial.achievements,
+    home.environments=home.environments,
+    integration.points=200,
+    curriculum.lower.slope=8,
+    curriculum.upper.slope=1000,
+    alpha=1,
+    home.curriculum.shape1=1,
+    home.curriculum.shape2=7,
+    zpd.offset=.035,
+    zpd.sd=.039,
+    zpd.scale=.05,
+    decay.weight=.007,
+    useGPU=FALSE,
+    verbose=FALSE)
+
+  # rescale the achievement values to MAP scale
+  trajectories[,2:ncol(trajectories)] <- apply(trajectories[,2:ncol(trajectories)], c(1,2), function(x) {scale.intercept+(x*scale.slope)})
+
+  # make the plot of trajectories (panel 1)
+  p1 <- visualizeTrajectories2(trajectories)+
+   xlim(0,3903)+ylim(100, ach.max)+  #1826
+    labs(y="MAP score", color="Student")+
+    geom_vline(xintercept=seq(1826, 3901, by=365), linetype="solid", alpha=.2)+
+    geom_vline(xintercept=seq(1826+365-113, 4100, by=365), linetype="solid", alpha=.2)+
+   annotate("text", x = seq(1826+110, 4100, by=365), y = 120, label = c(" K ", "1st", "2nd", "3rd", "4th", "5th"), family="Times", size=3.2)+
+    theme(legend.position=c(.08, .75),
+          axis.text.x=element_blank(),
+          axis.title.x=element_blank(),
+          axis.ticks.x=element_blank(),
+          axis.text.y=element_text(family="Times", size=11),
+          axis.title.y=element_text(family="Times", size=11),
+          legend.text=element_text(family="Times", size=11),
+          legend.title=element_text(family="Times", size=12))
+
+  # calculate the gaps by differencing student 3-2 and student 3-1
+  e_gap <- trajectories[3,2:ncol(trajectories)] - trajectories[2,2:ncol(trajectories)]
+  a_gap <- trajectories[3,2:ncol(trajectories)] - trajectories[1,2:ncol(trajectories)]
+
+  # bind into data frame. Gap type is varname "student" to enable visualizeTrajectories2 to be used
+  student <- c("Excellence", "Achievement")
+  gaps <- cbind(student, rbind(e_gap, a_gap))
+
+  # make the plot 
+  p2 <- visualizeTrajectories2(gaps)+
+    xlim(0,3903)+ylim(-10, gap.max)+
+    labs(y="Gap", color="Type")+
+    geom_vline(xintercept=seq(1826, 3901, by=365), linetype="solid", alpha=.2)+
+    geom_vline(xintercept=seq(1826+365-113, 4100, by=365), linetype="solid", alpha=.2)+
+   annotate("text", x = seq(1826+110, 4100, by=365), y = -7, label = c(" K ", "1st", "2nd", "3rd", "4th", "5th"), family="Times", size=3.2)+
+    # these color codes are ColorBrewer set1 colors 4 and 5
+    scale_colour_manual(values = c("#984ea3", "#ff7f00"))+
+    theme(legend.position=c(.08, .8),
+          axis.text.x=element_blank(),
+          axis.title.x=element_blank(),
+          axis.ticks.x=element_blank(),
+          axis.text.y=element_text(family="Times", size=11),
+          axis.title.y=element_text(family="Times", size=11),
+          legend.text=element_text(family="Times", size=11),
+          legend.title=element_text(family="Times", size=12))
+
+
+  gap.summary <- gaps[,c(1, days.to.sample+1)]
+  names(gap.summary) <- c("Type", "GradeK", "Grade1", "Grade2", "Grade3", "Grade4", "Grade5", "Grade6")
+  gap.summary <- melt(gap.summary)
+  
+  ach.summary <- trajectories[,c(1, days.to.sample+1)]
+  names(ach.summary) <- c("Student", "GradeK", "Grade1", "Grade2", "Grade3", "Grade4", "Grade5", "Grade6")
+  ach.summary <- melt(ach.summary, id.vars="Student")
+  ach.summary <- ach.summary[order(ach.summary$Student),]
+
+  nstudents <- nrow(trajectories)
+  days <- ncol(trajectories) - 1
+  trajectories <- reshape2::melt(trajectories, measure.vars = c(1:days + 
+      1))
+  trajectories[, 2] <- rep(seq(1:days), each = nstudents)
+  names(trajectories) <- c("student", "day", "achievement")
+  trajectories <- trajectories[order(trajectories$student), ]
+  
+  nstudents <- nrow(gaps)
+  days <- ncol(gaps) - 1
+  gaps <- reshape2::melt(gaps, measure.vars = c(1:days + 
+      1))
+  gaps[, 2] <- rep(seq(1:days), each = nstudents)
+  names(gaps) <- c("student", "day", "achievement")
+  gaps <- gaps[order(gaps$student), ]
+  
+  return(list(p1=p1, p2=p2, gap.summary=gap.summary, ach.summary=ach.summary, 
+              trajectories=trajectories, gaps=gaps))
+}
+
+
+```
+
+For each intervention considered, we used our theoretical model to generate synthetic trajectories for three students. The trajectories were generated from birth through the end of 5th grade; growing trajectories beyond the fifth grade would have been excessively speculative as we did not possess sufficiently detailed empirical data for model calibration. 
+
+The three students differ in only three dimensions: learning rate, home environment, and decay rate. The parameters are summarized in Table \@ref(tab:parameters). We will refer to the difference between student three and student two (e.g., the two highest performing students) as an *excellence gap*, and the difference between student three and student one (e.g., the highest and lowest performing students) as an *achievement gap*. 
+
+```{r parameters, results="asis"}
+
+learning.rates <- c(.15, .19, .22) # learning rate
+decay.rates <- c(.02, .015, .01) # decay rate
+home.environments <- c(.12, .15, .25) # quality of home environment
+
+parameters <- data.frame(cbind(c("1", "2", "3"), learning.rates, home.environments, format(decay.rates, nsmall=2)))
+names(parameters) <- c("Student", "Learn", "Home", "Decay")
+
+apa_table(parameters, 
+          col.names = c("Student", "Learning rate", "Home environment", "Decay rate"),
+          small=T, 
+          caption="Individual-differences parameters for the three simulated students")
+
+```
+
+## Model 1: No intervention / Standard multilevel curriculum
+
+The results of model 1 are displayed in figure \@ref(fig:model1). This model is based on the curriculum values that were used to reproduce the RHM2015 results. In this model, students may be selected into either a grade-level (typical) curriculum, a remedial curriculum, or an advanced curriculum. The selection happens automatically; each student receives whichever curriculum would produce the most growth in the time interval. The upper panel of the figure shows the achievement trajectories for each student expressed on the MAP reading metric from birth through the end of fifth grade. The vertical dotted reference lines indicate the time periods of the academic years. Before Kindergarten and during the summers, growth occurs only because of exposure to home instruction; during the school year growth results from the mixture of home and school instruction. 
+
+In this condition, student three enters Kindergarten with substantially mode advanced skills than the other students. This student experiences little growth in grade K, grows very rapidly in grades 1 and 2, and little growth thereafter. This is because the student is at the ceiling of the grade level instruction by third grade and is no longer receiving adequate opportunity to grow. This student's ZPD is mostly above what is being taught even within the 'advanced' curriculum. 
+
+Student one, on the other hand, enters Kindergarten with a relatively deficient skillset. This student's growth levels off as well, but for a different reason -- the curriculum is outpacing the student's growth rate. After a few years, the student's ZPD calls increasingly below the bulk of the curriculum, leading to slower growth. 
+
+Student two enters school at the 'sweet spot' of developed skill. This student's ZPD is consistently engaged with the school curriculum, and as a result this student experiences rapid and consistent growth. By the end of 5th grade, this student has nearly caught up with student three in developed skill. 
+
+The lower panel of figure \@ref(fig:model1) plots the excellence (student 3 vs 2) and achievement (student 3 vs 1) gaps over time. The excellence gap slowly diminishes over time, while the achievement gap increases. 
+
+```{r model1, fig.cap="Synthetic trajectories and gaps for three students. *Condition*: no intervention; standard multilevel curriculum (e.g., typical, remedial, and advanced). *Panel 1*: Achievement trajectories for birth through grade five in reading. *Panel 2:* Gaps (achievement differential). The \'achievement gap\' is difference between student three and student one; the \'excellence gap\' is the difference between student three and student two."}
+
+# these values best replicate the model results from RHM2015
+assignment <- c(
+  rep(0, 1825),   # time at home before school starts
+  rep(c(rep(1,5), 0, 0), 36),    # kindergarten
+  rep(0, 113),    # not in school days, including summers, holidays, and weekends
+  rep(c(rep(2,5), 0, 0), 36),    # first grade
+  rep(0, 113),    # not in school days, including summers, holidays, and weekends
+  rep(c(rep(3,5), 0, 0), 36),    # second grade
+  rep(0, 113),    # not in school days, including summers, holidays, and weekends
+  rep(c(rep(4,5), 0, 0), 36),    # third grade
+  rep(0, 113),    # not in school days, including summers, holidays, and weekends
+  rep(c(rep(5,5), 0, 0), 36),    # fourth grade
+  rep(0, 113),    # not in school days, including summers, holidays, and weekends
+  rep(c(rep(6,5), 0, 0), 36),    # fifth grade
+  rep(0, 113))    # not in school days, including summers, holidays, and weekends
+
+curriculum.starts <- structure(c(
+  0.0715, 0.2157, 0.3187, 0.3599, 0.4011, 0.432, # advanced
+  0.0406, 0.1539, 0.226, 0.2981, 0.3496, 0.3908, # remedial
+  0.0715, 0.1745, 0.2569, 0.329, 0.3805, 0.4217), # standard
+  .Dim = c(6L, 3L))  # change to 3L for all 3
+
+curriculum.widths <- structure(c(
+  0.125, 0.104, 0.083, 0.062, 0.041, 0.02, # advanced
+  0.125, 0.104, 0.083, 0.062, 0.041, 0.02, # remedial
+  0.125, 0.104, 0.083, 0.062, 0.041, 0.02), # standard)
+  .Dim = c(6L, 3L))
+
+model1 <- plotGaps(assignment=assignment, learning.rates=learning.rates, decay.rates=decay.rates, initial.achievements=c(0,0,0), home.environments=home.environments, dosage=.66, curriculum.starts=curriculum.starts, curriculum.widths=curriculum.widths, ach.max=230)
+
+# show the plot
+plot_grid(model1$p1, model1$p2, ncol=1)
+
+# save the data
+gap1 <- model1$gap.summary
+ach1 <- model1$ach.summary
+
+# rename outcome column
+names(gap1)[3] <- "model1"
+names(ach1)[3] <- "model1"
+```
+
+The results from model 1, representing business-as-usual, will be used as a baseline for the other models.
+
+## Model 2: Intervention to increase learning rates 
+
+Model 2 examined the impact of a hypothetical intervention for increasing learning rates. This condition approximates the effect of a successful psychosocial intervention that improves motivation, engagement, effort, or propensity to engage in deliberate practice. One might even consider an increased learning rate in the standard curriculum to be a desired secondary effect of academic enrichment. This was modeled by adding a constant value of $.05$ to each student's learning rate (as presented in table \@ref(tab:parameters)). No alterations were made to the school curriculum. The results of this model are displayed in figure \@ref(fig:model2). The results from model 1 are superimposed as faint dotted lines. 
+
+```{r model2, fig.cap="*Condition*: intervention with additive impact on learning rates; standard multilevel curriculum (e.g., typical, remedial, and advanced). *Panel 1*: Achievement trajectories. *Panel 2:* Gaps. Dotted reference lines display the no-intervention results for comparison."}
+
+learning.rates2 <- learning.rates+.05
+
+model2 <- plotGaps(assignment=assignment, learning.rates=learning.rates2, decay.rates=decay.rates, initial.achievements=c(0,0,0), home.environments=home.environments, dosage=.66, curriculum.starts=curriculum.starts, curriculum.widths=curriculum.widths, ach.max=230)
+
+# show the plot
+plot_grid(
+  model2$p1 + geom_line(data=model1$trajectories, aes(x=day, color=factor(student)), 
+                        size=.4, alpha=.35, linetype="dashed"), 
+  model2$p2 + geom_line(data=model1$gaps, aes(y=achievement, x=day, color=factor(student)), 
+                        size=.4, alpha=.35, linetype="dashed"), 
+  ncol=1)
+
+# save the data
+gap2 <- model2$gap.summary
+ach2 <- model2$ach.summary
+
+# rename outcome column
+names(gap2)[3] <- "model2"
+names(ach2)[3] <- "model2"
+```
+
+This intervention led to a reduction in both the excellence and the achievement gaps. Increasing the learning rate of students three and two did little to increase their grade-5 achievement; these students have outpaced the curriculum by such an extent by third grade that their growth almost ceases. The increased learning rate has enormous consequences for student 1, who is now able to keep up with the curriculum. As a result, student 1 has nearly caught up with students 2 and 3 by fifth grade. 
+
+## Model 3: Intervention to improve the educational quality of the home environment
+
+In model 3, the learning rates were reset to their baseline values, but each student's home environment was increased by a constant value of $.05$. This intervention is a prototypical abstraction of many which seek to increase the academic contribution of the home environment. For example, the Imagination Library sends one curated childrens' book per month to all families with pre-Kindergartens. Other such programs include summer camps, pre-K programs, educational apps and games, or public library reading programs.
+
+This model's results are displayed in figure \@ref(fig:model3). Due to the downward-sloping nature of the home curriculum function (see figure \@ref(fig:homeCurr)), the benefits of this intervention are strongest in early childhood and diminish with age. This intervention results in students entering Kindergarten with more advanced skills than they would otherwise have. By third grade, the benefits of this intervention have been nearly eliminated for students 3 and 2 due to their encounter with the curricular ceiling. Student 1 experiences some benefit, but is ultimately still unable to keep up with the curriculum. This intervention reduces the achievement gap while hardly affecting the excellence gap.
+
+```{r model3, fig.cap="*Condition*: intervention with additive impact on home environment; standard multilevel curriculum (e.g., typical, remedial, and advanced). *Panel 1*: Achievement trajectories. *Panel 2:* Gaps. Dotted reference lines display the no-intervention results for comparison."}
+
+home.environments2 <- home.environments + .05
+
+model3 <- plotGaps(assignment=assignment, learning.rates=learning.rates, decay.rates=decay.rates, initial.achievements=c(0,0,0), home.environments=home.environments2, dosage=.66, curriculum.starts=curriculum.starts, curriculum.widths=curriculum.widths, ach.max=230)
+
+# show the plot
+plot_grid(
+  model3$p1 + geom_line(data=model1$trajectories, aes(x=day, color=factor(student)), 
+                        size=.4, alpha=.35, linetype="dashed"), 
+  model3$p2 + geom_line(data=model1$gaps, aes(y=achievement, x=day, color=factor(student)), 
+                        size=.4, alpha=.35, linetype="dashed"), 
+  ncol=1)
+
+# save the data
+gap3 <- model3$gap.summary
+ach3 <- model3$ach.summary
+
+# rename outcome column
+names(gap3)[3] <- "model3"
+names(ach3)[3] <- "model3"
+```
+
+## Model 4: Intervention to increase educational dosage (length of school day)
+
+Model 4 displays the impact of an intervention which lengths the school day, increasing the educational "dose." The proportion of the students' waking hours spend at school were increased from the 66% baseline to 80%. Extending the length of the school day is the core feature of interventions such as the Knowledge is Power Program (KIPP) and Harlem Promise. 
+
+The results are displayed in figure \@ref(fig:model4). As can be seen in the figure, the benefits of this type of intervention are disproportionally experienced by the lowest-performing student, who enjoys a substantial improvement in skill development over time. The achievement gap by the beginning of 5th grade is nearly cut in half. The intervention has almost no effect for the highest performing student, who derives minimal benefit from prolonged exposure to instruction that is too easy.
+
+```{r model4, fig.cap="*Condition*: intervention to increase educational dose; standard multilevel curriculum (e.g., typical, remedial, and advanced). *Panel 1*: Achievement trajectories. *Panel 2:* Gaps. Dotted reference lines display the no-intervention results for comparison."}
+
+model4 <- plotGaps(assignment=assignment, learning.rates=learning.rates, decay.rates=decay.rates, initial.achievements=c(0,0,0), home.environments=home.environments, dosage=.8, curriculum.starts=curriculum.starts, curriculum.widths=curriculum.widths, ach.max=240)
+
+# show the plot
+plot_grid(
+  model4$p1 + geom_line(data=model1$trajectories, aes(x=day, color=factor(student)), 
+                        size=.4, alpha=.35, linetype="dashed"), 
+  model4$p2 + geom_line(data=model1$gaps, aes(y=achievement, x=day, color=factor(student)), 
+                        size=.4, alpha=.35, linetype="dashed"), 
+  ncol=1)
+
+# save the data
+gap4 <- model4$gap.summary
+ach4 <- model4$ach.summary
+
+# rename outcome column
+names(gap4)[3] <- "model4"
+names(ach4)[3] <- "model4"
+```
+
+## Model 5: Completely indivdualized instruction
+
+Figure \@ref(fig:model5) illustrates what might occur given completely individualized instruction. In this model, the individual differences parameters are set to their usual values (table \@ref(tab:parameters)), but the school curriculum function is altered to span the entire range of achievement in each grade. As a result, the students' ZPDs are always completely contained within the school curriculum. In this condition, achievement growth occurs at the most rapid pace that the student can sustain. Student 3's MAP reading score at the end of 5th grade is 299, a value that is `r round((299 - 222.3) / 17.68,1)` standard deviations higher than the average end-of-year 12th grader. Student 1's score of 224 is very close to the mean reading score for 12th graders.
+
+In this figure, all three students end fifth grade with much higher levels of achievement than they would otherwise have reached, but the achievement and excellence gaps are extreme. 
+
+```{r model5, fig.cap="*Condition*: Individualized curriculum."}
+
+# these values best replicate the model results from RHM2015
+assignment <- c(
+  rep(0, 1825),   # time at home before school starts
+  rep(c(rep(1,5), 0, 0), 36),    # kindergarten
+  rep(0, 113),    # not in school days, including summers, holidays, and weekends
+  rep(c(rep(2,5), 0, 0), 36),    # first grade
+  rep(0, 113),    # not in school days, including summers, holidays, and weekends
+  rep(c(rep(3,5), 0, 0), 36),    # second grade
+  rep(0, 113),    # not in school days, including summers, holidays, and weekends
+  rep(c(rep(4,5), 0, 0), 36),    # third grade
+  rep(0, 113),    # not in school days, including summers, holidays, and weekends
+  rep(c(rep(5,5), 0, 0), 36),    # fourth grade
+  rep(0, 113),    # not in school days, including summers, holidays, and weekends
+  rep(c(rep(6,5), 0, 0), 36),    # fifth grade
+  rep(0, 113))    # not in school days, including summers, holidays, and weekends
+
+curriculum.starts <- structure(c(
+  rep(.01, 6)), # standard
+  .Dim = c(6L, 1L))  # change to 3L for all 3
+
+curriculum.widths <- structure(c(
+  rep(1,6)), # standard)
+  .Dim = c(6L, 1L))
+
+model5 <- plotGaps(assignment=assignment, learning.rates=learning.rates, decay.rates=decay.rates, initial.achievements=c(0,0,0), home.environments=home.environments, dosage=.66, curriculum.starts=curriculum.starts, curriculum.widths=curriculum.widths, ach.max=300, gap.max=80)
+
+# show the plot
+plot_grid(
+  model5$p1 + geom_line(data=model1$trajectories, aes(x=day, color=factor(student)), 
+                      size=.5, alpha=.5, linetype="dashed"),
+
+  model5$p2 + geom_line(data=model1$gaps, aes(y=achievement, x=day, color=factor(student)), 
+                        size=.5, alpha=.5, linetype="dashed"), 
+ncol=1)
+
+# save the data
+gap5 <- model5$gap.summary
+ach5 <- model5$ach.summary
+
+# rename outcome column
+names(gap5)[3] <- "model5"
+names(ach5)[3] <- "model5"
+```
+
+## Summary of achievement and gaps under the models
+
+Tables \@ref(tab:exc-gaps), \@ref(tab:ach-gaps), and \@ref(tab:ach-long) summarize the raw MAP scores as well as the achievement and excellence gaps under each model at the beginning of each grade. 
+
+
+```{r ach-long, results='asis'}
+achievement <- cbind(ach1, ach2[,3], ach3[,3], ach4[,3], ach5[,3])
+names(achievement) <- c("Student", "Grade", "Model1", "Model2", "Model3", "Model4", "Model5")
+
+# format columns
+achievement[,3:ncol(achievement)] <- format(round(achievement[,3:ncol(achievement)],1), nsmall=1)
+
+# flip to long format
+m1 <- dcast(achievement, Grade~Student, value.var="Model1")
+m2 <- dcast(achievement, Grade~Student, value.var="Model2")
+m3 <- dcast(achievement, Grade~Student, value.var="Model3")
+m4 <- dcast(achievement, Grade~Student, value.var="Model4")
+m5 <- dcast(achievement, Grade~Student, value.var="Model5")
+
+# bind 'em together
+achievement.long <- cbind(
+  Model=rep(1:5, each=7),
+  rbind(m1, m2, m3, m4, m5))
+
+achievement.long[c(2:7, 9:14, 16:21, 23:28, 30:35),1] <- ""
+
+apa_table(achievement.long,
+          midrules=seq(7, by=7, length.out=4),
+      row.names=F, small=T,
+      #col_spanners=list('Student'=c(3,5)),
+      caption="Achieved MAP score at the beginning of each grade by model and student.",
+      note="Model 1: No intervention, standard multilevel curriculum. Model 2: Improve learning rates. Model 3: Improve home environment. Model 4: Increase dose. Model 5: Individualized instruction.")
+
+
+```
+
+```{r exc-gaps, results='asis'}
+
+excellence.gaps <- cbind(gap1, gap2[,3], gap3[,3], gap4[,3],  gap5[,3])
+names(excellence.gaps) <- c("Type", "Grade", "Model1", "Model2", "Model3", "Model4", "Model5")
+
+excellence.gaps[,3:ncol(excellence.gaps)] <- format(round(excellence.gaps[,3:ncol(excellence.gaps)],1), nsmall=1)
+
+apa_table(
+  excellence.gaps[excellence.gaps$Type=="Excellence",2:ncol(excellence.gaps)],
+  small=T,
+  caption="The excellence gap is defined as the achievement differential between the top two students. Excellence gaps at the beginning of each grade by model.", note="Model 1: No intervention, standard multilevel curriculum. Model 2: Improve learning rates. Model 3: Improve home environment. Model 4: Increase dose. Model 5: Individualized instruction.")
+
+```
+
+
+
+
+```{r ach-gaps, results='asis'}
+
+achievement.gaps <- cbind(gap1, gap2[,3], gap3[,3], gap4[,3],  gap5[,3])
+names(achievement.gaps) <- c("Type", "Grade", "Model1", "Model2", "Model3", "Model4", "Model5")
+
+achievement.gaps[,3:ncol(achievement.gaps)] <- format(round(achievement.gaps[,3:ncol(achievement.gaps)],1), nsmall=1)
+
+apa_table(
+      achievement.gaps[achievement.gaps$Type=="Achievement",2:ncol(achievement.gaps)],
+      small=T, row.names=F,
+      caption="Achievement gaps at the beginning of each grade by model.", note="The achievement gap is defined as the achievement differential between the lowest- and highest-performing students. Model 1: No intervention, standard multilevel curriculum. Model 2: Improve learning rates. Model 3: Improve home environment. Model 4: Increase dose. Model 5: Individualized instruction.")
+
+```
+
 # Discussion
 
+This analysis examined the impact of four prototypical families of educational interventions and their impact on achievement as well as achievement disparities. The results suggest that @ceci contention that non-targeted intervention always magnifies gaps is incomplete. Interventions that fail to raise the curricular ceiling for high-performing students tend to shrink gaps, as their benefits disproportionately accrue to the students who can benefit from the grade-level curriculum.
+
+According to this analysis, the only intervention which can meaningfully increase achievement for the highest-performing students is some variant of acceleration in which students are able to access advanced content earlier in their school experience. When this artificial barrier to continued growth is removed, students begin to accrue skills at rates more commensurate with their potential learning speed -- differences which create and increase the magnitude of gaps over time. 
+
+Larry Coleman was reportedly fond of saying that the most effective educational system is the one that increases variance in student achievement the most. The results of this analysis largely comport with that sentiment. One can imagine academic environments which increase achievement variance by denying low-performing students the opportunity to grow. But the analysis reported in model 5 examined a 'perfect' educational system that is perfectly adaptive, consistently delivering exactly the instruction that the student is ready to receive. All of the students derived extraordinary achievement benefit from this system. For example, under model 5, the lowest performing student entered 6th grade with a MAP score equal to student 2 under the baseline model. This student's increase of 25 points (at the end of 5th grade) is equivalent to 1.7 standard deviations with respect to the MAP norms; a staggering increase by any standard. But the highest performing student gains much more. 
+
+Effective gifted education interventions appear to magnify disparities by their very nature. This analysis suggests that attempting to limit disparities by pairing non-targeted interventions to increase learning rate, home environment, educational dose would backfire. Once the curricular ceiling is raised, the highest-achieving students would be able to derive disproportionate benefits from those interventions as well. The troubling issue is not the existence of achievement variance but the distribution of academic growth trajectories across ethnic, racial, and socioeconomic groups. Achievement variance is not the concerning issue, but rather the covariance of achievement with background characteristics that can lead to compounding intergenerational disadvantage.
+
+In addition to the policy implications, the quantitative theoretical model we employed has significance as a novel approach to educational science, broadly construed. It provides a structured framework for analyzing educational policies, moving beyond the simple question of basic effectiveness toward precise predictions regarding when, how, why, and for whom interventions are anticipated to work. The model makes is capable of making risky predictions that can be subjected to severe tests against empirical data (see @mayo, for a discussion of the characteristics and benefits of severe tests). From both scientific and pragmatic perspectives, a theory that is capable of generating point predictions is far more useful that most qualitative educational theories, from which only the vaguest predictions can be derived. Furthermore, this approach moves beyond mere description of growth trajectories to an investigation of their psychological origins, providing a deeper integration of developmental psychology in educational science.
+
+From a practical perspective, our model provides educators with a framework to consider how and when different students can benefit from different educational experiences at different times. Additionally, it helps connect gifted education with the larger education community through universally relevant and shared constructs like growth, school environment, home environment, and educational dose. Such alignment of educational values offers the opportunity to facilitate dialog between the gifted education and general education communities using shared language and values. Conversations relying on universal terms, shared values, as well as precise quantitative estimates will help all involved participate in determining educational values and how and when interventions should be implemented universally or to targeted groups at targeted times.
+
+## R packages used in this work
+It is important that package authors receive citation credit for their work. We used the following packages in this work: `r cite_r("r-references.bib")`. 
 
 \newpage
 
@@ -398,5 +1040,9 @@ We used `r cite_r("r-references.bib")` for all our analyses.
 r_refs(file = "r-references.bib")
 ```
 
+\begingroup
 \setlength{\parindent}{-0.5in}
 \setlength{\leftskip}{0.5in}
+
+<div id = "refs"></div>
+\endgroup

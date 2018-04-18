@@ -1,0 +1,197 @@
+R code for reproducing figure \@ref(fig:model1). Figures \@ref(fig:model2) through \@ref(fig:model5) (as well as tables \@ref(tab:ach-long), \@ref(tab:exc-gaps), and \@ref(tab:ach-gaps)) were produced using the same code after making alterations to the ```learning.rates``` object (model 2), ```home.environments``` object (model 3), ```dosage=``` argument to the ```plotGaps()``` function (model 4), or the ```curriculum.starts``` and ```curriculum.widths``` objects (model 5) as described in text.
+
+```{r, echo=T, eval=F, size="tiny"}
+library(devtools)
+# download the ZPDGrowthTrajectories package from github; only needs to be done once
+# uncomment the next line if you need to download the package
+#install_github("mcbeem/ZPDGrowthTrajectories", build_vignettes=TRUE)
+
+library(ZPDGrowthTrajectories)
+library(ggplot2)
+library(cowplot)
+library(reshape2)
+
+# set the individual differences parameters
+learning.rates <- c(.145, .175, .190) # learning rate 
+decay.rates <- c(.01, .008, .001) # decay rate
+home.environments <- c(.09, .21, .34) # quality of home environment #.25
+initial.achievements <- c(0, 0, 0) # initial achievement all set to zero
+
+# create the assignment object
+assignment <- c(
+  rep(0, 1825),   # time at home before school starts
+  rep(c(rep(1,5), 0, 0), 36),    # kindergarten
+  rep(0, 113),    # not in school days, including summers, holidays, and weekends
+  rep(c(rep(2,5), 0, 0), 36),    # first grade
+  rep(0, 113),    # not in school days, including summers, holidays, and weekends
+  rep(c(rep(3,5), 0, 0), 36),    # second grade
+  rep(0, 113),    # not in school days, including summers, holidays, and weekends
+  rep(c(rep(4,5), 0, 0), 36),    # third grade
+  rep(0, 113),    # not in school days, including summers, holidays, and weekends
+  rep(c(rep(5,5), 0, 0), 36),    # fourth grade
+  rep(0, 113),    # not in school days, including summers, holidays, and weekends
+  rep(c(rep(6,5), 0, 0), 36),    # fifth grade
+  rep(0, 113))    # not in school days, including summers, holidays, and weekends
+
+curriculum.starts <- structure(c(
+  0.0715, 0.2157, 0.3187, 0.3599, 0.4011, 0.432, # advanced
+  0.0406, 0.1539, 0.226, 0.2981, 0.3496, 0.3908, # remedial
+  0.0715, 0.1745, 0.2569, 0.329, 0.3805, 0.4217), # standard
+  .Dim = c(6L, 3L)) 
+
+curriculum.widths <- structure(c(
+  0.125, 0.104, 0.083, 0.062, 0.041, 0.02, # advanced
+  0.125, 0.104, 0.083, 0.062, 0.041, 0.02, # remedial
+  0.125, 0.104, 0.083, 0.062, 0.041, 0.02), # standard)
+  .Dim = c(6L, 3L))
+
+# modify the visualizeTrajectories function to add a legend and tweak the size and 
+# transparency of the lines
+
+visualizeTrajectories2 <- function(trajectories) {
+  if (ncol(trajectories) != 3) {
+    nstudents <- nrow(trajectories)
+    days <- ncol(trajectories) - 1
+    trajectories <- reshape2::melt(trajectories, measure.vars = c(1:days + 1))
+    trajectories[, 2] <- rep(seq(1:days), each = nstudents)
+    names(trajectories) <- c("student", "day", "achievement")
+    trajectories <- trajectories[order(trajectories$student), ]
+  }
+  p <- ggplot(data = trajectories, aes(x = day, 
+        y = achievement, color = factor(student))) + geom_line(
+        size = 0.6, alpha = 0.6) + geom_hline(yintercept = 0, 
+        col = "gray") + geom_vline(xintercept = 0, col = "gray") + 
+        theme(panel.background = element_blank(), 
+                   panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+  return(p)
+}
+
+# define function for plotting the trajectories and gaps
+
+plotGaps <- function(assignment, learning.rates, decay.rates, initial.achievements, 
+                     home.environments, dosage=.66, curriculum.starts, curriculum.widths, 
+                     scale.intercept=118.5, scale.slope=245, ach.max=260, gap.max=60, 
+                     days.to.sample=1825+seq(0, by=356, length.out=7)) {
+  
+  # generate the trajectories
+  
+  trajectories <- ZPDGrowthTrajectories(output.format="wide",
+                                        days=4015,
+                                        assignment=assignment, 
+                                        curriculum.start.points=curriculum.starts, 
+                                        curriculum.widths=curriculum.widths,
+                                        dosage=dosage,
+                                        learning.rates=learning.rates,
+                                        decay.rates=decay.rates,
+                                        initial.achievements=initial.achievements,
+                                        home.environments=home.environments,
+                                        integration.points=200,
+                                        curriculum.lower.slope=8,
+                                        curriculum.upper.slope=10000,
+                                        alpha=1,
+                                        home.curriculum.shape1=1,
+                                        home.curriculum.shape2=5,
+                                        zpd.offset=.026,
+                                        zpd.sd=.039,
+                                        zpd.scale=.05,
+                                        decay.weight=.005,
+                                        useGPU=FALSE,
+                                        verbose=FALSE)
+  
+  # rescale the achievement values to MAP scale
+  trajectories[,2:ncol(trajectories)] <- apply(trajectories[,2:ncol(trajectories)], 
+                                               c(1,2), function(x) {scale.intercept+(x*scale.slope)})
+  
+  # make the plot of trajectories (panel 1)
+  p1 <- visualizeTrajectories2(trajectories)+
+    xlim(0,3903)+ylim(100, ach.max)+  #1826
+    labs(y="MAP score", color="Student")+
+    geom_vline(xintercept=seq(1826, 3901, by=365), linetype="solid", alpha=.2)+
+    geom_vline(xintercept=seq(1826+365-113, 4100, by=365), linetype="solid", alpha=.2)+
+    annotate("text", x = seq(1826+110, 4100, by=365), y = 120, 
+             label = c(" K ", "1st", "2nd", "3rd", "4th", "5th"), size=3.2)+
+    theme(legend.position=c(.06, .75),
+          axis.text.x=element_blank(),
+          axis.title.x=element_blank(),
+          axis.ticks.x=element_blank(),
+          axis.text.y=element_text(size=11),
+          axis.title.y=element_text(size=11),
+          legend.text=element_text(size=11),
+          legend.title=element_text(size=12))
+  
+  # calculate the gaps by differencing student 3-2 and student 3-1
+  e_gap <- trajectories[3,2:ncol(trajectories)] - trajectories[2,2:ncol(trajectories)]
+  a_gap <- trajectories[3,2:ncol(trajectories)] - trajectories[1,2:ncol(trajectories)]
+  
+  # bind into data frame. 
+  # Gap type is varname "student" to enable visualizeTrajectories2 to be used
+  student <- c("Excellence", "Achievement")
+  gaps <- cbind(student, rbind(e_gap, a_gap))
+  
+  # make the plot of gaps (panel 2)
+  p2 <- visualizeTrajectories2(gaps)+
+    xlim(0,3903)+ylim(-10, gap.max)+
+    labs(y="Gap", color="Type")+
+    geom_vline(xintercept=seq(1826, 3901, by=365), linetype="solid", alpha=.2)+
+    geom_vline(xintercept=seq(1826+365-113, 4100, by=365), linetype="solid", alpha=.2)+
+    annotate("text", x = seq(1826+110, 4100, by=365), y = -7, 
+             label = c(" K ", "1st", "2nd", "3rd", "4th", "5th"), size=3.2)+
+    # these color codes are ColorBrewer set1 colors 4 and 5
+    scale_colour_manual(values = c("#984ea3", "#ff7f00"))+
+    theme(legend.position=c(.06, .8),
+          axis.text.x=element_blank(),
+          axis.title.x=element_blank(),
+          axis.ticks.x=element_blank(),
+          axis.text.y=element_text(size=11),
+          axis.title.y=element_text(size=11),
+          legend.text=element_text(size=11),
+          legend.title=element_text(size=12))
+  
+  gap.summary <- gaps[,c(1, days.to.sample+1)]
+  names(gap.summary) <- c("Type", "GradeK", "Grade1", "Grade2", "Grade3", 
+                          "Grade4", "Grade5", "Grade6")
+  gap.summary <- melt(gap.summary)
+  
+  ach.summary <- trajectories[,c(1, days.to.sample+1)]
+  names(ach.summary) <- c("Student", "GradeK", "Grade1", "Grade2", "Grade3", 
+                          "Grade4", "Grade5", "Grade6")
+  ach.summary <- melt(ach.summary, id.vars="Student")
+  ach.summary <- ach.summary[order(ach.summary$Student),]
+  
+  nstudents <- nrow(trajectories)
+  days <- ncol(trajectories) - 1
+  trajectories <- reshape2::melt(trajectories, measure.vars = c(1:days +  1))
+  trajectories[, 2] <- rep(seq(1:days), each = nstudents)
+  names(trajectories) <- c("student", "day", "achievement")
+  trajectories <- trajectories[order(trajectories$student), ]
+  
+  nstudents <- nrow(gaps)
+  days <- ncol(gaps) - 1
+  gaps <- reshape2::melt(gaps, measure.vars = c(1:days + 1))
+  gaps[, 2] <- rep(seq(1:days), each = nstudents)
+  names(gaps) <- c("student", "day", "achievement")
+  gaps <- gaps[order(gaps$student), ]
+  
+  return(list(p1=p1, p2=p2, gap.summary=gap.summary, ach.summary=ach.summary, 
+              trajectories=trajectories, gaps=gaps))
+}
+
+model1 <- plotGaps(assignment=assignment, learning.rates=learning.rates, 
+                   decay.rates=decay.rates, initial.achievements=initial.achievements,
+                   home.environments=home.environments, dosage=.66,
+                   curriculum.starts=curriculum.starts, curriculum.widths=curriculum.widths,
+                   ach.max=240)
+
+# show the plot
+plot_grid(model1$p1, model1$p2, ncol=1)
+
+# save the data
+gap1 <- model1$gap.summary
+ach1 <- model1$ach.summary
+
+# rename outcome column
+names(gap1)[3] <- "model1"
+names(ach1)[3] <- "model1"
+```
+
+

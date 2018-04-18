@@ -1,4 +1,4 @@
-\documentclass[english,floatsintext,man]{apa6}
+\documentclass[english,floatsintext,jou]{apa6}
 
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -20,6 +20,46 @@
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 % use microtype if available
 \IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{{#1}}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{{#1}}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\ImportTok}[1]{{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{{#1}}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{{#1}}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{{#1}}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{{#1}}}}
+\newcommand{\BuiltInTok}[1]{{#1}}
+\newcommand{\ExtensionTok}[1]{{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{{#1}}}
+\newcommand{\RegionMarkerTok}[1]{{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{{#1}}}}
+\newcommand{\NormalTok}[1]{{#1}}
 
 % Table formatting
 \usepackage{longtable, booktabs}
@@ -118,30 +158,31 @@ Theoretical Model}
 
   \author{Matthew T. McBee\textsuperscript{1}, Matthew C. Makel\textsuperscript{2}, \& Natasha L. Godkin\textsuperscript{1}}
 
-  \def\affdep{{"", "", ""}}%
-  \def\affcity{{"", "", ""}}%
+  % \def\affdep{{"", "", ""}}%
+  % \def\affcity{{"", "", ""}}%
 
   \affiliation{
     \vspace{0.5cm}
           \textsuperscript{1} East Tennessee State University\\
           \textsuperscript{2} Duke University Talent Identification Program  }
 
- % If no author_note is defined give only author information if available
-      \newcounter{author}
-                              \authornote{
-            Correspondence concerning this article should be addressed to Matthew T. McBee. E-mail: \href{mailto:mcbeem@etsu.edu}{\nolinkurl{mcbeem@etsu.edu}}
-          }
-                                                
+  \authornote{
+    Correspondence concerning this article should be addressed to Matthew T.
+    McBee, . E-mail:
+    \href{mailto:mcbeem@etsu.edu}{\nolinkurl{mcbeem@etsu.edu}}
+  }
+
 
   \abstract{A quantitative theoretical model of academic achievement, based on the
-concept of the Zone of Proximal Development (ZPD), has proven capable of
-reproducing the results of several empirical, longitudinal studies of
-achievement. This paper applies the model to understanding the origins
-of variance in achievement (at the individual and subgroup mean level of
-analysis), and the effect of gifted education initiatives on that
-variability.}
-  \keywords{gifted, excellence gap, zone of proximal development, theoretical
-calculation \\
+concept of the Zone of Proximal Development (ZPD) is used to explore the
+origin and development of achievement discrepancies via the phenomenon
+known as the Matthew effect. This paper applies the model to explore the
+potential impact of various types of educational interventions and their
+anticipated effects on academic achievement as well as excellence and
+achievement gaps. Interventions tend to aggravate both type of gaps
+unless they are paired with countervailing curricular insufficiency that
+serves to limit the growth of the highest achieving students.}
+  \keywords{gifted, achievement gap, excellence gap, zone of proximal development \\
 
     \indent Word count: X
   }
@@ -151,16 +192,16 @@ calculation \\
 
 
 \usepackage{amsthm}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
 \theoremstyle{definition}
-\newtheorem{definition}{Definition}
-\newtheorem{corollary}{Corollary}
-\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{proposition}{Proposition}[section]
 \theoremstyle{definition}
-\newtheorem{example}{Example}
+\newtheorem{example}{Example}[section]
 \theoremstyle{definition}
-\newtheorem{exercise}{Exercise}
+\newtheorem{exercise}{Exercise}[section]
 \theoremstyle{remark}
 \newtheorem*{remark}{Remark}
 \newtheorem*{solution}{Solution}
@@ -172,33 +213,157 @@ calculation \\
 
 
 
-\section{Theoretical Framework}\label{theoretical-framework}
+\enquote{For whoever has will be given more, and they will have an
+abundance. Whoever does not have, even what they have will be taken from
+them.} Matthew 25:29. NIV
 
-Current educational and psychological theories, being qualitative, are
-incapable of generating precise quantitative predictions --
-\enquote{point predictions} -- that are the hallmark of the physical
-sciences (c.f. Cohen, 1994; Maxwell \& Howard, 2009; Meehl, 1967). For
-theories to be falsifiable, they must make specific predictions. Only
-then can empirical research provide the type of severe tests (Mayo,
-1996) that lead to meaningful scientific progress. We propose such a
-theory in this paper. Our theory of academic achievement growth can
-describe and predict the achievement trajectories of individual
-students, accounting for both individual and environmental factors.
+The Biblical passage quote above, more colloquially stated, \enquote{the
+rich get richer and the poor get poorer} originally referred to the
+growth of a person's faith. Merton (1968), relying on Zuckerman (1965)
+interviews with Nobel laureates, argued that a modernized form of what
+he dubbed \enquote{The Matthew Effect} applied to scientists. As one
+Nobel interviewee stated, \enquote{The world tends to give the credit to
+already famous people} (Merton, p.~607). Broadly, those who had an
+initial advantage or accomplishment, reaped not just rewards, but
+outsized rewards, which lead to subsequent outsized opportunity and
+advantage which further widened the gap between those who had from those
+who had not. Merton described the Nobel winners as sometimes being
+embarrassed beneficiaries of this phenomenon.
 
-\section{Methods1}\label{methods1}
+Since Merton, others have found cumulative advantage Matthew Effects in
+numerous domains including education (for review, see Ceci and Papierno
+(2005)). For example, students who read well and have strong
+vocabularies tend read more than their peers, thus further developing
+their reading skills whereas children with weaker vocabularies read more
+slowly and less, thus widening the gap in reading between the groups
+(Ceci \& Papierno, 2005). Ceci and Papierno also note that Matthew
+Effects are observed when both gifted and nongifted students are
+provided with an educational intervention (Borkowski \& Peck, 1986); an
+already existing gap between the groups grew larger after the
+intervention.
 
-The Zone of Proximal Development (ZPD) is the basic psychological
-principle at the heart of this theoretical model. Although the ZPD
-concept is typically attributed to Lev Vygotsky, the phenomenon was
-actually first revealed by Dorthea McCarthy (1930). The ZPD describes
-how learning emerges from the interaction between a student's base of
-currently mastered skills and knowledge with a particular set of
+There is not universal acceptance of Matthew Effects. For example,
+researchers have found that a diverging performance that had a
+fan-spread pattern was not evident. However, they found that performance
+differences in the initial ability was maintained across grades
+(Protopapas, Sideridis, Mouzaki, \& Simons, 2011). The general
+alternative hypothesis to the Matthew Effect is called the compensatory
+trajectory of development. Children who initially start with lower
+abilities in reading, accelerate their abilities over time and catch up
+to those who had higher initial starting abilities (Huang, Moon, \&
+Boren, 2014). Regardless, to our knowledge, no one suggests that Matthew
+Effects are inevitable. Rather, that they are both common and pervasive
+(Ceci \& Papierno, 2005).
+
+\par
+
+Matthew Effects are particularly relevant in the modern policy
+environment with its strong focus on identifying and closing gaps. This
+is because when interventions are given universally to all students,
+Matthew Effects occur often, with disproportionate gains going to those
+who had already been high performing (Ceci \& Papierno, 2005). The
+question of what interventions should be provided -- and to whom --
+becomes relevant. If the sole goal of a nation's policy is to close
+gaps, targeted interventions that purposefully avoid providing the
+intervention to higher performing groups is a path to consider. The
+policy grows different if the goals vary (e.g., provide appropriate
+challenge to students no matter their current performance level) or are
+more multi-faceted (e.g., shrink gaps while also providing appropriate
+challenge to all students).
+
+Matthew Effects are particularly relevant for gifted education due to
+pervasive excellence gaps. Excellence gaps represent performance
+differences between sub-groups at the high end of achievement (J. A.
+Plucker \& Peters, 2016). Typically demonstrated through gaps between
+students of different race/ethnicity and income-level backgrounds in the
+percent of students attaining high performance, excellence gaps are
+large and pervasive. When achievement is unevenly distributed across
+demographic groups, the existence of Matthew Effects suggest that
+advanced educational opportunities like gifted programming will increase
+each group's mean achievement while at the same times magnifying
+discrepancies between groups.
+
+The goal of this paper is to model the psychological underpinning of the
+Matthew Effect as well as its limitations through the lens of Vygotsky's
+Zone of Proximal Development (ZPD; Vygotsky (1980)). ZPD is the basic
+psychological principle at the heart of this theoretical model. Although
+the ZPD concept is typically attributed to Lev Vygotsky, the phenomenon
+was actually first proposed by Dorthea McCarthy (1930). The ZPD
+describes how learning emerges from the interaction between a student's
+base of currently mastered skills and knowledge with a particular set of
 learning experiences, and refers specifically to the set of skills that
 a student cannot perform autonomously but can do with scaffolding from a
-teacher or more competent peer. In our theory, instruction that occurs
-within the ZPD leads to the most rapid, efficient learning.
+teacher or more competent peer. To further investigate the Matthew
+Effect, we have produced a quantitative model for academic achievement
+growth based on the ZPD (McBee, Makel, McCoach, nd) and developed an R
+package for implementing these calculations (McBee, 2017). The package
+is available for download from the first author's github site and
+installed using the following R code:
 
-\subsection{Academic achievement}\label{academic-achievement}
+\scriptsize
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# install the function for loading R packages from github}
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{'devtools'}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(devtools)}
+\CommentTok{# install the ZPDGrowthTrajectories package}
+\KeywordTok{install_github}\NormalTok{(}\StringTok{"mcbeem/ZPDGrowthTrajectories"}\NormalTok{, }
+               \DataTypeTok{build_vignettes=}\OtherTok{TRUE}\NormalTok{)}
+\CommentTok{# load it}
+\KeywordTok{library}\NormalTok{(ZPDGrowthTrajectories)}
+\CommentTok{# view the package vignette}
+\KeywordTok{vignette}\NormalTok{(}\StringTok{"Intro"}\NormalTok{, }\DataTypeTok{package=}\StringTok{"ZPDGrowthTrajectories"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize
+
+\section{Method}\label{method}
+
+In this section, we provide a brief introduction to the features of the
+quantitative ZPD model. The amount of learning during discrete time
+interval \(t\) for individual \(i\) is given by
+
+\small
+
+\begin{equation}
+\begin{split}
+\textit{Learning}_{ti} = & (\textit{LearnRate}_i) \times \,  \\
+  & \big[ ( \textit{dosage}_{ti})  \int_{0}^{\infty} \textit{ZPD}_{ti}(x) * S_t(x) \, dx  + \\ 
+  & (1-\textit{dosage}_{ti}) (\textit{HomeEnv}_i)  \int_{0}^{\infty} \textit{ZPD}_{ti}(x) * H_t(x) \, dx \big]
+\end{split}
+\end{equation}
+
+\normalsize
+
+where * denotes the pointwise product, \(LearnRate_i\) the \(i\)th
+student's learning rate, \(HomeEnv_i\) the \(i\)th student's home
+environment, dosage a constant between 0 and 1 that describes the
+relative exposure to school versus home during academic years, \(x\)
+denotes achievement, \(ZPD_it(x)\) denotes the function describing the
+\(i\)th student's zone of proximal development at time \(t\), \(S_t(x)\)
+denotes the function describing the home curriculum at time \(t\), and
+\(H_t(x)\) the function describing the home curriculum at time \(t\). As
+previously described, we use the normalized normal density function as
+our working model for \(ZPD(x)\), the normalized trapezoidal for
+\(S(x)\), and the normalized beta for \(H(x)\). The first integral gives
+the amount of learning due to school, the second integral the amount of
+learning at home. The value of the second interval is multiplied by the
+student's individual value of the home environment. Then these two
+components are summed and multiplied by the student's learning rate to
+yield the total growth (change in achievement) during interval \(t\).
+
+Achievement is updated for time interval \(t\) by adding the amount of
+learning during that interval to the student's prior achievement and
+then multiplying the result by a value slightly smaller than 1.0 to
+model decay due to forgetting.
+
+\begin{equation}
+\textit{Achievement}_{i,t}=(\textit{Achievement}_{i,t-1} + \textit{Learning}_{i,t})(1 - \textit{Decay}_i)
+\end{equation}
+
+\subsubsection{Academic achievement}\label{academic-achievement}
 
 We define the term academic achievement to mean a student's location
 along a sequenced, developmental curriculum within a specific domain.
@@ -211,18 +376,42 @@ is a meaningful quantity representing no knowledge or skills in the
 domain. Specific values of achievement could refer to the location of
 specific skill milestones or content mastery. For example, one could
 (arbitrarily) set the mastery of mathematical operations expected of a
-typical third grader to a value of 0.40 on the achievement metric. ZPD.
+typical third grader to a value of 0.40 on the achievement metric. Prior
+to plotting results, we rescaled the achievement values output by our
+model to the NWEA MAP RIT metric to place them on a more intuitively
+meaningful scale. The national norms from this test are displayed in
+figure \ref{fig:MAPnorms}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/MAPnorms-1.pdf}
+\caption{\label{fig:MAPnorms}NWEA MAP national norms by subject and grade.}
+\end{figure}
+
+\subsubsection{Zone of Proximal
+Development}\label{zone-of-proximal-development}
+
 The ZPD is represented by a normal curve, normalized to a maximum value
 of one, whose peak is slightly ahead of the student's current
-achievement (Figure 1). In the figure, a vertical line at 0.25 depicts
-the student's current achievement; her ZPD is the shaded curve peaking
-at 0.30. The ZPD is not a single point but rather a \enquote{spread} of
-values varying in intensity; its peak describes the most efficacious
-level of instruction for stimulating academic growth.
+achievement (figure \ref{fig:ZPD}). In the figure, a vertical line at
+0.25 depicts the student's current achievement; her ZPD is the shaded
+normal curve peaking at 0.27. The ZPD is not a single point but rather a
+\enquote{spread} of values varying in intensity; its peak describes the
+most efficacious level of instruction for stimulating academic growth.
 
-Insert Figure 1 here
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/ZPD-1.pdf}
+\caption{\label{fig:ZPD}Representation of the ZPD. The student's current
+level of achievement in a particular subject is represented by the
+vertical line. The student's ZPD is the shaded curve. Instruction is
+effective at producing academic growth when it aligns with this range.}
+\end{figure}
 
-\subsection{School curriculum.}\label{school-curriculum.}
+The ZPD is a function of the student's current achievement; as
+achievement changes, the location of the ZPD moves along with it.
+
+\subsubsection{School curriculum}\label{school-curriculum}
 
 School curriculum is co-located on the same scale with academic
 achievement in much the same way that IRT models place test scores and
@@ -230,24 +419,35 @@ item difficulties on a common scale. For example, one could imagine that
 a typical Kindergarten reading curriculum ranges from 0.05 to 0.15,
 where 0.05 might include basic letter and phoneme awareness and 0.15 a
 limited ability to \enquote{sound out} simple words and knowledge of
-roughly 200 sight words. Within this academic year, the curriculum
-presented on a specific day would consist of a narrow slice or segment
-of this interval, and as the year progresses, the presented curriculum
-would steadily advance. Our model uses a normalized trapezoidal
+roughly 200 sight words. Our model uses a normalized trapezoidal
 distribution to represent the school curriculum due to the many shapes
 it can assume with different choices of values for its parameters.
-Figure 2 illustrates how three students, with varying initial
-achievement, can experience the same school curriculum. Only the student
-in the center panel would derive strong benefit from exposure to this
-curriculum as it falls within his ZPD. The curriculum is too difficult
-for the first student and too easy for the third; neither of these
-students would experience much benefit. Our implementation of the model
-in our R package does allow for students to experience different
-curricula (e.g., remedial, typical, or advanced) on an individual basis.
+Figure \ref{fig:schoolCurr} illustrates how three students with varying
+initial achievement, can experience the same school curriculum. The
+student in the center panel would derive strong benefit from exposure to
+this curriculum (manifesting as the most rapid growth) as it falls
+within his ZPD. The curriculum is somewhat too difficult for the first
+student and too easy for the third; neither of these students would
+experience academic growth at the same pace due to this mismatch between
+what they need and what they receive. Our implementation of the model in
+our R package does allow for students to experience different curricula
+(e.g., remedial, typical, or advanced) on an individual basis.
 
-Insert Figure 2 here
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/schoolCurr-1.pdf}
+\caption{\label{fig:schoolCurr}Interaction of the ZPD (blue) with the school
+curriculum function (red). Panel 1: The student's current achievement is
+substantially below the curriculum. The small area of the intersection
+of these two curves indicates that this student will experience
+relatively slow achievement growth during interval t. The instruction is
+too advanced for optimal growth. Panel 2: The student experiences rapid
+academic growth due to the correspondence between the ZPD and
+instruction. Panel 3: The student experiences relatively slow growth
+because the instruction is too basic.}
+\end{figure}
 
-\subsection{Home curriculum}\label{home-curriculum}
+\subsubsection{Home curriculum}\label{home-curriculum}
 
 Children learn a great deal at home, particularly in early childhood and
 in certain subjects such as reading. The rate of academic growth caused
@@ -255,117 +455,714 @@ by learning experiences at home is a function of the overlap between the
 child's ZPD and what we call the \enquote{home curriculum}, which we
 conceptualize as a downward-sloping function. Our R package implantation
 represents the home curriculum as a normalized beta distribution with
-the \(\alpha\) parameter fixed to 1. Figure 3 displays the home
-curriculum function (with parameter \(\beta\) set to 5) with a
+the \(\alpha\) parameter fixed to 1. Figure \ref{fig:homeCurr} displays
+the home curriculum function (with parameter \(\beta\) set to 5) with a
 superimposed ZPD for a child with achievement = 0.20. The implication of
 this downward slope is that academic growth due to home instruction is
 most rapid in early childhood and becomes increasingly reliant on school
 instruction in later grades.
 
-Insert Figure 3 here
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/homeCurr-1.pdf}
+\caption{\label{fig:homeCurr}Interaction of the ZPD (blue) with the home
+curriculum function (red). The growth rate during interval t is
+proportional to the intersection area of the ZPD curve (blue) with the
+home curriculum function. As the student gains in achievement (moving
+down the panels), the intensity of instruction from home is reduced.
+This produces a diminishing achievement growth rate contribution from
+home instruction.}
+\end{figure}
 
-\subsection{Individual difference
+\subsubsection{Individual difference
 parameters}\label{individual-difference-parameters}
 
-Our model incorporates four child-level parameters: current achievement,
-learning rate, decay rate, and home environment; these create
-variability in growth trajectories. The learning rate represents
-individual differences in the pace of academic growth for students with
-identical levels of ZPD engagement, and can be considered to be a
-combination of general intelligence and motivation. The decay rate is
-the rate at which achievement will decay (due to forgetting) in the
-absence of instruction. The home environment parameter describes how
-effectively the home environment is at facilitating academic growth.
+Our model incorporates four child-level individual difference
+parameters: current achievement, learning rate, decay rate, and home
+environment; these create variability in growth trajectories. The
+learning rate represents individual differences in the pace of academic
+growth for students with identical levels of ZPD engagement, and can be
+considered to be a combination of general intelligence and the degree of
+motivation, social and parental support. The decay rate is the rate at
+which achievement will decay (due to forgetting) in the absence of
+instruction. The home environment parameter describes how effectively
+the home environment is at facilitating academic growth.
 
-\subsection{Model dynamics}\label{model-dynamics}
+\subsection{Reproducing Empirical Results with the Theoretical
+Model}\label{reproducing-empirical-results-with-the-theoretical-model}
 
-The amount of learning during discrete time interval \(t\) for
-individual \(i\) is given by
+We calibrated our model parameters against results presented by K. E.
+Rambo-Hernandez and McCoach (2015), hereafter known as
+\enquote{RHM2015}). In that paper, the authors fit a rich nonlinear
+piecewise multilevel growth model to a large sample of MAP reading data.
+The authors contrasted the academic year versus summer growth
+trajectories for high (98th percentile) and average (16-84th percentile)
+achieving groups, showing that the growth rate in reading for high
+achieving students does not vary between the school year and the summer.
+From our perspective, this paper offers a precise and highly constrained
+target against which we could test the veracity of our model's synthetic
+growth trajectories.
 
-\begin{equation}
-\begin{split}
-\textit{Learning}_{ti} = \textit{LearnRate}_i \, &* \\
-  & \big[ \big( \textit{dosage}_{ti} * \int_{0}^{\infty} \textit{ZPD}_{ti}(x) * S_t(x) \, dx \big) + \\ 
-  & (1-\textit{dosage}_{ti}) * \textit{HomeEnv}_i * \int_{0}^{\infty} \textit{ZPD}_{ti}(x) * H_t(x) \, dx \big) \big]
-\end{split}
-\end{equation}
+As a preliminary step for the analyses we present in this paper, we
+identified parameters for our simulation that could produce data which
+are highly similar to real data. To do this, we used our model to
+generate trajectories from birth through the beginning of sixth grade
+(matching the highest grade level reported in RHM2015). We took
+cross-sectional samples from this simulated data at time points
+corresponding with the grade levels in RHM2015; the beginning and end of
+3rd, 4th, and 5th grades, and the beginning of 6th grade. We rescaled
+the resulting achievement values to the MAP scale, added measurement
+error, and fit a simplified version of the piecewise model employed by
+RHM2015. Table \ref{tab:RHM2015} displays the empirical results from
+RHM2015 versus results from fitting their model to our synthetic data.
+The results are extraordinarily similar in both the fixed and random
+components.
+
+\begin{table}[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:RHM2015}Comparison of piecewise growth model results from Rambo-Hernandez and McCoach (2015) to results from the same model fit to synthetic data generated from the theoretical model.}
+\small{
+\begin{tabular}{lrr}
+\toprule
+ & \multicolumn{2}{c}{Parameter (Std Err)} \\
+\cmidrule(r){2-3}
+1 & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3}\\
+\midrule
+Fixed effects &  & \\
+\ \ \ Intercept & 193.72 (.084) & 190.29 (.053)\\
+High-achieving & 25.24 (.244) & 25.79 (.313)\\
+School year & 1.54 (.024) & 1.58 (.009)\\
+School year * High-ach & -1.28 (.025) & -1.32 (.052)\\
+Summer & -0.12 (.033) & -.083 (.015)\\
+Summer * High-ach & 0.24 (.036) & 0.504 (.090)\\
+School year squared & -0.02 (.001) & -.021 (.003)\\
+School year squared * High-ach & 0.03 (.001) & .032 (.002)\\
+Summer squared & .001 (.002) & -0.004 (.001)\\
+\ \ \ Summer squared * High-ach & -0.001 (.002) & -.025 (.007)\\ \midrule
+Random effects &  & \\
+\ \ \ Level-1 eij & 29.890 & 28.896\\
+\ \ \ Intercept & 30.601 & 30.761\\
+\ \ \ School year growth & 0.100 & 0.286\\
+\ \ \ Summer growth & - & -\\
+\ \ \ School year growth squared & 0.000 & 0.000\\
+\ \ \ Summer growth squared & - & -\\
+\bottomrule
+\addlinespace
+\end{tabular}
+}
+\begin{tablenotes}[para]
+\textit{Note.} 1: Model component. 2: Empirical result reported in Rambo-Hernandez \& McCoach (2015), Table 3. 3: Results from fitting the piecewise growth model from Rambo-Hernandez \& McCoach (2015) to synthetic data generated via the theoretical model.
+\end{tablenotes}
+\end{threeparttable}
+\end{center}
+\end{table}
+
+We used the model parameters that can reproduce the RHM2015 results as
+the basis of all the simulations reported in this paper.
+
+\subsection{Origin of the Matthew
+Effect}\label{origin-of-the-matthew-effect}
+
+Figure \ref{fig:origin} illustrates the putative origin of the Matthew
+effect. In this figure, prototypical academic growth trajectories for
+three students are displayed beginning at birth. They grow at different
+rates until they are observed at time \(t\), indicated by the vertical
+reference line. It is observed that these three students differ in
+achievement at time \(t\). If these students are observed again at a
+later time, their differences in achievement will be larger than they
+were when last observerd. This is due to the continuity of the process
+leading to the difference in achievement at \(t\). The process that
+caused the students' achievement to diverge at \(t\) will create
+additional variance in achievement in later observations. Logically, the
+highest-ranked student at time \(t\) must be the one who had experienced
+the most rapid growth during the prior interval; absent some
+discontinuous shock or achievement-limiting feature of the educational
+environment, that student will continue to experience the fastest growth
+in the subsequent interval.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{Matthew_effect_origin_AERA2018_files/figure-latex/unnamed-chunk-3-1.pdf}
-\caption{}
+\includegraphics{figures/origin-1.pdf}
+\caption{\label{fig:origin}Origin of the Matthew effect. X-axis: time.
+Y-axis: achievement. Students are observed at a time point denoted by
+the vertical dashed line. The process creating the discrepancies in
+achievement at time t will continue unless interrupted or constrained,
+resulting in growing inequality in achievement over time.}
 \end{figure}
 
-\begin{figure}[htbp]
-\centering
-\includegraphics{Matthew_effect_origin_AERA2018_files/figure-latex/unnamed-chunk-4-1.pdf}
-\caption{}
-\end{figure}
+Of course, there is such an achievement-limiting feature that is highly
+salient to school achievement: the limitation of the grade-level
+curriculum to which the vast majority of students are exposed. For
+example, Makel, Matthews, Peters, Rambo-Hernandez, and Plucker (2016)
+recently found that 35\% of 5th graders score at least one grade level
+ahead of placement in reading, with 24\% at least two grade levels above
+placement. This raises the question of whether these students' school
+experience will make any positive contribution at all to the development
+of their reading skills. The results provided in RHM2015 provide an
+answer; they observed no significant difference in the rate of summer
+versus academic year growth in reading skills for high-achieving
+students.
 
-\begin{figure}[htbp]
-\centering
-\includegraphics{Matthew_effect_origin_AERA2018_files/figure-latex/unnamed-chunk-5-1.pdf}
-\caption{}
-\end{figure}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics{Matthew_effect_origin_AERA2018_files/figure-latex/unnamed-chunk-6-1.pdf}
-\caption{}
-\end{figure}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics{Matthew_effect_origin_AERA2018_files/figure-latex/unnamed-chunk-7-1.pdf}
-\caption{}
-\end{figure}
-
-\section{Methods}\label{methods}
-
-We report how we determined our sample size, all data exclusions (if
-any), all manipulations, and all measures in the study.
-
-\subsection{Participants}\label{participants}
-
-\subsection{Material}\label{material}
-
-\subsection{Procedure}\label{procedure}
-
-\subsection{Data analysis}\label{data-analysis}
-
-We used R (3.4.0, R Core Team, 2017) and the R-packages \emph{cowplot}
-(0.9.2, Wilke, 2017), \emph{dplyr} (0.7.4, Wickham, Francois, Henry, \&
-Müller, 2017), \emph{ggplot2} (2.2.1, Wickham, 2009), \emph{papaja}
-(0.1.0.9492, Aust \& Barth, 2017), and \emph{ZPDGrowthTrajectories}
-(0.0.5, McBee, 2017) for all our analyses.
+Thus, the excellence and achievement gaps that are the subject of the
+Matthew effect are influenced by two countervailing forces: natural
+variation in student background and learning rates create gaps that will
+tend to grow over time, while curricular ceilings diminish gaps by
+limiting the growth potential of the highest performing students. In the
+following section, we use the quantified ZPD model to examine the
+consequences of different types of interventions and examine their
+effects on raw achievement as well as achievement and excellence gaps.
 
 \section{Results}\label{results}
 
+For each intervention considered, we used our theoretical model to
+generate synthetic trajectories for three students. The trajectories
+were generated from birth through the end of 5th grade; growing
+trajectories beyond the fifth grade would have been excessively
+speculative as we did not possess sufficiently detailed empirical data
+for model calibration.
+
+The three students differ in only three dimensions: learning rate, home
+environment, and decay rate. The parameters are summarized in Table
+\ref{tab:parameters}. We will refer to the difference between student
+three and student two (e.g., the two highest performing students) as an
+\emph{excellence gap}, and the difference between student three and
+student one (e.g., the highest and lowest performing students) as an
+\emph{achievement gap}.
+
+\begin{table}[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:parameters}Individual-differences parameters for the three simulated students}
+\small{
+\begin{tabular}{llll}
+\toprule
+Student & Learning rate & Home environment & Decay rate\\
+\midrule
+1 & 0.15 & 0.12 & 0.020\\
+2 & 0.19 & 0.15 & 0.015\\
+3 & 0.22 & 0.25 & 0.010\\
+\bottomrule
+\end{tabular}
+}
+\end{threeparttable}
+\end{center}
+\end{table}
+
+\subsection{Model 1: No intervention / Standard multilevel
+curriculum}\label{model-1-no-intervention-standard-multilevel-curriculum}
+
+The results of model 1 are displayed in figure \ref{fig:model1}. This
+model is based on the curriculum values that were used to reproduce the
+RHM2015 results. In this model, students may be selected into either a
+grade-level (typical) curriculum, a remedial curriculum, or an advanced
+curriculum. The selection happens automatically; each student receives
+whichever curriculum would produce the most growth in the time interval.
+The upper panel of the figure shows the achievement trajectories for
+each student expressed on the MAP reading metric from birth through the
+end of fifth grade. The vertical dotted reference lines indicate the
+time periods of the academic years. Before Kindergarten and during the
+summers, growth occurs only because of exposure to home instruction;
+during the school year growth results from the mixture of home and
+school instruction.
+
+In this condition, student three enters Kindergarten with substantially
+mode advanced skills than the other students. This student experiences
+little growth in grade K, grows very rapidly in grades 1 and 2, and
+little growth thereafter. This is because the student is at the ceiling
+of the grade level instruction by third grade and is no longer receiving
+adequate opportunity to grow. This student's ZPD is mostly above what is
+being taught even within the \enquote{advanced} curriculum.
+
+Student one, on the other hand, enters Kindergarten with a relatively
+deficient skillset. This student's growth levels off as well, but for a
+different reason -- the curriculum is outpacing the student's growth
+rate. After a few years, the student's ZPD calls increasingly below the
+bulk of the curriculum, leading to slower growth.
+
+Student two enters school at the \enquote{sweet spot} of developed
+skill. This student's ZPD is consistently engaged with the school
+curriculum, and as a result this student experiences rapid and
+consistent growth. By the end of 5th grade, this student has nearly
+caught up with student three in developed skill.
+
+The lower panel of figure \ref{fig:model1} plots the excellence (student
+3 vs 2) and achievement (student 3 vs 1) gaps over time. The excellence
+gap slowly diminishes over time, while the achievement gap increases.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/model1-1.pdf}
+\caption{\label{fig:model1}Synthetic trajectories and gaps for three
+students. \emph{Condition}: no intervention; standard multilevel
+curriculum (e.g., typical, remedial, and advanced). \emph{Panel 1}:
+Achievement trajectories for birth through grade five in reading.
+\emph{Panel 2:} Gaps (achievement differential). The
+\enquote{achievement gap} is difference between student three and
+student one; the \enquote{excellence gap} is the difference between
+student three and student two.}
+\end{figure}
+
+The results from model 1, representing business-as-usual, will be used
+as a baseline for the other models.
+
+\subsection{Model 2: Intervention to increase learning
+rates}\label{model-2-intervention-to-increase-learning-rates}
+
+Model 2 examined the impact of a hypothetical intervention for
+increasing learning rates. This condition approximates the effect of a
+successful psychosocial intervention that improves motivation,
+engagement, effort, or propensity to engage in deliberate practice. One
+might even consider an increased learning rate in the standard
+curriculum to be a desired secondary effect of academic enrichment. This
+was modeled by adding a constant value of \(.05\) to each student's
+learning rate (as presented in table \ref{tab:parameters}). No
+alterations were made to the school curriculum. The results of this
+model are displayed in figure \ref{fig:model2}. The results from model 1
+are superimposed as faint dotted lines.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/model2-1.pdf}
+\caption{\label{fig:model2}\emph{Condition}: intervention with additive
+impact on learning rates; standard multilevel curriculum (e.g., typical,
+remedial, and advanced). \emph{Panel 1}: Achievement trajectories.
+\emph{Panel 2:} Gaps. Dotted reference lines display the no-intervention
+results for comparison.}
+\end{figure}
+
+This intervention led to a reduction in both the excellence and the
+achievement gaps. Increasing the learning rate of students three and two
+did little to increase their grade-5 achievement; these students have
+outpaced the curriculum by such an extent by third grade that their
+growth almost ceases. The increased learning rate has enormous
+consequences for student 1, who is now able to keep up with the
+curriculum. As a result, student 1 has nearly caught up with students 2
+and 3 by fifth grade.
+
+\subsection{Model 3: Intervention to improve the educational quality of
+the home
+environment}\label{model-3-intervention-to-improve-the-educational-quality-of-the-home-environment}
+
+In model 3, the learning rates were reset to their baseline values, but
+each student's home environment was increased by a constant value of
+\(.05\). This intervention is a prototypical abstraction of many which
+seek to increase the academic contribution of the home environment. For
+example, the Imagination Library sends one curated childrens' book per
+month to all families with pre-Kindergartens. Other such programs
+include summer camps, pre-K programs, educational apps and games, or
+public library reading programs.
+
+This model's results are displayed in figure \ref{fig:model3}. Due to
+the downward-sloping nature of the home curriculum function (see figure
+\ref{fig:homeCurr}), the benefits of this intervention are strongest in
+early childhood and diminish with age. This intervention results in
+students entering Kindergarten with more advanced skills than they would
+otherwise have. By third grade, the benefits of this intervention have
+been nearly eliminated for students 3 and 2 due to their encounter with
+the curricular ceiling. Student 1 experiences some benefit, but is
+ultimately still unable to keep up with the curriculum. This
+intervention reduces the achievement gap while hardly affecting the
+excellence gap.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/model3-1.pdf}
+\caption{\label{fig:model3}\emph{Condition}: intervention with additive
+impact on home environment; standard multilevel curriculum (e.g.,
+typical, remedial, and advanced). \emph{Panel 1}: Achievement
+trajectories. \emph{Panel 2:} Gaps. Dotted reference lines display the
+no-intervention results for comparison.}
+\end{figure}
+
+\subsection{Model 4: Intervention to increase educational dosage (length
+of school
+day)}\label{model-4-intervention-to-increase-educational-dosage-length-of-school-day}
+
+Model 4 displays the impact of an intervention which lengths the school
+day, increasing the educational \enquote{dose.} The proportion of the
+students' waking hours spend at school were increased from the 66\%
+baseline to 80\%. Extending the length of the school day is the core
+feature of interventions such as the Knowledge is Power Program (KIPP)
+and Harlem Promise.
+
+The results are displayed in figure \ref{fig:model4}. As can be seen in
+the figure, the benefits of this type of intervention are
+disproportionally experienced by the lowest-performing student, who
+enjoys a substantial improvement in skill development over time. The
+achievement gap by the beginning of 5th grade is nearly cut in half. The
+intervention has almost no effect for the highest performing student,
+who derives minimal benefit from prolonged exposure to instruction that
+is too easy.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/model4-1.pdf}
+\caption{\label{fig:model4}\emph{Condition}: intervention to increase
+educational dose; standard multilevel curriculum (e.g., typical,
+remedial, and advanced). \emph{Panel 1}: Achievement trajectories.
+\emph{Panel 2:} Gaps. Dotted reference lines display the no-intervention
+results for comparison.}
+\end{figure}
+
+\subsection{Model 5: Completely indivdualized
+instruction}\label{model-5-completely-indivdualized-instruction}
+
+Figure \ref{fig:model5} illustrates what might occur given completely
+individualized instruction. In this model, the individual differences
+parameters are set to their usual values (table \ref{tab:parameters}),
+but the school curriculum function is altered to span the entire range
+of achievement in each grade. As a result, the students' ZPDs are always
+completely contained within the school curriculum. In this condition,
+achievement growth occurs at the most rapid pace that the student can
+sustain. Student 3's MAP reading score at the end of 5th grade is 299, a
+value that is 4.30 standard deviations higher than the average
+end-of-year 12th grader. Student 1's score of 224 is very close to the
+mean reading score for 12th graders.
+
+In this figure, all three students end fifth grade with much higher
+levels of achievement than they would otherwise have reached, but the
+achievement and excellence gaps are extreme.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/model5-1.pdf}
+\caption{\label{fig:model5}\emph{Condition}: Individualized curriculum.}
+\end{figure}
+
+\subsection{Summary of achievement and gaps under the
+models}\label{summary-of-achievement-and-gaps-under-the-models}
+
+Tables \ref{tab:exc-gaps}, \ref{tab:ach-gaps}, and \ref{tab:ach-long}
+summarize the raw MAP scores as well as the achievement and excellence
+gaps under each model at the beginning of each grade.
+
+\begin{table}[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:ach-long}Achieved MAP score at the beginning of each grade by model and student.}
+\small{
+\begin{tabular}{lllll}
+\toprule
+Model & \multicolumn{1}{c}{Grade} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3}\\
+\midrule
+1 & GradeK & 138.6 & 147.7 & 163.6\\
+ & Grade1 & 153.5 & 161.7 & 170.4\\
+ & Grade2 & 167.3 & 179.7 & 189.0\\
+ & Grade3 & 179.0 & 195.0 & 206.8\\
+ & Grade4 & 188.2 & 208.1 & 217.5\\
+ & Grade5 & 195.2 & 217.7 & 224.4\\
+ & Grade6 & 199.8 & 223.0 & 228.1\\ \midrule
+2 & GradeK & 143.6 & 152.6 & 168.7\\
+ & Grade1 & 159.8 & 165.6 & 173.9\\
+ & Grade2 & 178.1 & 186.3 & 192.7\\
+ & Grade3 & 193.3 & 205.0 & 211.3\\
+ & Grade4 & 206.5 & 216.5 & 220.5\\
+ & Grade5 & 216.2 & 223.5 & 226.7\\
+ & Grade6 & 221.5 & 227.1 & 230.1\\ \midrule
+3 & GradeK & 144.7 & 153.8 & 168.2\\
+ & Grade1 & 157.9 & 164.7 & 173.1\\
+ & Grade2 & 171.7 & 182.3 & 190.5\\
+ & Grade3 & 183.5 & 197.8 & 207.9\\
+ & Grade4 & 193.1 & 210.4 & 218.0\\
+ & Grade5 & 200.5 & 219.1 & 224.6\\
+ & Grade6 & 205.4 & 223.8 & 228.3\\ \midrule
+4 & GradeK & 138.6 & 147.7 & 163.6\\
+ & Grade1 & 155.6 & 163.1 & 170.8\\
+ & Grade2 & 172.1 & 183.8 & 191.1\\
+ & Grade3 & 186.1 & 202.1 & 210.3\\
+ & Grade4 & 197.9 & 214.8 & 220.0\\
+ & Grade5 & 207.2 & 222.5 & 226.3\\
+ & Grade6 & 213.9 & 226.4 & 229.8\\ \midrule
+5 & GradeK & 138.6 & 147.7 & 163.6\\
+ & Grade1 & 155.8 & 169.5 & 189.0\\
+ & Grade2 & 171.6 & 189.7 & 212.7\\
+ & Grade3 & 186.2 & 208.6 & 235.3\\
+ & Grade4 & 199.8 & 226.7 & 257.2\\
+ & Grade5 & 212.7 & 243.9 & 278.4\\
+ & Grade6 & 224.8 & 260.5 & 299.1\\
+\bottomrule
+\addlinespace
+\end{tabular}
+}
+\begin{tablenotes}[para]
+\textit{Note.} Model 1: No intervention, standard multilevel curriculum. Model 2: Improve learning rates. Model 3: Improve home environment. Model 4: Increase dose. Model 5: Individualized instruction.
+\end{tablenotes}
+\end{threeparttable}
+\end{center}
+\end{table}
+
+\begin{table}[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:exc-gaps}The excellence gap is defined as the achievement differential between the top two students. Excellence gaps at the beginning of each grade by model.}
+\small{
+\begin{tabular}{llllll}
+\toprule
+Grade & \multicolumn{1}{c}{Model1} & \multicolumn{1}{c}{Model2} & \multicolumn{1}{c}{Model3} & \multicolumn{1}{c}{Model4} & \multicolumn{1}{c}{Model5}\\
+\midrule
+GradeK & 15.9 & 16.1 & 14.4 & 15.9 & 15.9\\
+Grade1 & 8.7 & 8.3 & 8.4 & 7.7 & 19.5\\
+Grade2 & 9.3 & 6.5 & 8.1 & 7.4 & 23.0\\
+Grade3 & 11.8 & 6.3 & 10.1 & 8.2 & 26.7\\
+Grade4 & 9.4 & 4.0 & 7.6 & 5.2 & 30.5\\
+Grade5 & 6.7 & 3.2 & 5.5 & 3.8 & 34.5\\
+Grade6 & 5.2 & 3.0 & 4.5 & 3.4 & 38.6\\
+\bottomrule
+\addlinespace
+\end{tabular}
+}
+\begin{tablenotes}[para]
+\textit{Note.} Model 1: No intervention, standard multilevel curriculum. Model 2: Improve learning rates. Model 3: Improve home environment. Model 4: Increase dose. Model 5: Individualized instruction.
+\end{tablenotes}
+\end{threeparttable}
+\end{center}
+\end{table}
+
+\begin{table}[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:ach-gaps}Achievement gaps at the beginning of each grade by model.}
+\small{
+\begin{tabular}{llllll}
+\toprule
+Grade & \multicolumn{1}{c}{Model1} & \multicolumn{1}{c}{Model2} & \multicolumn{1}{c}{Model3} & \multicolumn{1}{c}{Model4} & \multicolumn{1}{c}{Model5}\\
+\midrule
+GradeK & 24.9 & 25.1 & 23.4 & 24.9 & 24.9\\
+Grade1 & 16.9 & 14.0 & 15.2 & 15.2 & 33.2\\
+Grade2 & 21.7 & 14.7 & 18.7 & 19.0 & 41.2\\
+Grade3 & 27.8 & 18.0 & 24.4 & 24.2 & 49.2\\
+Grade4 & 29.3 & 14.0 & 24.9 & 22.1 & 57.3\\
+Grade5 & 29.2 & 10.5 & 24.2 & 19.1 & 65.7\\
+Grade6 & 28.3 & 8.6 & 22.9 & 15.9 & 74.3\\
+\bottomrule
+\addlinespace
+\end{tabular}
+}
+\begin{tablenotes}[para]
+\textit{Note.} The achievement gap is defined as the achievement differential between the lowest- and highest-performing students. Model 1: No intervention, standard multilevel curriculum. Model 2: Improve learning rates. Model 3: Improve home environment. Model 4: Increase dose. Model 5: Individualized instruction.
+\end{tablenotes}
+\end{threeparttable}
+\end{center}
+\end{table}
+
 \section{Discussion}\label{discussion}
+
+This analysis examined the impact of four prototypical families of
+educational interventions and their impact on achievement as well as
+achievement disparities. The results suggest that Ceci and Papierno
+(2005) contention that non-targeted intervention always magnifies gaps
+is incomplete. Interventions that fail to raise the curricular ceiling
+for high-performing students tend to shrink gaps, as their benefits
+disproportionately accrue to the students who can benefit from the
+grade-level curriculum.
+
+According to this analysis, the only intervention which can meaningfully
+increase achievement for the highest-performing students is some variant
+of acceleration in which students are able to access advanced content
+earlier in their school experience. When this artificial barrier to
+continued growth is removed, students begin to accrue skills at rates
+more commensurate with their potential learning speed -- differences
+which create and increase the magnitude of gaps over time.
+
+Larry Coleman was reportedly fond of saying that the most effective
+educational system is the one that increases variance in student
+achievement the most. The results of this analysis largely comport with
+that sentiment. One can imagine academic environments which increase
+achievement variance by denying low-performing students the opportunity
+to grow. But the analysis reported in model 5 examined a
+\enquote{perfect} educational system that is perfectly adaptive,
+consistently delivering exactly the instruction that the student is
+ready to receive. All of the students derived extraordinary achievement
+benefit from this system. For example, under model 5, the lowest
+performing student entered 6th grade with a MAP score equal to student 2
+under the baseline model. This student's increase of 25 points (at the
+end of 5th grade) is equivalent to 1.7 standard deviations with respect
+to the MAP norms; a staggering increase by any standard. But the highest
+performing student gains much more.
+
+Effective gifted education interventions appear to magnify disparities
+by their very nature. This analysis suggests that attempting to limit
+disparities by pairing non-targeted interventions to increase learning
+rate, home environment, educational dose would backfire. Once the
+curricular ceiling is raised, the highest-achieving students would be
+able to derive disproportionate benefits from those interventions as
+well. The troubling issue is not the existence of achievement variance
+but the distribution of academic growth trajectories across ethnic,
+racial, and socioeconomic groups. Achievement variance is not the
+concerning issue, but rather the covariance of achievement with
+background characteristics that can lead to compounding
+intergenerational disadvantage.
+
+In addition to the policy implications, the quantitative theoretical
+model we employed has significance as a novel approach to educational
+science, broadly construed. It provides a structured framework for
+analyzing educational policies, moving beyond the simple question of
+basic effectiveness toward precise predictions regarding when, how, why,
+and for whom interventions are anticipated to work. The model makes is
+capable of making risky predictions that can be subjected to severe
+tests against empirical data (see Mayo (1996), for a discussion of the
+characteristics and benefits of severe tests). From both scientific and
+pragmatic perspectives, a theory that is capable of generating point
+predictions is far more useful that most qualitative educational
+theories, from which only the vaguest predictions can be derived.
+Furthermore, this approach moves beyond mere description of growth
+trajectories to an investigation of their psychological origins,
+providing a deeper integration of developmental psychology in
+educational science.
+
+From a practical perspective, our model provides educators with a
+framework to consider how and when different students can benefit from
+different educational experiences at different times. Additionally, it
+helps connect gifted education with the larger education community
+through universally relevant and shared constructs like growth, school
+environment, home environment, and educational dose. Such alignment of
+educational values offers the opportunity to facilitate dialog between
+the gifted education and general education communities using shared
+language and values. Conversations relying on universal terms, shared
+values, as well as precise quantitative estimates will help all involved
+participate in determining educational values and how and when
+interventions should be implemented universally or to targeted groups at
+targeted times.
+
+\subsection{R packages used in this
+work}\label{r-packages-used-in-this-work}
+
+It is important that package authors receive citation credit for their
+work. We used the following packages in this work: R (Version 3.4.0; R
+Core Team, 2017) and the R-packages \emph{bindrcpp} (Version 0.2;
+Müller, 2017), \emph{cowplot} (Version 0.9.2; Wilke, 2017a),
+\emph{devtools} (Version 1.13.4; Wickham \& Chang, 2017), \emph{dplyr}
+(Version 0.7.4; Wickham, Francois, Henry, \& Müller, 2017),
+\emph{extrafont} (Version 0.17; Winston Chang, 2014), \emph{forcats}
+(Version 0.3.0; Wickham, 2018), \emph{ggplot2} (Version 2.2.1; Wickham,
+2009), \emph{ggridges} (Version 0.4.1; Wilke, 2017b), \emph{papaja}
+(Version 0.1.0.9709; Aust \& Barth, 2018), \emph{reshape2} (Version
+1.4.3; Wickham, 2007), \emph{trapezoid} (Version 2.0.0; Hetzel, 2012),
+\emph{viridis} (Version 0.4.0; Garnier, 2017a, 2017b),
+\emph{viridisLite} (Version 0.2.0; Garnier, 2017b), and
+\emph{ZPDGrowthTrajectories} (Version 0.0.7; McBee, 2017).
 
 \newpage
 
 \section{References}\label{references}
 
+\begingroup
 \setlength{\parindent}{-0.5in} \setlength{\leftskip}{0.5in}
 
 \hypertarget{refs}{}
 \hypertarget{ref-R-papaja}{}
-Aust, F., \& Barth, M. (2017). \emph{papaja: Create APA manuscripts with
+Aust, F., \& Barth, M. (2018). \emph{papaja: Create APA manuscripts with
 R Markdown}. Retrieved from \url{https://github.com/crsh/papaja}
 
+\hypertarget{ref-borkowski}{}
+Borkowski, J. G., \& Peck, V. A. (1986). Causes and consequences of
+metamemory in gifted children. \emph{Conceptions of Giftedness},
+182--200.
+
+\hypertarget{ref-ceci}{}
+Ceci, J. S., \& Papierno, P. B. (2005). The rhetoric and reality of gap
+closing: When the`` have-nots'' gain but the`` haves'' gain even more.
+\emph{American Psychologist}, \emph{60}(2), 149.
+doi:\href{https://doi.org/10.1037/0003-066X.60.2.149}{10.1037/0003-066X.60.2.149}
+
+\hypertarget{ref-R-viridis}{}
+Garnier, S. (2017a). \emph{Viridis: Default color maps from
+'matplotlib'}. Retrieved from
+\url{https://CRAN.R-project.org/package=viridis}
+
+\hypertarget{ref-R-viridisLite}{}
+Garnier, S. (2017b). \emph{ViridisLite: Default color maps from
+'matplotlib' (lite version)}. Retrieved from
+\url{https://CRAN.R-project.org/package=viridisLite}
+
+\hypertarget{ref-R-trapezoid}{}
+Hetzel, J. T. (2012). \emph{Trapezoid: The trapezoidal distribution}.
+Retrieved from \url{https://CRAN.R-project.org/package=trapezoid}
+
+\hypertarget{ref-huang}{}
+Huang, F. L., Moon, T. R., \& Boren, R. (2014). Are the reading rich
+getting richer? Testing for the presence of the matthew effect.
+\emph{Reading and Writing Quarterly}, \emph{30}(2), 95--115.
+doi:\href{https://doi.org/10.1080/10573569.2013.789784}{10.1080/10573569.2013.789784}
+
+\hypertarget{ref-makel}{}
+Makel, M., Matthews, M., Peters, S., Rambo-Hernandez, K., \& Plucker, J.
+(2016). How can so many students be invisible? Large percentages of
+american students perform above grade level. Baltimore, MD: Johns
+Hopkins Institute for Education Policy. Retrieved from
+\url{http://edpolicy.education.jhu.edu/wp-content/uploads/2016/08/StudentsinvisiblemastheadFINAL.pdf}
+
+\hypertarget{ref-mayo}{}
+Mayo, D. G. (1996). \emph{Error and the growth of experimental
+knowledge}. Chicago: University of Chicago Press.
+
 \hypertarget{ref-R-ZPDGrowthTrajectories}{}
-McBee, M. (2017). \emph{ZPDGrowthTrajectories: Simulates achievement
-growth trajectories using a theoretical model of academic achievement}.
+McBee, M. (2017). \emph{ZPDGrowthTrajectories: Simulate achievement
+growth trajectories using a theoretical model of academic achievement
+based on the zone of proximal development}. Retrieved from
+\url{https://github.com/mcbeem/ZPDGrowthTrajectories}
+
+\hypertarget{ref-mccarthy}{}
+McCarthy, D. A. (1930). \emph{The language development of the preschool
+child.} Oxford, England: University of Minnesota Press.
+
+\hypertarget{ref-merton}{}
+Merton, R. K. (1968). The matthew effect in science: The reward and
+communication systems of science are considered. \emph{Science},
+\emph{159}(3810), 56--63.
+doi:\href{https://doi.org/10.1126/science.159.3810.56}{10.1126/science.159.3810.56}
+
+\hypertarget{ref-R-bindrcpp}{}
+Müller, K. (2017). \emph{Bindrcpp: An 'rcpp' interface to active
+bindings}. Retrieved from
+\url{https://CRAN.R-project.org/package=bindrcpp}
+
+\hypertarget{ref-plucker}{}
+Plucker, J. A., \& Peters, S. J. (2016). \emph{Excellence gaps in
+education: Expanding opportunities for talented students.} Cambridge,
+MA.: Harvard Education Press.
+
+\hypertarget{ref-protopapas}{}
+Protopapas, A., Sideridis, G. D., Mouzaki, A., \& Simons, P. (2011).
+Matthew effects in reading comprehension: Myth or reality? \emph{Journal
+of Learning Disabilities}, \emph{44}(5), 402--420.
+doi:\href{https://doi.org/10.1177/0022219411417568}{10.1177/0022219411417568}
 
 \hypertarget{ref-R-base}{}
 R Core Team. (2017). \emph{R: A language and environment for statistical
 computing}. Vienna, Austria: R Foundation for Statistical Computing.
 Retrieved from \url{https://www.R-project.org/}
 
+\hypertarget{ref-rambo}{}
+Rambo-Hernandez, K. E., \& McCoach, D. B. (2015). High-achieving and
+average students? Reading growth: Contrasting school and summer
+trajectories. \emph{The Journal of Educational Research}, \emph{108}(2),
+112--129.
+doi:\href{https://doi.org/10.1080/00220671.2013.850398}{10.1080/00220671.2013.850398}
+
+\hypertarget{ref-vygotsky}{}
+Vygotsky, L. S. (1980). \emph{Mind in society: The development of higher
+psychological processes}. Cambridge, MA: Harvard University Press.
+
+\hypertarget{ref-R-reshape2}{}
+Wickham, H. (2007). Reshaping data with the reshape package.
+\emph{Journal of Statistical Software}, \emph{21}(12), 1--20. Retrieved
+from \url{http://www.jstatsoft.org/v21/i12/}
+
 \hypertarget{ref-R-ggplot2}{}
 Wickham, H. (2009). \emph{Ggplot2: Elegant graphics for data analysis}.
 Springer-Verlag New York. Retrieved from \url{http://ggplot2.org}
+
+\hypertarget{ref-R-forcats}{}
+Wickham, H. (2018). \emph{Forcats: Tools for working with categorical
+variables (factors)}. Retrieved from
+\url{https://CRAN.R-project.org/package=forcats}
+
+\hypertarget{ref-R-devtools}{}
+Wickham, H., \& Chang, W. (2017). \emph{Devtools: Tools to make
+developing r packages easier}. Retrieved from
+\url{https://CRAN.R-project.org/package=devtools}
 
 \hypertarget{ref-R-dplyr}{}
 Wickham, H., Francois, R., Henry, L., \& Müller, K. (2017). \emph{Dplyr:
@@ -373,13 +1170,243 @@ A grammar of data manipulation}. Retrieved from
 \url{https://CRAN.R-project.org/package=dplyr}
 
 \hypertarget{ref-R-cowplot}{}
-Wilke, C. O. (2017). \emph{Cowplot: Streamlined plot theme and plot
+Wilke, C. O. (2017a). \emph{Cowplot: Streamlined plot theme and plot
 annotations for 'ggplot2'}. Retrieved from
 \url{https://CRAN.R-project.org/package=cowplot}
 
+\hypertarget{ref-R-ggridges}{}
+Wilke, C. O. (2017b). \emph{Ggridges: Ridgeline plots in 'ggplot2'}.
+Retrieved from \url{https://CRAN.R-project.org/package=ggridges}
+
+\hypertarget{ref-R-extrafont}{}
+Winston Chang. (2014). \emph{Extrafont: Tools for using fonts}.
+Retrieved from \url{https://CRAN.R-project.org/package=extrafont}
+
+\hypertarget{ref-zuckerman}{}
+Zuckerman, H. (1965). Theory choice and problem choice in science.
+\emph{Sociological Inquiry}, \emph{48}(3-4), 65--95.
+doi:\href{https://doi.org/10.1111/j.1475-682X.1978.tb00819.x}{10.1111/j.1475-682X.1978.tb00819.x}
+
+\endgroup
 
 
 
 
+
+  \clearpage
+  
+  
+  
+\begin{appendix}
+\section{}
+R code for reproducing figure \ref{fig:model1}. Figures \ref{fig:model2}
+through \ref{fig:model5} (as well as tables \ref{tab:ach-long},
+\ref{tab:exc-gaps}, and \ref{tab:ach-gaps}) were produced using the same
+code after making alterations to the \texttt{learning.rates} object
+(model 2), \texttt{home.environments} object (model 3), \texttt{dosage=}
+argument to the \texttt{plotGaps()} function (model 4), or the
+\texttt{curriculum.starts} and \texttt{curriculum.widths} objects (model
+5) as described in text.
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(devtools)}
+\CommentTok{# download the ZPDGrowthTrajectories package from github; only needs to be done once}
+\CommentTok{# uncomment the next line if you need to download the package}
+\CommentTok{#install_github("mcbeem/ZPDGrowthTrajectories", build_vignettes=TRUE)}
+
+\KeywordTok{library}\NormalTok{(ZPDGrowthTrajectories)}
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{library}\NormalTok{(cowplot)}
+\KeywordTok{library}\NormalTok{(reshape2)}
+
+\CommentTok{# set the individual differences parameters}
+\NormalTok{learning.rates <-}\StringTok{ }\KeywordTok{c}\NormalTok{(.}\DecValTok{145}\NormalTok{, .}\DecValTok{175}\NormalTok{, .}\DecValTok{190}\NormalTok{) }\CommentTok{# learning rate }
+\NormalTok{decay.rates <-}\StringTok{ }\KeywordTok{c}\NormalTok{(.}\DecValTok{01}\NormalTok{, .}\DecValTok{008}\NormalTok{, .}\DecValTok{001}\NormalTok{) }\CommentTok{# decay rate}
+\NormalTok{home.environments <-}\StringTok{ }\KeywordTok{c}\NormalTok{(.}\DecValTok{09}\NormalTok{, .}\DecValTok{21}\NormalTok{, .}\DecValTok{34}\NormalTok{) }\CommentTok{# quality of home environment #.25}
+\NormalTok{initial.achievements <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{) }\CommentTok{# initial achievement all set to zero}
+
+\CommentTok{# create the assignment object}
+\NormalTok{assignment <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}
+\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1825}\NormalTok{),   }\CommentTok{# time at home before school starts}
+\KeywordTok{rep}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{5}\NormalTok{), }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DecValTok{36}\NormalTok{),    }\CommentTok{# kindergarten}
+\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{113}\NormalTok{),    }\CommentTok{# not in school days, including summers, holidays, and weekends}
+\KeywordTok{rep}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{5}\NormalTok{), }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DecValTok{36}\NormalTok{),    }\CommentTok{# first grade}
+\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{113}\NormalTok{),    }\CommentTok{# not in school days, including summers, holidays, and weekends}
+\KeywordTok{rep}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{5}\NormalTok{), }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DecValTok{36}\NormalTok{),    }\CommentTok{# second grade}
+\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{113}\NormalTok{),    }\CommentTok{# not in school days, including summers, holidays, and weekends}
+\KeywordTok{rep}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{), }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DecValTok{36}\NormalTok{),    }\CommentTok{# third grade}
+\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{113}\NormalTok{),    }\CommentTok{# not in school days, including summers, holidays, and weekends}
+\KeywordTok{rep}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{5}\NormalTok{,}\DecValTok{5}\NormalTok{), }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DecValTok{36}\NormalTok{),    }\CommentTok{# fourth grade}
+\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{113}\NormalTok{),    }\CommentTok{# not in school days, including summers, holidays, and weekends}
+\KeywordTok{rep}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{6}\NormalTok{,}\DecValTok{5}\NormalTok{), }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{), }\DecValTok{36}\NormalTok{),    }\CommentTok{# fifth grade}
+\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{113}\NormalTok{))    }\CommentTok{# not in school days, including summers, holidays, and weekends}
+
+\NormalTok{curriculum.starts <-}\StringTok{ }\KeywordTok{structure}\NormalTok{(}\KeywordTok{c}\NormalTok{(}
+\FloatTok{0.0715}\NormalTok{, }\FloatTok{0.2157}\NormalTok{, }\FloatTok{0.3187}\NormalTok{, }\FloatTok{0.3599}\NormalTok{, }\FloatTok{0.4011}\NormalTok{, }\FloatTok{0.432}\NormalTok{, }\CommentTok{# advanced}
+\FloatTok{0.0406}\NormalTok{, }\FloatTok{0.1539}\NormalTok{, }\FloatTok{0.226}\NormalTok{, }\FloatTok{0.2981}\NormalTok{, }\FloatTok{0.3496}\NormalTok{, }\FloatTok{0.3908}\NormalTok{, }\CommentTok{# remedial}
+\FloatTok{0.0715}\NormalTok{, }\FloatTok{0.1745}\NormalTok{, }\FloatTok{0.2569}\NormalTok{, }\FloatTok{0.329}\NormalTok{, }\FloatTok{0.3805}\NormalTok{, }\FloatTok{0.4217}\NormalTok{), }\CommentTok{# standard}
+\DataTypeTok{.Dim =} \KeywordTok{c}\NormalTok{(6L, 3L)) }
+
+\NormalTok{curriculum.widths <-}\StringTok{ }\KeywordTok{structure}\NormalTok{(}\KeywordTok{c}\NormalTok{(}
+\FloatTok{0.125}\NormalTok{, }\FloatTok{0.104}\NormalTok{, }\FloatTok{0.083}\NormalTok{, }\FloatTok{0.062}\NormalTok{, }\FloatTok{0.041}\NormalTok{, }\FloatTok{0.02}\NormalTok{, }\CommentTok{# advanced}
+\FloatTok{0.125}\NormalTok{, }\FloatTok{0.104}\NormalTok{, }\FloatTok{0.083}\NormalTok{, }\FloatTok{0.062}\NormalTok{, }\FloatTok{0.041}\NormalTok{, }\FloatTok{0.02}\NormalTok{, }\CommentTok{# remedial}
+\FloatTok{0.125}\NormalTok{, }\FloatTok{0.104}\NormalTok{, }\FloatTok{0.083}\NormalTok{, }\FloatTok{0.062}\NormalTok{, }\FloatTok{0.041}\NormalTok{, }\FloatTok{0.02}\NormalTok{), }\CommentTok{# standard)}
+\DataTypeTok{.Dim =} \KeywordTok{c}\NormalTok{(6L, 3L))}
+
+\CommentTok{# modify the visualizeTrajectories function to add a legend and tweak the size and }
+\CommentTok{# transparency of the lines}
+
+\NormalTok{visualizeTrajectories2 <-}\StringTok{ }\NormalTok{function(trajectories) \{}
+\NormalTok{if (}\KeywordTok{ncol}\NormalTok{(trajectories) !=}\StringTok{ }\DecValTok{3}\NormalTok{) \{}
+\NormalTok{nstudents <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(trajectories)}
+\NormalTok{days <-}\StringTok{ }\KeywordTok{ncol}\NormalTok{(trajectories) -}\StringTok{ }\DecValTok{1}
+\NormalTok{trajectories <-}\StringTok{ }\NormalTok{reshape2::}\KeywordTok{melt}\NormalTok{(trajectories, }\DataTypeTok{measure.vars =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{:days +}\StringTok{ }\DecValTok{1}\NormalTok{))}
+\NormalTok{trajectories[, }\DecValTok{2}\NormalTok{] <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{:days), }\DataTypeTok{each =} \NormalTok{nstudents)}
+\KeywordTok{names}\NormalTok{(trajectories) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"student"}\NormalTok{, }\StringTok{"day"}\NormalTok{, }\StringTok{"achievement"}\NormalTok{)}
+\NormalTok{trajectories <-}\StringTok{ }\NormalTok{trajectories[}\KeywordTok{order}\NormalTok{(trajectories$student), ]}
+\NormalTok{\}}
+\NormalTok{p <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =} \NormalTok{trajectories, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \NormalTok{day, }
+\DataTypeTok{y =} \NormalTok{achievement, }\DataTypeTok{color =} \KeywordTok{factor}\NormalTok{(student))) +}\StringTok{ }\KeywordTok{geom_line}\NormalTok{(}
+\DataTypeTok{size =} \FloatTok{0.6}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.6}\NormalTok{) +}\StringTok{ }\KeywordTok{geom_hline}\NormalTok{(}\DataTypeTok{yintercept =} \DecValTok{0}\NormalTok{, }
+\DataTypeTok{col =} \StringTok{"gray"}\NormalTok{) +}\StringTok{ }\KeywordTok{geom_vline}\NormalTok{(}\DataTypeTok{xintercept =} \DecValTok{0}\NormalTok{, }\DataTypeTok{col =} \StringTok{"gray"}\NormalTok{) +}\StringTok{ }
+\StringTok{        }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{panel.background =} \KeywordTok{element_blank}\NormalTok{(), }
+\DataTypeTok{panel.grid.major =} \KeywordTok{element_blank}\NormalTok{(), }\DataTypeTok{panel.grid.minor =} \KeywordTok{element_blank}\NormalTok{())}
+\KeywordTok{return}\NormalTok{(p)}
+\NormalTok{\}}
+
+\CommentTok{# define function for plotting the trajectories and gaps}
+
+\NormalTok{plotGaps <-}\StringTok{ }\NormalTok{function(assignment, learning.rates, decay.rates, initial.achievements, }
+\NormalTok{home.environments, }\DataTypeTok{dosage=}\NormalTok{.}\DecValTok{66}\NormalTok{, curriculum.starts, curriculum.widths, }
+\DataTypeTok{scale.intercept=}\FloatTok{118.5}\NormalTok{, }\DataTypeTok{scale.slope=}\DecValTok{245}\NormalTok{, }\DataTypeTok{ach.max=}\DecValTok{260}\NormalTok{, }\DataTypeTok{gap.max=}\DecValTok{60}\NormalTok{, }
+\DataTypeTok{days.to.sample=}\DecValTok{1825}\NormalTok{+}\KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DataTypeTok{by=}\DecValTok{356}\NormalTok{, }\DataTypeTok{length.out=}\DecValTok{7}\NormalTok{)) \{}
+
+\CommentTok{# generate the trajectories}
+
+\NormalTok{trajectories <-}\StringTok{ }\KeywordTok{ZPDGrowthTrajectories}\NormalTok{(}\DataTypeTok{output.format=}\StringTok{"wide"}\NormalTok{,}
+\DataTypeTok{days=}\DecValTok{4015}\NormalTok{,}
+\DataTypeTok{assignment=}\NormalTok{assignment, }
+\DataTypeTok{curriculum.start.points=}\NormalTok{curriculum.starts, }
+\DataTypeTok{curriculum.widths=}\NormalTok{curriculum.widths,}
+\DataTypeTok{dosage=}\NormalTok{dosage,}
+\DataTypeTok{learning.rates=}\NormalTok{learning.rates,}
+\DataTypeTok{decay.rates=}\NormalTok{decay.rates,}
+\DataTypeTok{initial.achievements=}\NormalTok{initial.achievements,}
+\DataTypeTok{home.environments=}\NormalTok{home.environments,}
+\DataTypeTok{integration.points=}\DecValTok{200}\NormalTok{,}
+\DataTypeTok{curriculum.lower.slope=}\DecValTok{8}\NormalTok{,}
+\DataTypeTok{curriculum.upper.slope=}\DecValTok{10000}\NormalTok{,}
+\DataTypeTok{alpha=}\DecValTok{1}\NormalTok{,}
+\DataTypeTok{home.curriculum.shape1=}\DecValTok{1}\NormalTok{,}
+\DataTypeTok{home.curriculum.shape2=}\DecValTok{5}\NormalTok{,}
+\DataTypeTok{zpd.offset=}\NormalTok{.}\DecValTok{026}\NormalTok{,}
+\DataTypeTok{zpd.sd=}\NormalTok{.}\DecValTok{039}\NormalTok{,}
+\DataTypeTok{zpd.scale=}\NormalTok{.}\DecValTok{05}\NormalTok{,}
+\DataTypeTok{decay.weight=}\NormalTok{.}\DecValTok{005}\NormalTok{,}
+\DataTypeTok{useGPU=}\OtherTok{FALSE}\NormalTok{,}
+\DataTypeTok{verbose=}\OtherTok{FALSE}\NormalTok{)}
+
+\CommentTok{# rescale the achievement values to MAP scale}
+\NormalTok{trajectories[,}\DecValTok{2}\NormalTok{:}\KeywordTok{ncol}\NormalTok{(trajectories)] <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(trajectories[,}\DecValTok{2}\NormalTok{:}\KeywordTok{ncol}\NormalTok{(trajectories)], }
+\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{), function(x) \{scale.intercept+(x*scale.slope)\})}
+
+\CommentTok{# make the plot of trajectories (panel 1)}
+\NormalTok{p1 <-}\StringTok{ }\KeywordTok{visualizeTrajectories2}\NormalTok{(trajectories)+}
+\StringTok{    }\KeywordTok{xlim}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{3903}\NormalTok{)+}\KeywordTok{ylim}\NormalTok{(}\DecValTok{100}\NormalTok{, ach.max)+}\StringTok{  }\CommentTok{#1826}
+\StringTok{    }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y=}\StringTok{"MAP score"}\NormalTok{, }\DataTypeTok{color=}\StringTok{"Student"}\NormalTok{)+}
+\StringTok{    }\KeywordTok{geom_vline}\NormalTok{(}\DataTypeTok{xintercept=}\KeywordTok{seq}\NormalTok{(}\DecValTok{1826}\NormalTok{, }\DecValTok{3901}\NormalTok{, }\DataTypeTok{by=}\DecValTok{365}\NormalTok{), }\DataTypeTok{linetype=}\StringTok{"solid"}\NormalTok{, }\DataTypeTok{alpha=}\NormalTok{.}\DecValTok{2}\NormalTok{)+}
+\StringTok{    }\KeywordTok{geom_vline}\NormalTok{(}\DataTypeTok{xintercept=}\KeywordTok{seq}\NormalTok{(}\DecValTok{1826+365-113}\NormalTok{, }\DecValTok{4100}\NormalTok{, }\DataTypeTok{by=}\DecValTok{365}\NormalTok{), }\DataTypeTok{linetype=}\StringTok{"solid"}\NormalTok{, }\DataTypeTok{alpha=}\NormalTok{.}\DecValTok{2}\NormalTok{)+}
+\StringTok{    }\KeywordTok{annotate}\NormalTok{(}\StringTok{"text"}\NormalTok{, }\DataTypeTok{x =} \KeywordTok{seq}\NormalTok{(}\DecValTok{1826+110}\NormalTok{, }\DecValTok{4100}\NormalTok{, }\DataTypeTok{by=}\DecValTok{365}\NormalTok{), }\DataTypeTok{y =} \DecValTok{120}\NormalTok{, }
+\DataTypeTok{label =} \KeywordTok{c}\NormalTok{(}\StringTok{" K "}\NormalTok{, }\StringTok{"1st"}\NormalTok{, }\StringTok{"2nd"}\NormalTok{, }\StringTok{"3rd"}\NormalTok{, }\StringTok{"4th"}\NormalTok{, }\StringTok{"5th"}\NormalTok{), }\DataTypeTok{size=}\FloatTok{3.2}\NormalTok{)+}
+\StringTok{    }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position=}\KeywordTok{c}\NormalTok{(.}\DecValTok{06}\NormalTok{, .}\DecValTok{75}\NormalTok{),}
+\DataTypeTok{axis.text.x=}\KeywordTok{element_blank}\NormalTok{(),}
+\DataTypeTok{axis.title.x=}\KeywordTok{element_blank}\NormalTok{(),}
+\DataTypeTok{axis.ticks.x=}\KeywordTok{element_blank}\NormalTok{(),}
+\DataTypeTok{axis.text.y=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{11}\NormalTok{),}
+\DataTypeTok{axis.title.y=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{11}\NormalTok{),}
+\DataTypeTok{legend.text=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{11}\NormalTok{),}
+\DataTypeTok{legend.title=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{12}\NormalTok{))}
+
+\CommentTok{# calculate the gaps by differencing student 3-2 and student 3-1}
+\NormalTok{e_gap <-}\StringTok{ }\NormalTok{trajectories[}\DecValTok{3}\NormalTok{,}\DecValTok{2}\NormalTok{:}\KeywordTok{ncol}\NormalTok{(trajectories)] -}\StringTok{ }\NormalTok{trajectories[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{:}\KeywordTok{ncol}\NormalTok{(trajectories)]}
+\NormalTok{a_gap <-}\StringTok{ }\NormalTok{trajectories[}\DecValTok{3}\NormalTok{,}\DecValTok{2}\NormalTok{:}\KeywordTok{ncol}\NormalTok{(trajectories)] -}\StringTok{ }\NormalTok{trajectories[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{:}\KeywordTok{ncol}\NormalTok{(trajectories)]}
+
+\CommentTok{# bind into data frame. }
+\CommentTok{# Gap type is varname "student" to enable visualizeTrajectories2 to be used}
+\NormalTok{student <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Excellence"}\NormalTok{, }\StringTok{"Achievement"}\NormalTok{)}
+\NormalTok{gaps <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(student, }\KeywordTok{rbind}\NormalTok{(e_gap, a_gap))}
+
+\CommentTok{# make the plot of gaps (panel 2)}
+\NormalTok{p2 <-}\StringTok{ }\KeywordTok{visualizeTrajectories2}\NormalTok{(gaps)+}
+\StringTok{    }\KeywordTok{xlim}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{3903}\NormalTok{)+}\KeywordTok{ylim}\NormalTok{(-}\DecValTok{10}\NormalTok{, gap.max)+}
+\StringTok{    }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y=}\StringTok{"Gap"}\NormalTok{, }\DataTypeTok{color=}\StringTok{"Type"}\NormalTok{)+}
+\StringTok{    }\KeywordTok{geom_vline}\NormalTok{(}\DataTypeTok{xintercept=}\KeywordTok{seq}\NormalTok{(}\DecValTok{1826}\NormalTok{, }\DecValTok{3901}\NormalTok{, }\DataTypeTok{by=}\DecValTok{365}\NormalTok{), }\DataTypeTok{linetype=}\StringTok{"solid"}\NormalTok{, }\DataTypeTok{alpha=}\NormalTok{.}\DecValTok{2}\NormalTok{)+}
+\StringTok{    }\KeywordTok{geom_vline}\NormalTok{(}\DataTypeTok{xintercept=}\KeywordTok{seq}\NormalTok{(}\DecValTok{1826+365-113}\NormalTok{, }\DecValTok{4100}\NormalTok{, }\DataTypeTok{by=}\DecValTok{365}\NormalTok{), }\DataTypeTok{linetype=}\StringTok{"solid"}\NormalTok{, }\DataTypeTok{alpha=}\NormalTok{.}\DecValTok{2}\NormalTok{)+}
+\StringTok{    }\KeywordTok{annotate}\NormalTok{(}\StringTok{"text"}\NormalTok{, }\DataTypeTok{x =} \KeywordTok{seq}\NormalTok{(}\DecValTok{1826+110}\NormalTok{, }\DecValTok{4100}\NormalTok{, }\DataTypeTok{by=}\DecValTok{365}\NormalTok{), }\DataTypeTok{y =} \NormalTok{-}\DecValTok{7}\NormalTok{, }
+\DataTypeTok{label =} \KeywordTok{c}\NormalTok{(}\StringTok{" K "}\NormalTok{, }\StringTok{"1st"}\NormalTok{, }\StringTok{"2nd"}\NormalTok{, }\StringTok{"3rd"}\NormalTok{, }\StringTok{"4th"}\NormalTok{, }\StringTok{"5th"}\NormalTok{), }\DataTypeTok{size=}\FloatTok{3.2}\NormalTok{)+}
+\StringTok{    }\CommentTok{# these color codes are ColorBrewer set1 colors 4 and 5}
+\StringTok{    }\KeywordTok{scale_colour_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"#984ea3"}\NormalTok{, }\StringTok{"#ff7f00"}\NormalTok{))+}
+\StringTok{    }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position=}\KeywordTok{c}\NormalTok{(.}\DecValTok{06}\NormalTok{, .}\DecValTok{8}\NormalTok{),}
+\DataTypeTok{axis.text.x=}\KeywordTok{element_blank}\NormalTok{(),}
+\DataTypeTok{axis.title.x=}\KeywordTok{element_blank}\NormalTok{(),}
+\DataTypeTok{axis.ticks.x=}\KeywordTok{element_blank}\NormalTok{(),}
+\DataTypeTok{axis.text.y=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{11}\NormalTok{),}
+\DataTypeTok{axis.title.y=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{11}\NormalTok{),}
+\DataTypeTok{legend.text=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{11}\NormalTok{),}
+\DataTypeTok{legend.title=}\KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\DecValTok{12}\NormalTok{))}
+
+\NormalTok{gap.summary <-}\StringTok{ }\NormalTok{gaps[,}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, days.to.sample}\DecValTok{+1}\NormalTok{)]}
+\KeywordTok{names}\NormalTok{(gap.summary) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Type"}\NormalTok{, }\StringTok{"GradeK"}\NormalTok{, }\StringTok{"Grade1"}\NormalTok{, }\StringTok{"Grade2"}\NormalTok{, }\StringTok{"Grade3"}\NormalTok{, }
+\StringTok{"Grade4"}\NormalTok{, }\StringTok{"Grade5"}\NormalTok{, }\StringTok{"Grade6"}\NormalTok{)}
+\NormalTok{gap.summary <-}\StringTok{ }\KeywordTok{melt}\NormalTok{(gap.summary)}
+
+\NormalTok{ach.summary <-}\StringTok{ }\NormalTok{trajectories[,}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, days.to.sample}\DecValTok{+1}\NormalTok{)]}
+\KeywordTok{names}\NormalTok{(ach.summary) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Student"}\NormalTok{, }\StringTok{"GradeK"}\NormalTok{, }\StringTok{"Grade1"}\NormalTok{, }\StringTok{"Grade2"}\NormalTok{, }\StringTok{"Grade3"}\NormalTok{, }
+\StringTok{"Grade4"}\NormalTok{, }\StringTok{"Grade5"}\NormalTok{, }\StringTok{"Grade6"}\NormalTok{)}
+\NormalTok{ach.summary <-}\StringTok{ }\KeywordTok{melt}\NormalTok{(ach.summary, }\DataTypeTok{id.vars=}\StringTok{"Student"}\NormalTok{)}
+\NormalTok{ach.summary <-}\StringTok{ }\NormalTok{ach.summary[}\KeywordTok{order}\NormalTok{(ach.summary$Student),]}
+
+\NormalTok{nstudents <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(trajectories)}
+\NormalTok{days <-}\StringTok{ }\KeywordTok{ncol}\NormalTok{(trajectories) -}\StringTok{ }\DecValTok{1}
+\NormalTok{trajectories <-}\StringTok{ }\NormalTok{reshape2::}\KeywordTok{melt}\NormalTok{(trajectories, }\DataTypeTok{measure.vars =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{:days +}\StringTok{  }\DecValTok{1}\NormalTok{))}
+\NormalTok{trajectories[, }\DecValTok{2}\NormalTok{] <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{:days), }\DataTypeTok{each =} \NormalTok{nstudents)}
+\KeywordTok{names}\NormalTok{(trajectories) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"student"}\NormalTok{, }\StringTok{"day"}\NormalTok{, }\StringTok{"achievement"}\NormalTok{)}
+\NormalTok{trajectories <-}\StringTok{ }\NormalTok{trajectories[}\KeywordTok{order}\NormalTok{(trajectories$student), ]}
+
+\NormalTok{nstudents <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(gaps)}
+\NormalTok{days <-}\StringTok{ }\KeywordTok{ncol}\NormalTok{(gaps) -}\StringTok{ }\DecValTok{1}
+\NormalTok{gaps <-}\StringTok{ }\NormalTok{reshape2::}\KeywordTok{melt}\NormalTok{(gaps, }\DataTypeTok{measure.vars =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{:days +}\StringTok{ }\DecValTok{1}\NormalTok{))}
+\NormalTok{gaps[, }\DecValTok{2}\NormalTok{] <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{:days), }\DataTypeTok{each =} \NormalTok{nstudents)}
+\KeywordTok{names}\NormalTok{(gaps) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"student"}\NormalTok{, }\StringTok{"day"}\NormalTok{, }\StringTok{"achievement"}\NormalTok{)}
+\NormalTok{gaps <-}\StringTok{ }\NormalTok{gaps[}\KeywordTok{order}\NormalTok{(gaps$student), ]}
+
+\KeywordTok{return}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\DataTypeTok{p1=}\NormalTok{p1, }\DataTypeTok{p2=}\NormalTok{p2, }\DataTypeTok{gap.summary=}\NormalTok{gap.summary, }\DataTypeTok{ach.summary=}\NormalTok{ach.summary, }
+\DataTypeTok{trajectories=}\NormalTok{trajectories, }\DataTypeTok{gaps=}\NormalTok{gaps))}
+\NormalTok{\}}
+
+\NormalTok{model1 <-}\StringTok{ }\KeywordTok{plotGaps}\NormalTok{(}\DataTypeTok{assignment=}\NormalTok{assignment, }\DataTypeTok{learning.rates=}\NormalTok{learning.rates, }
+\DataTypeTok{decay.rates=}\NormalTok{decay.rates, }\DataTypeTok{initial.achievements=}\NormalTok{initial.achievements,}
+\DataTypeTok{home.environments=}\NormalTok{home.environments, }\DataTypeTok{dosage=}\NormalTok{.}\DecValTok{66}\NormalTok{,}
+\DataTypeTok{curriculum.starts=}\NormalTok{curriculum.starts, }\DataTypeTok{curriculum.widths=}\NormalTok{curriculum.widths,}
+\DataTypeTok{ach.max=}\DecValTok{240}\NormalTok{)}
+
+\CommentTok{# show the plot}
+\KeywordTok{plot_grid}\NormalTok{(model1$p1, model1$p2, }\DataTypeTok{ncol=}\DecValTok{1}\NormalTok{)}
+
+\CommentTok{# save the data}
+\NormalTok{gap1 <-}\StringTok{ }\NormalTok{model1$gap.summary}
+\NormalTok{ach1 <-}\StringTok{ }\NormalTok{model1$ach.summary}
+
+\CommentTok{# rename outcome column}
+\KeywordTok{names}\NormalTok{(gap1)[}\DecValTok{3}\NormalTok{] <-}\StringTok{ "model1"}
+\KeywordTok{names}\NormalTok{(ach1)[}\DecValTok{3}\NormalTok{] <-}\StringTok{ "model1"}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize
+\end{appendix}
 
 \end{document}
